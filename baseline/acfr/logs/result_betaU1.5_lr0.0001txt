@@ -1,0 +1,223 @@
+========== begin seed=0 ==========
+epoch:0, loss_train:13964.8093, loss_test_y: 1206.8400, loss_test_cfy: 1222.3290
+epoch:50, loss_train:9204.1263, loss_test_y: 759.7123, loss_test_cfy: 767.2716
+epoch:100, loss_train:8369.4270, loss_test_y: 691.2936, loss_test_cfy: 699.6426
+epoch:150, loss_train:7149.9183, loss_test_y: 589.4564, loss_test_cfy: 596.9412
+epoch:200, loss_train:5426.2815, loss_test_y: 453.6453, loss_test_cfy: 459.1806
+epoch:250, loss_train:3668.2480, loss_test_y: 310.2255, loss_test_cfy: 313.4225
+epoch:300, loss_train:2246.3003, loss_test_y: 191.0084, loss_test_cfy: 192.3234
+epoch:350, loss_train:1313.2377, loss_test_y: 112.2669, loss_test_cfy: 113.1316
+epoch:400, loss_train:859.8526, loss_test_y: 73.4902, loss_test_cfy: 74.8519
+epoch:450, loss_train:695.7712, loss_test_y: 58.5884, loss_test_cfy: 62.6847
+epoch:500, loss_train:653.6798, loss_test_y: 53.4678, loss_test_cfy: 61.2955
+epoch:550, loss_train:632.1809, loss_test_y: 51.3788, loss_test_cfy: 62.6022
+epoch:600, loss_train:631.6822, loss_test_y: 50.5954, loss_test_cfy: 63.9621
+epoch:650, loss_train:632.4317, loss_test_y: 50.1817, loss_test_cfy: 64.7613
+epoch:700, loss_train:628.8171, loss_test_y: 50.1201, loss_test_cfy: 65.0561
+epoch:750, loss_train:633.3181, loss_test_y: 50.1904, loss_test_cfy: 65.1215
+epoch:800, loss_train:635.7971, loss_test_y: 50.0179, loss_test_cfy: 65.1829
+epoch:850, loss_train:630.0010, loss_test_y: 50.0432, loss_test_cfy: 65.1735
+epoch:900, loss_train:625.6686, loss_test_y: 50.1544, loss_test_cfy: 65.1910
+epoch:950, loss_train:629.3153, loss_test_y: 50.1092, loss_test_cfy: 65.1300
+seed:0, loss_test_y: 55.3403, loss_test_cfy: 61.3405
+========== begin seed=1 ==========
+epoch:0, loss_train:14285.1084, loss_test_y: 1117.9503, loss_test_cfy: 1076.4434
+epoch:50, loss_train:9806.2429, loss_test_y: 739.2616, loss_test_cfy: 684.0208
+epoch:100, loss_train:8845.0379, loss_test_y: 666.4591, loss_test_cfy: 617.6546
+epoch:150, loss_train:7470.9431, loss_test_y: 562.3722, loss_test_cfy: 519.3633
+epoch:200, loss_train:5696.7304, loss_test_y: 426.6518, loss_test_cfy: 389.9009
+epoch:250, loss_train:3826.0994, loss_test_y: 286.3047, loss_test_cfy: 257.0557
+epoch:300, loss_train:2319.9191, loss_test_y: 171.4439, loss_test_cfy: 150.9831
+epoch:350, loss_train:1333.2115, loss_test_y: 97.5555, loss_test_cfy: 86.2259
+epoch:400, loss_train:850.6135, loss_test_y: 62.3820, loss_test_cfy: 60.0075
+epoch:450, loss_train:674.5034, loss_test_y: 50.2880, loss_test_cfy: 55.8758
+epoch:500, loss_train:630.0794, loss_test_y: 47.0536, loss_test_cfy: 58.8140
+epoch:550, loss_train:612.0291, loss_test_y: 45.9945, loss_test_cfy: 61.3517
+epoch:600, loss_train:597.4564, loss_test_y: 45.8226, loss_test_cfy: 63.0798
+epoch:650, loss_train:599.9457, loss_test_y: 45.9481, loss_test_cfy: 64.0577
+epoch:700, loss_train:601.4977, loss_test_y: 45.9628, loss_test_cfy: 64.2753
+epoch:750, loss_train:601.4477, loss_test_y: 45.8627, loss_test_cfy: 64.1395
+epoch:800, loss_train:599.0763, loss_test_y: 45.8460, loss_test_cfy: 64.0723
+epoch:850, loss_train:606.9635, loss_test_y: 45.6769, loss_test_cfy: 63.8176
+epoch:900, loss_train:600.7920, loss_test_y: 45.8873, loss_test_cfy: 64.1147
+epoch:950, loss_train:606.8128, loss_test_y: 45.7089, loss_test_cfy: 63.8077
+seed:1, loss_test_y: 51.8717, loss_test_cfy: 55.6179
+========== begin seed=2 ==========
+epoch:0, loss_train:19326.3908, loss_test_y: 1582.5978, loss_test_cfy: 1405.1634
+epoch:50, loss_train:13795.3354, loss_test_y: 1123.9871, loss_test_cfy: 952.3456
+epoch:100, loss_train:12683.3010, loss_test_y: 1042.3175, loss_test_cfy: 883.6384
+epoch:150, loss_train:11195.4056, loss_test_y: 922.8743, loss_test_cfy: 777.6151
+epoch:200, loss_train:9223.3023, loss_test_y: 758.6082, loss_test_cfy: 631.4576
+epoch:250, loss_train:6901.2332, loss_test_y: 567.7351, loss_test_cfy: 464.0386
+epoch:300, loss_train:4654.4599, loss_test_y: 382.4950, loss_test_cfy: 306.2808
+epoch:350, loss_train:2831.4983, loss_test_y: 231.5838, loss_test_cfy: 184.3279
+epoch:400, loss_train:1566.8307, loss_test_y: 129.9115, loss_test_cfy: 111.4813
+epoch:450, loss_train:903.1723, loss_test_y: 74.5428, loss_test_cfy: 82.3756
+epoch:500, loss_train:615.7071, loss_test_y: 52.0613, loss_test_cfy: 82.0424
+epoch:550, loss_train:533.4895, loss_test_y: 45.6250, loss_test_cfy: 91.4320
+epoch:600, loss_train:513.7988, loss_test_y: 44.3315, loss_test_cfy: 98.8813
+epoch:650, loss_train:510.8831, loss_test_y: 44.1191, loss_test_cfy: 102.1612
+epoch:700, loss_train:509.9894, loss_test_y: 44.0311, loss_test_cfy: 103.0788
+epoch:750, loss_train:513.2302, loss_test_y: 43.9867, loss_test_cfy: 103.1221
+epoch:800, loss_train:509.3861, loss_test_y: 44.0082, loss_test_cfy: 103.2130
+epoch:850, loss_train:507.8725, loss_test_y: 44.1355, loss_test_cfy: 103.5033
+epoch:900, loss_train:507.6763, loss_test_y: 44.1141, loss_test_cfy: 103.4580
+epoch:950, loss_train:510.9076, loss_test_y: 43.9543, loss_test_cfy: 103.1336
+seed:2, loss_test_y: 61.6249, loss_test_cfy: 79.8400
+========== begin seed=3 ==========
+epoch:0, loss_train:16612.5089, loss_test_y: 1386.3563, loss_test_cfy: 1473.8978
+epoch:50, loss_train:11222.8986, loss_test_y: 927.6575, loss_test_cfy: 1006.1585
+epoch:100, loss_train:10470.0476, loss_test_y: 866.2754, loss_test_cfy: 949.4536
+epoch:150, loss_train:9299.6733, loss_test_y: 772.2777, loss_test_cfy: 853.0078
+epoch:200, loss_train:7684.3779, loss_test_y: 636.2410, loss_test_cfy: 711.6731
+epoch:250, loss_train:5751.3938, loss_test_y: 474.5557, loss_test_cfy: 541.5606
+epoch:300, loss_train:3822.5748, loss_test_y: 314.7300, loss_test_cfy: 371.7171
+epoch:350, loss_train:2259.7337, loss_test_y: 185.9361, loss_test_cfy: 233.4076
+epoch:400, loss_train:1255.0616, loss_test_y: 101.7966, loss_test_cfy: 142.1239
+epoch:450, loss_train:743.7693, loss_test_y: 59.5575, loss_test_cfy: 97.4962
+epoch:500, loss_train:543.7326, loss_test_y: 43.2534, loss_test_cfy: 83.5613
+epoch:550, loss_train:489.8234, loss_test_y: 38.9255, loss_test_cfy: 83.7178
+epoch:600, loss_train:472.0297, loss_test_y: 38.0944, loss_test_cfy: 86.9431
+epoch:650, loss_train:471.9596, loss_test_y: 38.0978, loss_test_cfy: 89.1076
+epoch:700, loss_train:468.1990, loss_test_y: 38.1157, loss_test_cfy: 90.0060
+epoch:750, loss_train:467.6730, loss_test_y: 38.1093, loss_test_cfy: 90.1939
+epoch:800, loss_train:469.4439, loss_test_y: 38.0952, loss_test_cfy: 90.1863
+epoch:850, loss_train:466.3857, loss_test_y: 38.0852, loss_test_cfy: 90.1039
+epoch:900, loss_train:469.0855, loss_test_y: 38.1044, loss_test_cfy: 90.1181
+epoch:950, loss_train:466.4225, loss_test_y: 38.0300, loss_test_cfy: 90.1485
+seed:3, loss_test_y: 41.6211, loss_test_cfy: 82.7661
+========== begin seed=4 ==========
+epoch:0, loss_train:14984.6177, loss_test_y: 1263.2726, loss_test_cfy: 1229.1551
+epoch:50, loss_train:10089.5674, loss_test_y: 855.2217, loss_test_cfy: 821.4906
+epoch:100, loss_train:9152.3103, loss_test_y: 778.9171, loss_test_cfy: 750.7210
+epoch:150, loss_train:7800.3310, loss_test_y: 665.5009, loss_test_cfy: 641.7823
+epoch:200, loss_train:6049.2306, loss_test_y: 515.6611, loss_test_cfy: 496.0543
+epoch:250, loss_train:4160.6370, loss_test_y: 355.4438, loss_test_cfy: 340.7882
+epoch:300, loss_train:2563.7619, loss_test_y: 219.0946, loss_test_cfy: 210.1207
+epoch:350, loss_train:1486.6538, loss_test_y: 125.1758, loss_test_cfy: 123.6594
+epoch:400, loss_train:909.0982, loss_test_y: 74.7388, loss_test_cfy: 81.7838
+epoch:450, loss_train:692.8599, loss_test_y: 53.6958, loss_test_cfy: 70.8838
+epoch:500, loss_train:619.5703, loss_test_y: 46.5687, loss_test_cfy: 73.6222
+epoch:550, loss_train:595.8902, loss_test_y: 44.4074, loss_test_cfy: 78.5263
+epoch:600, loss_train:590.7836, loss_test_y: 43.6698, loss_test_cfy: 81.9720
+epoch:650, loss_train:590.8825, loss_test_y: 43.5916, loss_test_cfy: 83.4567
+epoch:700, loss_train:594.9240, loss_test_y: 43.4907, loss_test_cfy: 83.9917
+epoch:750, loss_train:590.9659, loss_test_y: 43.4476, loss_test_cfy: 84.1808
+epoch:800, loss_train:591.5898, loss_test_y: 43.4114, loss_test_cfy: 84.1737
+epoch:850, loss_train:594.0279, loss_test_y: 43.4361, loss_test_cfy: 84.1403
+epoch:900, loss_train:588.8101, loss_test_y: 43.4352, loss_test_cfy: 84.1482
+epoch:950, loss_train:587.9162, loss_test_y: 43.5437, loss_test_cfy: 84.1332
+seed:4, loss_test_y: 50.7726, loss_test_cfy: 70.8122
+========== begin seed=5 ==========
+epoch:0, loss_train:12503.8025, loss_test_y: 1080.5710, loss_test_cfy: 1220.0049
+epoch:50, loss_train:8462.7463, loss_test_y: 700.3810, loss_test_cfy: 790.4160
+epoch:100, loss_train:7677.4487, loss_test_y: 629.4561, loss_test_cfy: 716.8107
+epoch:150, loss_train:6445.9486, loss_test_y: 532.0786, loss_test_cfy: 613.3160
+epoch:200, loss_train:4983.9894, loss_test_y: 410.6028, loss_test_cfy: 480.4567
+epoch:250, loss_train:3456.7493, loss_test_y: 282.9228, loss_test_cfy: 337.8073
+epoch:300, loss_train:2127.8086, loss_test_y: 174.9268, loss_test_cfy: 214.4107
+epoch:350, loss_train:1250.9833, loss_test_y: 103.0778, loss_test_cfy: 130.7704
+epoch:400, loss_train:791.9411, loss_test_y: 65.8848, loss_test_cfy: 89.6127
+epoch:450, loss_train:588.4738, loss_test_y: 50.1811, loss_test_cfy: 79.4237
+epoch:500, loss_train:507.4443, loss_test_y: 44.6895, loss_test_cfy: 81.2536
+epoch:550, loss_train:489.9064, loss_test_y: 43.0069, loss_test_cfy: 87.6001
+epoch:600, loss_train:477.6476, loss_test_y: 42.8947, loss_test_cfy: 90.8598
+epoch:650, loss_train:479.3773, loss_test_y: 42.7661, loss_test_cfy: 93.0215
+epoch:700, loss_train:483.1619, loss_test_y: 42.7815, loss_test_cfy: 93.4165
+epoch:750, loss_train:476.1054, loss_test_y: 42.8632, loss_test_cfy: 92.8732
+epoch:800, loss_train:475.8160, loss_test_y: 42.9188, loss_test_cfy: 92.7338
+epoch:850, loss_train:480.9896, loss_test_y: 43.1384, loss_test_cfy: 92.2076
+epoch:900, loss_train:476.3029, loss_test_y: 42.8396, loss_test_cfy: 93.2835
+epoch:950, loss_train:475.9718, loss_test_y: 42.9512, loss_test_cfy: 92.7158
+seed:5, loss_test_y: 48.9703, loss_test_cfy: 78.0391
+========== begin seed=6 ==========
+epoch:0, loss_train:14394.3979, loss_test_y: 1188.4185, loss_test_cfy: 1173.8583
+epoch:50, loss_train:9254.0961, loss_test_y: 785.6838, loss_test_cfy: 781.5930
+epoch:100, loss_train:8586.2490, loss_test_y: 727.7455, loss_test_cfy: 725.9069
+epoch:150, loss_train:7588.8832, loss_test_y: 643.1288, loss_test_cfy: 642.0245
+epoch:200, loss_train:6189.0686, loss_test_y: 523.5032, loss_test_cfy: 523.0061
+epoch:250, loss_train:4561.8958, loss_test_y: 383.5316, loss_test_cfy: 383.6421
+epoch:300, loss_train:3009.4309, loss_test_y: 252.2592, loss_test_cfy: 253.0045
+epoch:350, loss_train:1826.8445, loss_test_y: 151.4083, loss_test_cfy: 153.8657
+epoch:400, loss_train:1108.1001, loss_test_y: 90.7667, loss_test_cfy: 96.6361
+epoch:450, loss_train:775.2740, loss_test_y: 63.4802, loss_test_cfy: 75.0840
+epoch:500, loss_train:660.0674, loss_test_y: 54.9400, loss_test_cfy: 73.8640
+epoch:550, loss_train:626.2167, loss_test_y: 52.9907, loss_test_cfy: 78.4133
+epoch:600, loss_train:623.6388, loss_test_y: 52.6532, loss_test_cfy: 82.0432
+epoch:650, loss_train:621.0563, loss_test_y: 52.7316, loss_test_cfy: 83.8872
+epoch:700, loss_train:622.2157, loss_test_y: 52.4408, loss_test_cfy: 84.0855
+epoch:750, loss_train:623.3166, loss_test_y: 52.5585, loss_test_cfy: 84.3050
+epoch:800, loss_train:619.7208, loss_test_y: 52.7064, loss_test_cfy: 84.5258
+epoch:850, loss_train:620.1651, loss_test_y: 52.6800, loss_test_cfy: 84.5051
+epoch:900, loss_train:621.4999, loss_test_y: 52.6165, loss_test_cfy: 84.4527
+epoch:950, loss_train:619.8201, loss_test_y: 52.7605, loss_test_cfy: 84.6038
+seed:6, loss_test_y: 56.5575, loss_test_cfy: 72.6967
+========== begin seed=7 ==========
+epoch:0, loss_train:13089.3618, loss_test_y: 1158.7403, loss_test_cfy: 1169.5994
+epoch:50, loss_train:8466.0771, loss_test_y: 760.0756, loss_test_cfy: 784.3978
+epoch:100, loss_train:7795.0102, loss_test_y: 709.2648, loss_test_cfy: 733.4769
+epoch:150, loss_train:6908.1886, loss_test_y: 622.0383, loss_test_cfy: 638.9843
+epoch:200, loss_train:5670.4232, loss_test_y: 504.2338, loss_test_cfy: 519.6343
+epoch:250, loss_train:4224.7768, loss_test_y: 373.1394, loss_test_cfy: 384.9068
+epoch:300, loss_train:2800.0874, loss_test_y: 248.5787, loss_test_cfy: 256.4059
+epoch:350, loss_train:1736.2445, loss_test_y: 151.6497, loss_test_cfy: 157.0673
+epoch:400, loss_train:1064.9084, loss_test_y: 92.0870, loss_test_cfy: 98.2308
+epoch:450, loss_train:744.1946, loss_test_y: 63.0191, loss_test_cfy: 74.3577
+epoch:500, loss_train:626.3395, loss_test_y: 51.3609, loss_test_cfy: 71.1365
+epoch:550, loss_train:581.0196, loss_test_y: 46.8165, loss_test_cfy: 74.8251
+epoch:600, loss_train:567.0173, loss_test_y: 45.6442, loss_test_cfy: 78.9873
+epoch:650, loss_train:561.0973, loss_test_y: 45.6011, loss_test_cfy: 81.3105
+epoch:700, loss_train:563.3106, loss_test_y: 45.4384, loss_test_cfy: 81.9415
+epoch:750, loss_train:561.9843, loss_test_y: 45.2814, loss_test_cfy: 81.9066
+epoch:800, loss_train:563.0431, loss_test_y: 45.3793, loss_test_cfy: 81.9847
+epoch:850, loss_train:560.1550, loss_test_y: 45.4887, loss_test_cfy: 82.1142
+epoch:900, loss_train:558.3094, loss_test_y: 45.4248, loss_test_cfy: 81.9805
+epoch:950, loss_train:560.6564, loss_test_y: 45.4553, loss_test_cfy: 82.0527
+seed:7, loss_test_y: 55.4810, loss_test_cfy: 70.7423
+========== begin seed=8 ==========
+epoch:0, loss_train:15130.9300, loss_test_y: 1301.1407, loss_test_cfy: 1201.7068
+epoch:50, loss_train:9983.2187, loss_test_y: 842.2188, loss_test_cfy: 788.0858
+epoch:100, loss_train:9037.8089, loss_test_y: 762.6905, loss_test_cfy: 716.0935
+epoch:150, loss_train:7625.5642, loss_test_y: 645.1061, loss_test_cfy: 603.5881
+epoch:200, loss_train:5811.1521, loss_test_y: 489.7345, loss_test_cfy: 454.6845
+epoch:250, loss_train:3915.0370, loss_test_y: 329.3640, loss_test_cfy: 302.5068
+epoch:300, loss_train:2362.2162, loss_test_y: 197.1605, loss_test_cfy: 179.8475
+epoch:350, loss_train:1354.7262, loss_test_y: 110.4522, loss_test_cfy: 103.1453
+epoch:400, loss_train:826.1534, loss_test_y: 67.3045, loss_test_cfy: 70.0068
+epoch:450, loss_train:636.1381, loss_test_y: 52.2982, loss_test_cfy: 64.1987
+epoch:500, loss_train:590.9199, loss_test_y: 48.8011, loss_test_cfy: 67.1478
+epoch:550, loss_train:579.5306, loss_test_y: 48.4682, loss_test_cfy: 70.2675
+epoch:600, loss_train:581.1721, loss_test_y: 48.4882, loss_test_cfy: 71.5783
+epoch:650, loss_train:574.3660, loss_test_y: 48.2490, loss_test_cfy: 71.3129
+epoch:700, loss_train:579.1525, loss_test_y: 48.3481, loss_test_cfy: 71.5786
+epoch:750, loss_train:577.0612, loss_test_y: 48.2332, loss_test_cfy: 71.3639
+epoch:800, loss_train:576.3518, loss_test_y: 48.4272, loss_test_cfy: 71.6459
+epoch:850, loss_train:580.7820, loss_test_y: 48.4622, loss_test_cfy: 71.9776
+epoch:900, loss_train:578.0598, loss_test_y: 48.3623, loss_test_cfy: 71.7687
+epoch:950, loss_train:580.2360, loss_test_y: 48.3152, loss_test_cfy: 71.4315
+seed:8, loss_test_y: 53.4974, loss_test_cfy: 63.9626
+========== begin seed=9 ==========
+epoch:0, loss_train:14078.4158, loss_test_y: 1182.7670, loss_test_cfy: 1035.6356
+epoch:50, loss_train:9532.6520, loss_test_y: 780.6890, loss_test_cfy: 659.9254
+epoch:100, loss_train:8680.3085, loss_test_y: 714.1501, loss_test_cfy: 602.1674
+epoch:150, loss_train:7437.3805, loss_test_y: 617.9485, loss_test_cfy: 514.1819
+epoch:200, loss_train:5861.0061, loss_test_y: 491.0459, loss_test_cfy: 398.7133
+epoch:250, loss_train:4123.8740, loss_test_y: 350.2315, loss_test_cfy: 274.3852
+epoch:300, loss_train:2653.3732, loss_test_y: 227.0937, loss_test_cfy: 170.5507
+epoch:350, loss_train:1621.9457, loss_test_y: 140.0348, loss_test_cfy: 105.1074
+epoch:400, loss_train:1044.9753, loss_test_y: 92.1529, loss_test_cfy: 79.6819
+epoch:450, loss_train:825.6786, loss_test_y: 71.5110, loss_test_cfy: 79.1543
+epoch:500, loss_train:765.0221, loss_test_y: 65.5576, loss_test_cfy: 87.1857
+epoch:550, loss_train:754.7811, loss_test_y: 63.2380, loss_test_cfy: 91.3459
+epoch:600, loss_train:747.5845, loss_test_y: 63.2269, loss_test_cfy: 93.9279
+epoch:650, loss_train:746.2110, loss_test_y: 62.9800, loss_test_cfy: 94.0521
+epoch:700, loss_train:750.4284, loss_test_y: 62.7919, loss_test_cfy: 93.7975
+epoch:750, loss_train:747.2488, loss_test_y: 62.8399, loss_test_cfy: 93.9953
+epoch:800, loss_train:749.6691, loss_test_y: 62.8152, loss_test_cfy: 93.9745
+epoch:850, loss_train:752.7553, loss_test_y: 62.6881, loss_test_cfy: 93.8656
+epoch:900, loss_train:746.9772, loss_test_y: 62.5753, loss_test_cfy: 93.5062
+epoch:950, loss_train:749.5425, loss_test_y: 62.6408, loss_test_cfy: 93.5646
+seed:9, loss_test_y: 76.7527, loss_test_cfy: 77.1902
+loss_list: [61.3405, 55.61788, 79.83999, 82.76605, 70.81218, 78.03911, 72.69674, 70.74228, 63.96265, 77.19025]
+f_loss_mean: 55.2490, f_loss_std: 8.7435
+cf_loss_mean: 71.3008, cf_loss_std: 8.2823
