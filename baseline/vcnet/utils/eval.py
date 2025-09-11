@@ -1,0 +1,113 @@
+import torch
+import numpy as np
+import json
+
+
+def test_ltee_drnet(model, x, t, y, cfT, cfY, targetreg=None, norm=False, mu=0., std=1.):
+    """test factual and counterfactual performance on test/valid dataset"""
+    # check factual performance
+    if targetreg:
+        out = model.forward(t, x)
+        tr_out = targetreg(t).data
+        g = out[0].data.squeeze()
+        pred_y = out[1].data.squeeze() + tr_out / (g + 1e-6)
+    else:
+        g, wass, out_s, out_y = model.forward(t, x)
+
+    loss_y = ((out_y - y.view(-1, 1)) ** 2).mean().item()
+
+    # check counterfactual performance
+    loss_cfy_list = []
+    for i in range(cfT.shape[0]):
+        cft, cfy = cfT[i, :], cfY[i, :]
+        if targetreg:
+            out = model.forward(cft, x)
+            tr_out = targetreg(cft).data
+            g = out[0].data.squeeze()
+            pred_cfy = out[1].data.squeeze() + tr_out / (g + 1e-6)
+        else:
+            g, wass, out_s, cf_out_y = model.forward(cft, x)
+
+        loss_cfy_list.append(((cf_out_y - cfy.view(-1, 1)) ** 2).mean().item())
+
+    loss_cfy = np.array(loss_cfy_list).mean()
+
+    return loss_y, loss_cfy
+
+def test(model, x, t, y, cfT, cfY, targetreg=None, norm=False, mu=0., std=1.):
+    """test factual and counterfactual performance on test/valid dataset"""
+    # check factual performance
+    if targetreg:
+        out = model.forward(t, x)
+        tr_out = targetreg(t).data
+        g = out[0].data.squeeze()
+        pred_y = out[1].data.squeeze() + tr_out / (g + 1e-6)
+    else:
+        out = model.forward(t, x)
+        pred_y = out[1].data.squeeze()
+
+    if norm:
+        y = y * std + mu
+        pred_y = pred_y * std + mu
+    loss_y = ((pred_y - y) ** 2).mean().item()
+
+    # check counterfactual performance
+    loss_cfy_list = []
+    for i in range(cfT.shape[0]):
+        cft, cfy = cfT[i, :], cfY[i, :]
+        if targetreg:
+            out = model.forward(cft, x)
+            tr_out = targetreg(cft).data
+            g = out[0].data.squeeze()
+            pred_cfy = out[1].data.squeeze() + tr_out / (g + 1e-6)
+        else:
+            out = model.forward(cft, x)
+            pred_cfy = out[1].data.squeeze()
+
+        if norm:
+            cfy = cfy * std + mu
+            pred_cfy = pred_cfy * std + mu
+
+        loss_cfy_list.append(((pred_cfy - cfy) ** 2).mean().item())
+    loss_cfy = np.array(loss_cfy_list).mean()
+
+    return loss_y, loss_cfy
+
+def curve(model, test_matrix, t_grid, targetreg=None):
+    n_test = t_grid.shape[1]
+    t_grid_hat = torch.zeros(2, n_test)
+    t_grid_hat[0, :] = t_grid[0, :]
+
+    test_loader = get_iter(test_matrix, batch_size=test_matrix.shape[0], shuffle=False)
+
+    if targetreg is None:
+        for _ in range(n_test):
+            for idx, (inputs, y) in enumerate(test_loader):
+                t = inputs[:, 0]
+                t *= 0
+                t += t_grid[0, _]
+                x = inputs[:, 1:]
+                break
+            out = model.forward(t, x)
+            out = out[1].data.squeeze()
+            out = out.mean()
+            t_grid_hat[1, _] = out
+        mse = ((t_grid_hat[1, :].squeeze() - t_grid[1, :].squeeze()) ** 2).mean().data
+        return t_grid_hat, mse
+    else:
+        for _ in range(n_test):
+            for idx, (inputs, y) in enumerate(test_loader):
+                t = inputs[:, 0]
+                t *= 0
+                t += t_grid[0, _]
+                x = inputs[:, 1:]
+                break
+            out = model.forward(t, x)
+            tr_out = targetreg(t).data
+            g = out[0].data.squeeze()
+            out = out[1].data.squeeze() + tr_out / (g + 1e-6)
+            out = out.mean()
+            t_grid_hat[1, _] = out
+        mse = ((t_grid_hat[1, :].squeeze() - t_grid[1, :].squeeze()) ** 2).mean().data
+        return t_grid_hat, mse
+

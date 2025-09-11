@@ -1,0 +1,2 @@
+========== begin seed=0 ==========
+epoch:0, loss_test_y: nan, loss_test_cfy: nan, best_cf: inf

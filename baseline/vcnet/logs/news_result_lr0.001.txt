@@ -1,0 +1,4 @@
+========== begin seed=0 ==========
+epoch:0, loss_test_y: 273.8501, loss_test_cfy: 15.8135, best_cf: 15.6443
+epoch:20, loss_test_y: 273.7290, loss_test_cfy: 15.6341, best_cf: 15.3059
+epoch:40, loss_test_y: 273.4484, loss_test_cfy: 15.5229, best_cf: 15.3059
