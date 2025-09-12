@@ -1,7 +1,7 @@
 import os
 import numpy as np
 
-from data_utils.simu1 import simu_data1
+from data.simu1 import simu_data1
 import argparse
 
 if __name__ == "__main__":

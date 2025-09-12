@@ -12,6 +12,9 @@ from utils.eval import curve
 
 import argparse
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print('Using device:', device)
+
 def adjust_learning_rate(optimizer, init_lr, epoch):
     if lr_type == 'cos':  # cos without warm-up
         lr = 0.5 * init_lr * (1 + math.cos(math.pi * epoch / num_epoch))
@@ -90,7 +93,7 @@ if __name__ == "__main__":
             cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
             degree = 2
             knots = [0.33, 0.66]
-            model = Vcnet(cfg_density, num_grid, cfg, degree, knots)
+            model = Vcnet(cfg_density, num_grid, cfg, degree, knots).to(device)
             model._initialize_weights()
 
         elif model_name == 'Drnet' or model_name == 'Drnet_tr':
@@ -98,7 +101,7 @@ if __name__ == "__main__":
             num_grid = 10
             cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
             isenhance = 1
-            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance)
+            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
             model._initialize_weights()
 
         elif model_name == 'Tarnet' or model_name == 'Tarnet_tr':
@@ -106,7 +109,7 @@ if __name__ == "__main__":
             num_grid = 10
             cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
             isenhance = 0
-            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance)
+            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
             model._initialize_weights()
 
         # use Target Regularization
@@ -118,7 +121,7 @@ if __name__ == "__main__":
         if isTargetReg:
             tr_knots = list(np.arange(0.1, 1, 0.1))
             tr_degree = 2
-            TargetReg = TR(tr_degree, tr_knots)
+            TargetReg = TR(tr_degree, tr_knots).to(device)
             TargetReg._initialize_weights()
 
         # best cfg for each model
@@ -171,11 +174,11 @@ if __name__ == "__main__":
                 os.makedirs(cur_save_path)
 
             data = pd.read_csv(load_path + '/' + str(_) + '/train.txt', header=None, sep=' ')
-            train_matrix = torch.from_numpy(data.to_numpy()).float()
+            train_matrix = torch.from_numpy(data.to_numpy()).float().to(device)
             data = pd.read_csv(load_path + '/' + str(_) + '/test.txt', header=None, sep=' ')
-            test_matrix = torch.from_numpy(data.to_numpy()).float()
+            test_matrix = torch.from_numpy(data.to_numpy()).float().to(device)
             data = pd.read_csv(load_path + '/' + str(_) + '/t_grid.txt', header=None, sep=' ')
-            t_grid = torch.from_numpy(data.to_numpy()).float()
+            t_grid = torch.from_numpy(data.to_numpy()).float().to(device)
 
             # train_matrix, test_matrix, t_grid = simu_data1(500, 200)
             train_loader = get_iter(train_matrix, batch_size=500, shuffle=True)
