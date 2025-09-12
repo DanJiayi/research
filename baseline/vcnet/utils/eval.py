@@ -1,7 +1,33 @@
 import torch
+from torch.utils.data import Dataset, DataLoader
 import numpy as np
 import json
 
+class Dataset_from_matrix(Dataset):
+    """Face Landmarks dataset."""
+
+    def __init__(self, data_matrix):
+        """
+        Args: create a torch dataset from a tensor data_matrix with size n * p
+        [treatment, features, outcome]
+        """
+        self.data_matrix = data_matrix
+        self.num_data = data_matrix.shape[0]
+
+    def __len__(self):
+        return self.num_data
+
+    def __getitem__(self, idx):
+        if torch.is_tensor(idx):
+            idx = idx.tolist()
+        sample = self.data_matrix[idx, :]
+        return (sample[0:-1], sample[-1])
+
+
+def get_iter(data_matrix, batch_size, shuffle=True):
+    dataset = Dataset_from_matrix(data_matrix)
+    iterator = DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
+    return iterator
 
 def test_ltee_drnet(model, x, t, y, cfT, cfY, targetreg=None, norm=False, mu=0., std=1.):
     """test factual and counterfactual performance on test/valid dataset"""
@@ -92,6 +118,10 @@ def curve(model, test_matrix, t_grid, targetreg=None):
             out = out[1].data.squeeze()
             out = out.mean()
             t_grid_hat[1, _] = out
+
+        device = t_grid_hat.device
+        t_grid_hat = t_grid_hat.to(device)
+        t_grid = t_grid.to(device)
         mse = ((t_grid_hat[1, :].squeeze() - t_grid[1, :].squeeze()) ** 2).mean().data
         return t_grid_hat, mse
     else:
@@ -108,6 +138,9 @@ def curve(model, test_matrix, t_grid, targetreg=None):
             out = out[1].data.squeeze() + tr_out / (g + 1e-6)
             out = out.mean()
             t_grid_hat[1, _] = out
+        device = t_grid_hat.device
+        t_grid_hat = t_grid_hat.to(device)
+        t_grid = t_grid.to(device)
         mse = ((t_grid_hat[1, :].squeeze() - t_grid[1, :].squeeze()) ** 2).mean().data
         return t_grid_hat, mse
 

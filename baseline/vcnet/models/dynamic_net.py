@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from model.model_utils import wasserstein
+# from model.model_utils import wasserstein
 
 class Truncated_power():
     def __init__(self, degree, knots):
@@ -554,7 +554,7 @@ class Treat_LTEE(nn.Module):
 
 
 class Multi_head_ltee(nn.Module):
-    def __init__(self, cfg, isenhance, pt, hidden_size):
+    def __init__(self, cfg, isenhance, pt= [0.0, 0.2, 0.4, 0.6, 0.8, 1.], hidden_size=8):
         super(Multi_head_ltee, self).__init__()
 
         self.cfg = cfg # cfg does NOT include the extra dimension of concat treatment

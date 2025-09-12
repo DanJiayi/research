@@ -7,7 +7,7 @@ import os
 import json
 
 from models.dynamic_net import Vcnet, Drnet, TR
-from data_utils.data import get_iter
+from data.data import get_iter
 from utils.eval import curve
 
 import argparse
@@ -85,7 +85,8 @@ if __name__ == "__main__":
 
 
     Result = {}
-    for model_name in ['Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr', 'Vcnet', 'Vcnet_tr']:
+    #for model_name in ['Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr', 'Vcnet', 'Vcnet_tr']:
+    for model_name in ['Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr','Vcnet', 'Vcnet_tr']:
         Result[model_name]=[]
         if model_name == 'Vcnet' or model_name == 'Vcnet_tr':
             cfg_density = [(6, 50, 1, 'relu'), (50, 50, 1, 'relu')]
