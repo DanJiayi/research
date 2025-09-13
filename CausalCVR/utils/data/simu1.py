@@ -134,8 +134,8 @@ def simu_data2(n_train, n_test):
         for j in range(n_test):
             x = test_matrix[j, 1:9]
             y1,y2 = t_x_y_2(t, x)
-            y1 = 0.7 * x_t_link(y1 + torch.randn(1)[0] * 0.5)
-            y2 = 0.7 * x_t_link(y2 + torch.randn(1)[0] * 0.5)
+            y1 = 0.7 * x_t_link(y1)
+            y2 = 0.7 * x_t_link(y2)
             psi1 += y1
             psi2 += y2
         psi1 /= n_test

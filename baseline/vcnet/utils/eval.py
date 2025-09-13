@@ -108,7 +108,7 @@ def curve(model, test_matrix, t_grid, targetreg=None):
 
     if targetreg is None:
         for _ in range(n_test):
-            for idx, (inputs, y) in enumerate(test_loader):
+            for idx, (inputs, y) in enumerate(test_loader): # n个样本，都取第一个t
                 t = inputs[:, 0]
                 t *= 0
                 t += t_grid[0, _]
@@ -143,4 +143,3 @@ def curve(model, test_matrix, t_grid, targetreg=None):
         t_grid = t_grid.to(device)
         mse = ((t_grid_hat[1, :].squeeze() - t_grid[1, :].squeeze()) ** 2).mean().data
         return t_grid_hat, mse
-
