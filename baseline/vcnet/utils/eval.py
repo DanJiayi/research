@@ -143,3 +143,51 @@ def curve(model, test_matrix, t_grid, targetreg=None):
         t_grid = t_grid.to(device)
         mse = ((t_grid_hat[1, :].squeeze() - t_grid[1, :].squeeze()) ** 2).mean().data
         return t_grid_hat, mse
+
+
+def curve_2(model,test_matrix, t_grid, targetreg1=None, targetreg2=None):
+    n_test = t_grid.shape[1]
+    t_grid_hat = torch.zeros(3, n_test)
+    t_grid_hat[0, :] = t_grid[0, :]
+
+    test_loader = get_iter(test_matrix, batch_size=test_matrix.shape[0], shuffle=False)
+
+    if targetreg1 is None:
+        for _ in range(n_test):
+            for idx, inputs in enumerate(test_loader): # n个样本，都取第一个t
+                t = inputs[:, 0]
+                t *= 0
+                t += t_grid[0, _]
+                x = inputs[:, 1:-3]
+                break
+            out = model.forward(t, x)
+            out1,out2 = out[1].data.squeeze(),out[2].data.squeeze()
+            out1,out2 = out1.mean(),out2.mean()
+            t_grid_hat[1, _], t_grid_hat[2, _]= out1,out2
+
+        device = t_grid_hat.device
+        t_grid_hat = t_grid_hat.to(device)
+        t_grid = t_grid.to(device)
+        mse1 = ((t_grid_hat[1, :].squeeze() - t_grid[1, :].squeeze()) ** 2).mean().data
+        mse2 = ((t_grid_hat[2, :].squeeze() - t_grid[2, :].squeeze()) ** 2).mean().data
+        return t_grid_hat, mse1, mse2
+    else:
+        for _ in range(n_test):
+            for idx, inputs in enumerate(test_loader):
+                t = inputs[:, 0]
+                t *= 0
+                t += t_grid[0, _]
+                x = inputs[:, 1:-3]
+                break
+            out = model.forward(t, x)
+            tr_out1,tr_out2 = targetreg1(t).data, targetreg2(t).data
+            g = out[0].data.squeeze()
+            out1,out2 = out[1].data.squeeze() + tr_out1 / (g + 1e-6),out[2].data.squeeze() + tr_out2 / (g + 1e-6)
+            out1,out2 = out1.mean(),out2.mean()
+            t_grid_hat[1, _], t_grid_hat[2, _]= out2
+        device = t_grid_hat.device
+        t_grid_hat = t_grid_hat.to(device)
+        t_grid = t_grid.to(device)
+        mse1 = ((t_grid_hat[1, :].squeeze() - t_grid[1, :].squeeze()) ** 2).mean().data
+        mse2 = ((t_grid_hat[2, :].squeeze() - t_grid[2, :].squeeze()) ** 2).mean().data
+        return t_grid_hat, mse1, mse2

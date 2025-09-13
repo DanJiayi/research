@@ -236,6 +236,87 @@ class Vcnet(nn.Module):
                 if m.isbias:
                     m.bias.data.zero_()
 
+class Vcnet_2(nn.Module):
+    def __init__(self, cfg_density, num_grid, cfg, degree, knots):
+        super(Vcnet, self).__init__()
+        """
+        cfg_density: cfg for the density estimator; [(ind1, outd1, isbias1), 'act', ....]; the cfg for density estimator head is not included
+        num_grid: how many grid used for the density estimator head
+        """
+
+        # cfg/cfg_density = [(ind1, outd1, isbias1, activation),....]
+        self.cfg_density = cfg_density
+        self.num_grid = num_grid
+
+        self.cfg = cfg
+        self.degree = degree
+        self.knots = knots
+
+        # construct the density estimator
+        density_blocks = []
+        density_hidden_dim = -1
+        for layer_idx, layer_cfg in enumerate(cfg_density):
+            # fc layer
+            if layer_idx == 0:
+                # weight connected to feature
+                self.feature_weight = nn.Linear(in_features=layer_cfg[0], out_features=layer_cfg[1], bias=layer_cfg[2])
+                density_blocks.append(self.feature_weight)
+            else:
+                density_blocks.append(nn.Linear(in_features=layer_cfg[0], out_features=layer_cfg[1], bias=layer_cfg[2]))
+            density_hidden_dim = layer_cfg[1]
+            if layer_cfg[3] == 'relu':
+                density_blocks.append(nn.ReLU(inplace=True))
+            elif layer_cfg[3] == 'elu':
+                density_blocks.append(nn.ELU(inplace=True))
+            elif layer_cfg[3] == 'tanh':
+                density_blocks.append(nn.Tanh())
+            elif layer_cfg[3] == 'sigmoid':
+                density_blocks.append(nn.Sigmoid())
+            else:
+                print('No activation')
+
+        self.hidden_features = nn.Sequential(*density_blocks)
+
+        self.density_hidden_dim = density_hidden_dim
+        self.density_estimator_head = Density_Block(self.num_grid, density_hidden_dim, isbias=1)
+
+        # construct the dynamics network
+        blocks = []
+        for layer_idx, layer_cfg in enumerate(cfg):
+            if layer_idx == len(cfg)-1: # last layer
+                last_layer = Dynamic_FC(layer_cfg[0], layer_cfg[1], self.degree, self.knots, act=layer_cfg[3], isbias=layer_cfg[2], islastlayer=1)
+            else:
+                blocks.append(
+                    Dynamic_FC(layer_cfg[0], layer_cfg[1], self.degree, self.knots, act=layer_cfg[3], isbias=layer_cfg[2], islastlayer=0))
+        blocks.append(last_layer)
+
+        self.Q = nn.Sequential(*blocks)
+
+    def forward(self, t, x):
+        hidden = self.hidden_features(x)
+        t_hidden = torch.cat((torch.unsqueeze(t, 1), hidden), 1)
+        #t_hidden = torch.cat((torch.unsqueeze(t, 1), x), 1)
+        g = self.density_estimator_head(t, hidden)
+        Q = self.Q(t_hidden)
+
+        return g, Q
+
+    def _initialize_weights(self):
+        # TODO: maybe add more distribution for initialization
+        for m in self.modules():
+            if isinstance(m, Dynamic_FC):
+                m.weight.data.normal_(0, 1.)
+                if m.isbias:
+                    m.bias.data.zero_()
+            elif isinstance(m, nn.Linear):
+                m.weight.data.normal_(0, 0.01)
+                if m.bias is not None:
+                    m.bias.data.zero_()
+            elif isinstance(m, Density_Block):
+                m.weight.data.normal_(0, 0.01)
+                if m.isbias:
+                    m.bias.data.zero_()
+
 
 """
 cfg_density = [(3,4,1,'relu'), (4,6,1,'relu')]
