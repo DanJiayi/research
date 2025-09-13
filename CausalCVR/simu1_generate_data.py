@@ -7,8 +7,8 @@ import argparse
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='generate simulate data_utils')
     parser.add_argument('--save_dir', type=str, default='dataset/simu2', help='dir to save generated data_utils')
-    parser.add_argument('--num_eval', type=int, default=10, help='num of dataset for evaluating the methods')
-    parser.add_argument('--num_tune', type=int, default=2, help='num of dataset for tuning the parameters')
+    parser.add_argument('--num_eval', type=int, default=100, help='num of dataset for evaluating the methods')
+    parser.add_argument('--num_tune', type=int, default=20, help='num of dataset for tuning the parameters')
 
     args = parser.parse_args()
     save_path = args.save_dir

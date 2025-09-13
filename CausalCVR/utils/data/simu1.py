@@ -101,8 +101,8 @@ def simu_data2(n_train, n_test):
         train_matrix[_, 0] = t
 
         y1,y2 = t_x_y_2(t, x)
-        y1 = 0.7*x_t_link(y1 + torch.randn(1)[0] * 0.5)
-        y2 = 0.7*x_t_link(y2 + torch.randn(1)[0] * 0.5)
+        y1 = torch.bernoulli(0.7*x_t_link(y1 + torch.randn(1)[0] * 0.5))
+        y2 = torch.bernoulli(0.9*x_t_link(y2 + torch.randn(1)[0] * 0.5))
 
         train_matrix[_, -3] = y1
         train_matrix[_, -2] = y2
@@ -118,8 +118,8 @@ def simu_data2(n_train, n_test):
         test_matrix[_, 0] = t
 
         y1,y2 = t_x_y_2(t, x)
-        y1 = 0.7*x_t_link(y1 + torch.randn(1)[0] * 0.5)
-        y2 = 0.7*x_t_link(y2 + torch.randn(1)[0] * 0.5)
+        y1 = torch.bernoulli(0.7*x_t_link(y1 + torch.randn(1)[0] * 0.5))
+        y2 = torch.bernoulli(0.9*x_t_link(y2 + torch.randn(1)[0] * 0.5))
 
         test_matrix[_, -3] = y1
         test_matrix[_, -2] = y2
@@ -135,7 +135,7 @@ def simu_data2(n_train, n_test):
             x = test_matrix[j, 1:9]
             y1,y2 = t_x_y_2(t, x)
             y1 = 0.7 * x_t_link(y1)
-            y2 = 0.7 * x_t_link(y2)
+            y2 = 0.9 * x_t_link(y2)
             psi1 += y1
             psi2 += y2
         psi1 /= n_test
@@ -150,7 +150,9 @@ if __name__ == '__main__':
     train_matrix, test_matrix, t_grid = simu_data2(500, 200)
     print(train_matrix.shape,test_matrix.shape,t_grid.shape)
     y1,y2,y3 = train_matrix[:,-3],train_matrix[:,-2],train_matrix[:,-1]
-    print(y1.mean(),y2.mean(),y3.mean())
+    print(train_matrix)
+    print(test_matrix)
+    print(y1.shape,y1.mean(),y3.shape,y2.mean(),y3.shape,y3.mean())
     y1,y2,y3 = test_matrix[:,-3],test_matrix[:,-2],test_matrix[:,-1]
     print(y1.mean(),y2.mean(),y3.mean())
     print(t_grid[0,:].mean(),t_grid[1,:].mean(),t_grid[2,:].mean())

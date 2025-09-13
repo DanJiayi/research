@@ -11,8 +11,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='generate news data_utils')
     parser.add_argument('--data_path', type=str, default='../baseline/vcnet/dataset/news/news_pp.npy', help='data_utils path')
     parser.add_argument('--save_dir', type=str, default='dataset/news', help='dir to save generated data_utils')
-    parser.add_argument('--num_eval', type=int, default=10, help='num of dataset for evaluating the methods')
-    parser.add_argument('--num_tune', type=int, default=2, help='num of dataset for tuning the parameters')
+    parser.add_argument('--num_eval', type=int, default=100, help='num of dataset for evaluating the methods')
+    parser.add_argument('--num_tune', type=int, default=20, help='num of dataset for tuning the parameters')
 
     args = parser.parse_args()
     save_path = args.save_dir
@@ -69,8 +69,8 @@ if __name__ == "__main__":
             y1,y2 = torch.from_numpy(y1), torch.from_numpy(y2)
             x = torch.from_numpy(x)
             t = torch.from_numpy(t)
-            y1 = sigmoid(y1 + torch.randn(1)[0] * np.sqrt(0.5))
-            y2 = sigmoid(y2 +torch.randn(1)[0] * np.sqrt(0.5))
+            y1 = torch.bernoulli(0.6*sigmoid(y1 + torch.randn(1)[0] * np.sqrt(0.5)))
+            y2 = torch.bernoulli(0.6*sigmoid(y2 +torch.randn(1)[0] * np.sqrt(0.5)))
 
             data_matrix[_, 0] = t
             data_matrix[_, num_feature+1] = y1
@@ -88,8 +88,8 @@ if __name__ == "__main__":
             for j in range(num_data):
                 x = data_matrix[j, 1: num_feature+1].numpy()
                 y1,y2 = t_x_y(t, x)
-                psi1 += sigmoid(y1)
-                psi2 += sigmoid(y2)
+                psi1 += 0.6*sigmoid(y1)
+                psi2 += 0.6*sigmoid(y2)
             psi1 /= num_data
             psi2 /= num_data
             t_grid[1, i] = psi1
