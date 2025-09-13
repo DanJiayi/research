@@ -87,6 +87,7 @@ class Dynamic_FC(nn.Module):
         x_treat_basis_ = torch.unsqueeze(x_treat_basis, 1)
 
         # x_feature_weight * x_treat_basis; bs, outd, d
+        # print('***',x_feature_weight.device,x_treat_basis_.device)
         out = torch.sum(x_feature_weight * x_treat_basis_, dim=2) # bs, outd
 
         if self.isbias:

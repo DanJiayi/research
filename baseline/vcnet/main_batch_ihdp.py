@@ -2,13 +2,15 @@ import torch
 import math
 import numpy as np
 from models.dynamic_net import Vcnet, Drnet, TR
-from data_utils.data import get_iter
+from data.data import get_iter
 from utils.eval import curve
 
 import os
 import json
 import argparse
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print('Using device:', device)
 
 def adjust_learning_rate(optimizer, init_lr, epoch):
     if lr_type == 'cos':  # cos without warm-up
@@ -48,7 +50,7 @@ if __name__ == "__main__":
     parser.add_argument('--save_dir', type=str, default='logs/ihdp/eval', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=2, help='num of datasets to train')
 
     # training
     parser.add_argument('--n_epochs', type=int, default=800, help='num of epochs to train')
@@ -90,7 +92,7 @@ if __name__ == "__main__":
     t_grid_all = torch.load(args.data_dir + '/t_grid.pt')
 
     Result = {}
-    for model_name in ['Vcnet', 'Vcnet_tr', 'Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr']:
+    for model_name in ['Vcnet', 'Vcnet_tr']: #, 'Drnet', 'Drnet_tr','Tarnet', 'Tarnet_tr'
         Result[model_name]=[]
         # import model
         if model_name == 'Vcnet' or model_name == 'Vcnet_tr':
@@ -99,7 +101,7 @@ if __name__ == "__main__":
             cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
             degree = 2
             knots = [0.33, 0.66]
-            model = Vcnet(cfg_density, num_grid, cfg, degree, knots)
+            model = Vcnet(cfg_density, num_grid, cfg, degree, knots).to(device)
             model._initialize_weights()
 
         elif model_name == 'Drnet' or model_name == 'Drnet_tr':
@@ -107,7 +109,7 @@ if __name__ == "__main__":
             num_grid = 10
             cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
             isenhance = 1
-            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance)
+            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
             model._initialize_weights()
 
         elif model_name == 'Tarnet' or model_name == 'Tarnet_tr':
@@ -115,7 +117,7 @@ if __name__ == "__main__":
             num_grid = 10
             cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
             isenhance = 0
-            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance)
+            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
             model._initialize_weights()
 
         # use Target Regularization?
@@ -126,7 +128,7 @@ if __name__ == "__main__":
 
         tr_knots = list(np.arange(0.05, 1, 0.05))
         tr_degree = 2
-        TargetReg = TR(tr_degree, tr_knots)
+        TargetReg = TR(tr_degree, tr_knots).to(device)
         TargetReg._initialize_weights()
 
         # best cfg for each model
@@ -188,13 +190,13 @@ if __name__ == "__main__":
             idx_train = torch.load('dataset/ihdp/eval/' + str(_) + '/idx_train.pt')
             idx_test = torch.load('dataset/ihdp/eval/' + str(_) + '/idx_test.pt')
 
-            train_matrix = data_matrix[idx_train, :]
-            test_matrix = data_matrix[idx_test, :]
-            t_grid = t_grid_all[:, idx_test]
+            train_matrix = data_matrix[idx_train, :].to(device)
+            test_matrix = data_matrix[idx_test, :].to(device)
+            t_grid = t_grid_all[:, idx_test].to(device)
 
             # train_matrix, test_matrix, t_grid = simu_data1(500, 200)
-            train_loader = get_iter(data_matrix[idx_train, :], batch_size=471, shuffle=True)
-            test_loader = get_iter(data_matrix[idx_test, :], batch_size=data_matrix[idx_test, :].shape[0], shuffle=False)
+            train_loader = get_iter(train_matrix, batch_size=471, shuffle=True)
+            test_loader = get_iter(test_matrix, batch_size=test_matrix.shape[0], shuffle=False)
 
             # reinitialize model
             model._initialize_weights()
@@ -230,6 +232,7 @@ if __name__ == "__main__":
                         tr_optimizer.step()
                     else:
                         optimizer.zero_grad()
+                        # print('***',t.device,x.device)
                         out = model.forward(t, x)
                         loss = criterion(out, y, alpha=alpha)
                         loss.backward()
