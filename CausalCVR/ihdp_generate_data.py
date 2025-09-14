@@ -99,8 +99,8 @@ if __name__ == "__main__":
             # y1,y2 = torch.from_numpy(y1), torch.from_numpy(y2)
             # x = torch.from_numpy(x)
             # t = torch.from_numpy(t)
-            y1 = torch.bernoulli(0.6*sigmoid(y1 + torch.randn(1)[0] * np.sqrt(0.5)))
-            y2 = torch.bernoulli(0.5*sigmoid(y2 +torch.randn(1)[0] * np.sqrt(0.5)))
+            y1 = torch.bernoulli(0.6*sigmoid(y1 + torch.randn(1)[0] * np.sqrt(0.25)))
+            y2 = torch.bernoulli(0.4*sigmoid(y2 +torch.randn(1)[0] * np.sqrt(0.25)))
 
             data_matrix[_, 0] = t
             data_matrix[_, n_feature+1] = y1
@@ -114,12 +114,12 @@ if __name__ == "__main__":
 
         for i in tqdm(range(n_data)):
             psi1,psi2 = 0,0
-            t = t_grid[0, i].numpy()
+            t = t_grid[0, i] #.numpy()
             for j in range(n_data):
-                x = data_matrix[j, 1: n_feature+1].numpy()
+                x = data_matrix[j, 1: n_feature+1] #.numpy()
                 y1,y2 = t_x_y(t, x)
                 psi1 += 0.6*sigmoid(y1)
-                psi2 += 0.5*sigmoid(y2)
+                psi2 += 0.4*sigmoid(y2)
             psi1 /= n_data
             psi2 /= n_data
             t_grid[1, i] = psi1
