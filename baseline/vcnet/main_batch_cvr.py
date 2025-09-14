@@ -49,7 +49,7 @@ def criterion_TR(out, trg, y, beta=1., epsilon=1e-6):
     return beta * ((y.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[1].squeeze())**2).mean()
 
 def criterion_TR_2(out, trg, y1, y2,beta=1., epsilon=1e-6):
-    return beta *  (y1.squeeze() *(y2.squeeze() - trg2.squeeze()/(out[0].squeeze() + epsilon) - out[2].squeeze())**2).mean()
+    return beta *  (y1.squeeze() *(y2.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[2].squeeze())**2).mean()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='train with simulate data_utils')
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     parser.add_argument('--save_dir', type=str, default='logs/simu2/eval', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=5, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
 
     # training
     parser.add_argument('--n_epochs', type=int, default=800, help='num of epochs to train')
