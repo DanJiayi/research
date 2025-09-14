@@ -6,9 +6,9 @@ import pandas as pd
 import os
 import json
 
-from models.dynamic_net import Vcnet, Drnet, TR
+from models.dynamic_net import Vcnet, Drnet, TR, Vcnet_2
 from data.data import get_iter
-from utils.eval import curve
+from utils.eval import curve,curve_2
 
 import argparse
 
@@ -97,16 +97,16 @@ if __name__ == "__main__":
     for model_name in ['Vcnet', 'Vcnet_tr']:
         Result[model_name]=[]
         if model_name == 'Vcnet' or model_name == 'Vcnet_tr':
-            cfg_density = [(6, 50, 1, 'relu'), (50, 50, 1, 'relu')]
+            cfg_density = [(8, 50, 1, 'relu'), (50, 50, 1, 'relu')]
             num_grid = 10
             cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
             degree = 2
             knots = [0.33, 0.66]
-            model = Vcnet(cfg_density, num_grid, cfg, degree, knots).to(device)
+            model = Vcnet_2(cfg_density, num_grid, cfg, degree, knots).to(device)
             model._initialize_weights()
 
         elif model_name == 'Drnet' or model_name == 'Drnet_tr':
-            cfg_density = [(6, 50, 1, 'relu'), (50, 50, 1, 'relu')]
+            cfg_density = [(8, 50, 1, 'relu'), (50, 50, 1, 'relu')]
             num_grid = 10
             cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
             isenhance = 1
@@ -114,7 +114,7 @@ if __name__ == "__main__":
             model._initialize_weights()
 
         elif model_name == 'Tarnet' or model_name == 'Tarnet_tr':
-            cfg_density = [(6, 50, 1, 'relu'), (50, 50, 1, 'relu')]
+            cfg_density = [(8, 50, 1, 'relu'), (50, 50, 1, 'relu')]
             num_grid = 10
             cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
             isenhance = 0
@@ -130,8 +130,10 @@ if __name__ == "__main__":
         if isTargetReg:
             tr_knots = list(np.arange(0.1, 1, 0.1))
             tr_degree = 2
-            TargetReg = TR(tr_degree, tr_knots).to(device)
-            TargetReg._initialize_weights()
+            TargetReg1 = TR(tr_degree, tr_knots).to(device)
+            TargetReg2 = TR(tr_degree, tr_knots).to(device)
+            TargetReg1._initialize_weights()
+            TargetReg2._initialize_weights()
 
         # best cfg for each model
         if model_name == 'Tarnet':
@@ -200,35 +202,39 @@ if __name__ == "__main__":
             optimizer = torch.optim.SGD(model.parameters(), lr=init_lr, momentum=momentum, weight_decay=wd, nesterov=True)
 
             if isTargetReg:
-                TargetReg._initialize_weights()
-                tr_optimizer = torch.optim.SGD(TargetReg.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
+                TargetReg1._initialize_weights()
+                TargetReg2._initialize_weights()
+                tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
+                tr_optimizer2 = torch.optim.SGD(TargetReg2.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
 
             print('model : ', model_name)
             for epoch in range(num_epoch):
-
-
-                for idx, (inputs, y) in enumerate(train_loader):
+                for idx, (inputs,y2) in enumerate(train_loader):
                     t = inputs[:, 0]
-                    x = inputs[:, 1:]
+                    x = inputs[:, 1:-2]
+                    y1 = inputs[:,-2]
 
                     if isTargetReg:
                         optimizer.zero_grad()
                         out = model.forward(t, x)
-                        trg = TargetReg(t)
-                        loss = criterion(out, y, alpha=alpha) + criterion_TR(out, trg, y, beta=beta)
+                        trg1,trg2 = TargetReg1(t),TargetReg2(t)
+                        loss = criterion_2(out, y1,y2,alpha=alpha) + criterion_TR(out, trg1, y1, beta=beta) + criterion_TR(out, trg2, y1, y2, beta=beta)
                         loss.backward()
                         optimizer.step()
 
-                        tr_optimizer.zero_grad()
+                        tr_optimizer1.zero_grad()
+                        tr_optimizer2.zero_grad()
                         out = model.forward(t, x)
-                        trg = TargetReg(t)
-                        tr_loss = criterion_TR(out, trg, y, beta=beta)
-                        tr_loss.backward()
-                        tr_optimizer.step()
+                        trg1,trg2 = TargetReg1(t),TargetReg2(t)
+                        tr_loss1,tr_loss2 = criterion_TR(out, trg1, y1, beta=beta),criterion_TR(out, trg2, y1, y2, beta=beta)
+                        tr_loss1.backward()
+                        tr_optimizer1.step()
+                        tr_loss2.backward()
+                        tr_optimizer2.step()
                     else:
                         optimizer.zero_grad()
                         out = model.forward(t, x)
-                        loss = criterion(out, y, alpha=alpha)
+                        loss = criterion_2(out, y1,y2,alpha=alpha) + criterion_TR(out, trg1, y1, beta=beta) + criterion_TR(out, trg2, y1, y2, beta=beta)
                         loss.backward()
                         optimizer.step()
 
@@ -237,23 +243,23 @@ if __name__ == "__main__":
                     print('loss: ', loss.data)
 
             if isTargetReg:
-                t_grid_hat, mse = curve(model, test_matrix, t_grid, targetreg=TargetReg)
+                t_grid_hat, mse1, mse2 = curve_2(model,test_matrix, t_grid, TargetReg1,TargetReg2)
             else:
-                t_grid_hat, mse = curve(model, test_matrix, t_grid)
+                t_grid_hat, mse1, mse2 = curve_2(model, test_matrix, t_grid)
 
-            mse = float(mse)
+            mse1,mse2 = float(mse1),float(mse2)
             print('current loss: ', float(loss.data))
-            print('current test loss: ', mse)
+            print('current mse1: ', mse1,' mse2: ',mse2)
             print('-----------------------------------------------------------------')
             save_checkpoint({
                 'model': model_name,
-                'best_test_loss': mse,
+                'best_test_loss': [mse1,mse2],
                 'model_state_dict': model.state_dict(),
-                'TR_state_dict': TargetReg.state_dict() if isTargetReg else None,
+                'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()] if isTargetReg else None
             }, model_name=model_name, checkpoint_dir=cur_save_path)
             print('-----------------------------------------------------------------')
 
-            Result[model_name].append(mse)
+            Result[model_name].append([mse1,mse2])
 
             with open(save_path + '/result.json', 'w') as fp:
                 json.dump(Result, fp)

@@ -154,11 +154,11 @@ def curve_2(model,test_matrix, t_grid, targetreg1=None, targetreg2=None):
 
     if targetreg1 is None:
         for _ in range(n_test):
-            for idx, inputs in enumerate(test_loader): # n个样本，都取第一个t
+            for idx, (inputs,y2) in enumerate(test_loader): # n个样本，都取第一个t
                 t = inputs[:, 0]
                 t *= 0
                 t += t_grid[0, _]
-                x = inputs[:, 1:-3]
+                x = inputs[:, 1:-2]
                 break
             out = model.forward(t, x)
             out1,out2 = out[1].data.squeeze(),out[2].data.squeeze()
@@ -173,11 +173,11 @@ def curve_2(model,test_matrix, t_grid, targetreg1=None, targetreg2=None):
         return t_grid_hat, mse1, mse2
     else:
         for _ in range(n_test):
-            for idx, inputs in enumerate(test_loader):
+            for idx, (inputs,y2) in enumerate(test_loader):
                 t = inputs[:, 0]
                 t *= 0
                 t += t_grid[0, _]
-                x = inputs[:, 1:-3]
+                x = inputs[:, 1:-2]
                 break
             out = model.forward(t, x)
             tr_out1,tr_out2 = targetreg1(t).data, targetreg2(t).data

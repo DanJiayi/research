@@ -238,7 +238,7 @@ class Vcnet(nn.Module):
 
 class Vcnet_2(nn.Module):
     def __init__(self, cfg_density, num_grid, cfg, degree, knots):
-        super(Vcnet, self).__init__()
+        super(Vcnet_2, self).__init__()
         """
         cfg_density: cfg for the density estimator; [(ind1, outd1, isbias1), 'act', ....]; the cfg for density estimator head is not included
         num_grid: how many grid used for the density estimator head
@@ -281,25 +281,28 @@ class Vcnet_2(nn.Module):
         self.density_estimator_head = Density_Block(self.num_grid, density_hidden_dim, isbias=1)
 
         # construct the dynamics network
-        blocks = []
-        for layer_idx, layer_cfg in enumerate(cfg):
-            if layer_idx == len(cfg)-1: # last layer
-                last_layer = Dynamic_FC(layer_cfg[0], layer_cfg[1], self.degree, self.knots, act=layer_cfg[3], isbias=layer_cfg[2], islastlayer=1)
-            else:
-                blocks.append(
-                    Dynamic_FC(layer_cfg[0], layer_cfg[1], self.degree, self.knots, act=layer_cfg[3], isbias=layer_cfg[2], islastlayer=0))
-        blocks.append(last_layer)
-
-        self.Q = nn.Sequential(*blocks)
+        tmp = []
+        for _ in range(2):
+            blocks = []
+            for layer_idx, layer_cfg in enumerate(cfg):
+                if layer_idx == len(cfg)-1: # last layer
+                    last_layer = Dynamic_FC(layer_cfg[0], layer_cfg[1], self.degree, self.knots, act=layer_cfg[3], isbias=layer_cfg[2], islastlayer=1)
+                else:
+                    blocks.append(
+                        Dynamic_FC(layer_cfg[0], layer_cfg[1], self.degree, self.knots, act=layer_cfg[3], isbias=layer_cfg[2], islastlayer=0))
+            blocks.append(last_layer)
+            tmp.append(blocks)
+        self.Q1 = nn.Sequential(*tmp[0])
+        self.Q2 = nn.Sequential(*tmp[1])
 
     def forward(self, t, x):
         hidden = self.hidden_features(x)
         t_hidden = torch.cat((torch.unsqueeze(t, 1), hidden), 1)
         #t_hidden = torch.cat((torch.unsqueeze(t, 1), x), 1)
         g = self.density_estimator_head(t, hidden)
-        Q = self.Q(t_hidden)
-
-        return g, Q
+        Q1 = self.Q1(t_hidden)
+        Q2 = self.Q2(t_hidden)
+        return g, Q1, Q2
 
     def _initialize_weights(self):
         # TODO: maybe add more distribution for initialization
