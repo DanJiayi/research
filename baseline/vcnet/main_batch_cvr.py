@@ -41,15 +41,15 @@ def criterion(out, y, alpha=0.5, epsilon=1e-6):
 
 def criterion_2(out, y1, y2,alpha=0.5, epsilon=1e-6):
     loss_pi = -alpha * torch.log(out[0] + epsilon).mean()
-    loss_y1 = (-y1 * torch.log(out[1] + epsilon) - (1-y1) * torch.log(1 - out[1] + epsilon)).mean()
-    loss_y2 = (-y2 * torch.log(out[2] + epsilon) - (1-y2) * torch.log(1 - out[2] + epsilon) * y1).mean()
+    loss_y1 = (-y1 * torch.log(out[1] + epsilon).squeeze() - (1-y1) * torch.log(1 - out[1] + epsilon).squeeze()).mean()
+    loss_y2 = ((-y2 * torch.log(out[2] + epsilon).squeeze() - (1-y2) * torch.log(1 - out[2] + epsilon).squeeze()) * y1.squeeze()).mean()
     return loss_pi + loss_y1 + loss_y2 
 
 def criterion_TR(out, trg, y, beta=1., epsilon=1e-6):
     return beta * ((y.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[1].squeeze())**2).mean()
 
 def criterion_TR_2(out, trg, y1, y2,beta=1., epsilon=1e-6):
-    return beta * ((y2.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[2].squeeze())**2 * y1).mean()
+    return beta *  (y1.squeeze() *(y2.squeeze() - trg2.squeeze()/(out[0].squeeze() + epsilon) - out[2].squeeze())**2).mean()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='train with simulate data_utils')
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     parser.add_argument('--save_dir', type=str, default='logs/simu2/eval', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=5, help='num of datasets to train')
 
     # training
     parser.add_argument('--n_epochs', type=int, default=800, help='num of epochs to train')
@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     Result = {}
     #for model_name in ['Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr', 'Vcnet', 'Vcnet_tr']:
-    for model_name in ['Vcnet', 'Vcnet_tr']:
+    for model_name in ['Vcnet','Vcnet_tr']: # 
         Result[model_name]=[]
         if model_name == 'Vcnet' or model_name == 'Vcnet_tr':
             cfg_density = [(8, 50, 1, 'relu'), (50, 50, 1, 'relu')]
@@ -218,23 +218,24 @@ if __name__ == "__main__":
                         optimizer.zero_grad()
                         out = model.forward(t, x)
                         trg1,trg2 = TargetReg1(t),TargetReg2(t)
-                        loss = criterion_2(out, y1,y2,alpha=alpha) + criterion_TR(out, trg1, y1, beta=beta) + criterion_TR(out, trg2, y1, y2, beta=beta)
+                        loss = criterion_2(out, y1,y2,alpha=alpha) + criterion_TR(out, trg1, y1, beta=beta) + criterion_TR_2(out, trg2, y1, y2, beta=beta)
                         loss.backward()
                         optimizer.step()
 
                         tr_optimizer1.zero_grad()
                         tr_optimizer2.zero_grad()
-                        out = model.forward(t, x)
-                        trg1,trg2 = TargetReg1(t),TargetReg2(t)
-                        tr_loss1,tr_loss2 = criterion_TR(out, trg1, y1, beta=beta),criterion_TR(out, trg2, y1, y2, beta=beta)
-                        tr_loss1.backward()
+                        out = model(t, x)
+                        trg1, trg2 = TargetReg1(t), TargetReg2(t)
+                        tr_loss1 = criterion_TR(out, trg1, y1, beta=beta)
+                        tr_loss2 = criterion_TR_2(out, trg2, y1, y2, beta=beta)
+                        tr_loss1.backward(retain_graph=True) 
                         tr_optimizer1.step()
-                        tr_loss2.backward()
+                        tr_loss2.backward() 
                         tr_optimizer2.step()
                     else:
                         optimizer.zero_grad()
                         out = model.forward(t, x)
-                        loss = criterion_2(out, y1,y2,alpha=alpha) + criterion_TR(out, trg1, y1, beta=beta) + criterion_TR(out, trg2, y1, y2, beta=beta)
+                        loss = criterion_2(out, y1,y2,alpha=alpha)
                         loss.backward()
                         optimizer.step()
 
@@ -250,14 +251,14 @@ if __name__ == "__main__":
             mse1,mse2 = float(mse1),float(mse2)
             print('current loss: ', float(loss.data))
             print('current mse1: ', mse1,' mse2: ',mse2)
-            print('-----------------------------------------------------------------')
-            save_checkpoint({
-                'model': model_name,
-                'best_test_loss': [mse1,mse2],
-                'model_state_dict': model.state_dict(),
-                'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()] if isTargetReg else None
-            }, model_name=model_name, checkpoint_dir=cur_save_path)
-            print('-----------------------------------------------------------------')
+            # print('-----------------------------------------------------------------')
+            # save_checkpoint({
+            #     'model': model_name,
+            #     'best_test_loss': [mse1,mse2],
+            #     'model_state_dict': model.state_dict(),
+            #     'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()] if isTargetReg else None
+            # }, model_name=model_name, checkpoint_dir=cur_save_path)
+            # print('-----------------------------------------------------------------')
 
             Result[model_name].append([mse1,mse2])
 

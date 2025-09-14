@@ -184,7 +184,7 @@ def curve_2(model,test_matrix, t_grid, targetreg1=None, targetreg2=None):
             g = out[0].data.squeeze()
             out1,out2 = out[1].data.squeeze() + tr_out1 / (g + 1e-6),out[2].data.squeeze() + tr_out2 / (g + 1e-6)
             out1,out2 = out1.mean(),out2.mean()
-            t_grid_hat[1, _], t_grid_hat[2, _]= out2
+            t_grid_hat[1, _], t_grid_hat[2, _]= out1,out2
         device = t_grid_hat.device
         t_grid_hat = t_grid_hat.to(device)
         t_grid = t_grid.to(device)
