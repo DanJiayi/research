@@ -6,7 +6,7 @@ import pandas as pd
 import os
 import json
 
-from models.dynamic_net import Vcnet, Drnet, TR, Vcnet_2
+from models.dynamic_net import Vcnet, Drnet, TR, Vcnet_2, MyNet
 from data.data import get_iter
 from utils.eval import curve,curve_2
 
@@ -56,7 +56,7 @@ def criterion_TR(out, trg, y, beta=1., epsilon=1e-9):
     return beta * ((y.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[1].squeeze())**2).mean()
 
 def criterion_TR_2(out, trg, y1, y2,beta=1., epsilon=1e-9):
-    return beta *  (y1.squeeze() *(y2.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[2].squeeze())**2).mean()
+    return beta *  (y1.squeeze() *(y2.squeeze() - trg.squeeze()/(out[0].detach().squeeze() + epsilon) - out[2].squeeze())**2).mean()
 
 def criterion_TR_cvr(out, trg, y1, y2, beta=1., epsilon=1e-9):
     out1,out2 = out[1],out[1]*out[2]
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     # i/o
     parser.add_argument('--data_dir', type=str, default='/root/test01/research/CausalCVR/dataset/simu2/eval', help='dir of eval dataset')
-    parser.add_argument('--save_dir', type=str, default='logs/simu2/eval', help='dir to save result')
+    parser.add_argument('--save_dir', type=str, default='logs/simu3/eval', help='dir to save result')
 
     # common
     parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
@@ -115,7 +115,8 @@ if __name__ == "__main__":
             cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
             degree = 2
             knots = [0.33, 0.66]
-            model = Vcnet_2(cfg_density, num_grid, cfg, degree, knots).to(device)
+            #model = Vcnet_2(cfg_density, num_grid, cfg, degree, knots).to(device)
+            model = MyNet(cfg_density, num_grid, cfg, degree, knots).to(device)
             model._initialize_weights()
 
         elif model_name == 'Drnet' or model_name == 'Drnet_tr':

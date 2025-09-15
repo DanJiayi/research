@@ -125,6 +125,10 @@ if __name__ == "__main__":
             t_grid[1, i] = psi1
             t_grid[2, i] = psi2
 
+        t = data_matrix[:, 0]
+        data_matrix[:, 0] = (t - t.min()) / (t.max() - t.min() + 1e-12)
+        t_grid[0, :] = data_matrix[:, 0].squeeze()
+
         return data_matrix, t_grid
 
 
