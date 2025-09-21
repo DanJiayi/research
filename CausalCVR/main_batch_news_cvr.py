@@ -53,7 +53,7 @@ def criterion_TR(out, trg, y, beta=1., epsilon=1e-9):
     return beta * ((y.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[1].squeeze())**2).mean()
 
 def criterion_TR_2(out, trg, y1, y2,beta=1., epsilon=1e-9):
-    return beta *  (y1.squeeze() *(y2.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[2].squeeze())**2).mean()
+    return beta *  (y1.squeeze() *(y2.squeeze() - trg.squeeze()/(out[0].detach().squeeze() + epsilon) - out[2].squeeze())**2).mean()
 
 def criterion_TR_cvr(out, trg, y1, y2, beta=1., epsilon=1e-9):
     out1,out2 = out[1],out[1]*out[2]
@@ -66,10 +66,10 @@ if __name__ == "__main__":
     # i/o
     parser.add_argument('--data_dir', type=str, default='/root/test01/research/CausalCVR/dataset/news', help='dir of data_utils matrix')
     parser.add_argument('--data_split_dir', type=str, default='/root/test01/research/CausalCVR/dataset/news/eval', help='dir of data_utils split')
-    parser.add_argument('--save_dir', type=str, default='logs/news/eval', help='dir to save result')
+    parser.add_argument('--save_dir', type=str, default='logs/news/tune', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=10, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=20, help='num of datasets to train')
 
     # training
     parser.add_argument('--n_epochs', type=int, default=800, help='num of epochs to train')
@@ -109,186 +109,201 @@ if __name__ == "__main__":
     t_grid_all = torch.load(args.data_dir + '/t_grid.pt')
 
     Result = {}
+    # model_name = 'Vcnet_tr'
+    best_mse = 1e6
+    best_params = None
+    k = 0
 
     #for model_name in ['Vcnet', 'Vcnet_tr', 'Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr']:
-    for model_name in ['Vcnet', 'Vcnet_tr']:
-        Result[model_name]=[]
-        # import model
-        if model_name == 'Vcnet' or model_name == 'Vcnet_tr':
-            cfg_density = [(498, 50, 1, 'relu'), (50, 50, 1, 'relu')]
-            num_grid = 10
-            cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
-            degree = 2
-            knots = [0.33, 0.66]
-            model = Vcnet_2(cfg_density, num_grid, cfg, degree, knots).to(device)
-            model._initialize_weights()
+    for num_epoch in [800]:
+        for h in [16]:
+            # for init_lr in [1e-4,1e-3,1e-2]:
+            # for alpha in [0.1,0.5,1]:
+            for alpha in [0.1]:
+                # for tr_init_lr in [1e-4,1e-3,1e-2]:
+                for beta in [1]:
+                    params = f'{num_epoch}_{h}_{alpha}_{beta}'
+                    Result[params]={}
+                    #Result[model_name]=[]
+                    k+=1
+                    for model_name in ['Vcnet', 'Vcnet_tr']:
+                        Result[params][model_name]=[]
+                        # import model
+                        if model_name == 'Vcnet' or model_name == 'Vcnet_tr':
+                            cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
+                            num_grid = 10
+                            cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
+                            degree = 2
+                            knots = [0.33, 0.66]
+                            model = Vcnet_2(cfg_density, num_grid, cfg, degree, knots).to(device)
+                            model._initialize_weights()
 
-        elif model_name == 'Drnet' or model_name == 'Drnet_tr':
-            cfg_density = [(498, 50, 1, 'relu'), (50, 50, 1, 'relu')]
-            num_grid = 10
-            cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
-            isenhance = 1
-            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
-            model._initialize_weights()
+                        elif model_name == 'Drnet' or model_name == 'Drnet_tr':
+                            cfg_density = [(498, 50, 1, 'relu'), (50, 50, 1, 'relu')]
+                            num_grid = 10
+                            cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
+                            isenhance = 1
+                            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
+                            model._initialize_weights()
 
-        elif model_name == 'Tarnet' or model_name == 'Tarnet_tr':
-            cfg_density = [(498, 50, 1, 'relu'), (50, 50, 1, 'relu')]
-            num_grid = 10
-            cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
-            isenhance = 0
-            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
-            model._initialize_weights()
+                        elif model_name == 'Tarnet' or model_name == 'Tarnet_tr':
+                            cfg_density = [(498, 50, 1, 'relu'), (50, 50, 1, 'relu')]
+                            num_grid = 10
+                            cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
+                            isenhance = 0
+                            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
+                            model._initialize_weights()
 
-        # use Target Regularization?
-        if model_name == 'Vcnet_tr' or model_name == 'Drnet_tr' or model_name == 'Tarnet_tr':
-            isTargetReg = 1
-        else:
-            isTargetReg = 0
+                        # use Target Regularization?
+                        if model_name == 'Vcnet_tr' or model_name == 'Drnet_tr' or model_name == 'Tarnet_tr':
+                            isTargetReg = 1
+                        else:
+                            isTargetReg = 0
 
-        tr_knots=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9]
-        tr_degree = 2
-        TargetReg1 = TR(tr_degree, tr_knots).to(device)
-        TargetReg1._initialize_weights()
-        TargetReg2 = TR(tr_degree, tr_knots).to(device)
-        TargetReg2._initialize_weights()
+                        tr_knots=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9]
+                        tr_degree = 2
+                        TargetReg1 = TR(tr_degree, tr_knots).to(device)
+                        TargetReg1._initialize_weights()
+                        TargetReg2 = TR(tr_degree, tr_knots).to(device)
+                        TargetReg2._initialize_weights()
 
-        # best cfg for each model
-        if model_name == 'Tarnet':
-            init_lr = 0.0005
-            alpha = 1.0
-            tr_init_lr = 0.001
-            beta = 1.
+                        # best cfg for each model
+                        if model_name == 'Tarnet':
+                            init_lr = 0.0005
+                            alpha = 1.0
+                            tr_init_lr = 0.001
+                            beta = 1.
 
-            Result['Tarnet'] = []
+                            Result['Tarnet'] = []
 
-        elif model_name == 'Tarnet_tr':
-            init_lr = 0.0005
-            alpha = 0.5
-            tr_init_lr = 0.0005
-            beta = 1.
+                        elif model_name == 'Tarnet_tr':
+                            init_lr = 0.0005
+                            alpha = 0.5
+                            tr_init_lr = 0.0005
+                            beta = 1.
 
-            Result['Tarnet_tr'] = []
+                            Result['Tarnet_tr'] = []
 
-        elif model_name == 'Drnet':
-            init_lr = 0.0005  # 0.005
-            alpha = 1.
-            tr_init_lr = 0.0005
-            beta = 1.
+                        elif model_name == 'Drnet':
+                            init_lr = 0.0005  # 0.005
+                            alpha = 1.
+                            tr_init_lr = 0.0005
+                            beta = 1.
 
-            Result['Drnet'] = []
+                            Result['Drnet'] = []
 
-        elif model_name == 'Drnet_tr':
-            init_lr = 0.0005 # 0.005
-            alpha = 0.5
-            tr_init_lr = 0.0005
-            beta = 1.
+                        elif model_name == 'Drnet_tr':
+                            init_lr = 0.0005 # 0.005
+                            alpha = 0.5
+                            tr_init_lr = 0.0005
+                            beta = 1.
 
-            Result['Drnet_tr'] = []
+                            Result['Drnet_tr'] = []
 
-        elif model_name == 'Vcnet':
-            init_lr = 0.0005
-            alpha = 0.5
-            tr_init_lr = 0.0005
-            beta = 1.
+                        elif model_name == 'Vcnet':
+                            init_lr = 0.0005
+                            alpha = 0.5
+                            tr_init_lr = 0.0005
+                            beta = 1.
 
-            Result['Vcnet'] = []
+                            Result['Vcnet'] = []
 
-        elif model_name == 'Vcnet_tr':
-            init_lr = 0.0005
-            alpha = 0.5
-            tr_init_lr = 0.0005
-            beta = 0.5
+                        elif model_name == 'Vcnet_tr':
+                            init_lr = 0.0005
+                            alpha = 0.5
+                            tr_init_lr = 0.0005
+                            beta = 0.5
 
-            Result['Vcnet_tr'] = []
+                            Result['Vcnet_tr'] = []
 
-        for _ in range(num_dataset):
-            cur_save_path = save_path + '/' + str(_)
-            if not os.path.exists(cur_save_path):
-                os.makedirs(cur_save_path)
+                        for _ in range(num_dataset):
+                            cur_save_path = save_path + '/' + str(_)
+                            if not os.path.exists(cur_save_path):
+                                os.makedirs(cur_save_path)
 
-            idx_train = torch.load(args.data_split_dir + '/' + str(_) + '/idx_train.pt')
-            idx_test = torch.load(args.data_split_dir + '/' + str(_) + '/idx_test.pt')
+                            idx_train = torch.load(args.data_split_dir + '/' + str(_) + '/idx_train.pt')
+                            idx_test = torch.load(args.data_split_dir + '/' + str(_) + '/idx_test.pt')
 
-            train_matrix = data_matrix[idx_train, :].to(device)
-            test_matrix = data_matrix[idx_test, :].to(device)
-            t_grid = t_grid_all[:, idx_test].to(device)
+                            train_matrix = data_matrix[idx_train, :].to(device)
+                            test_matrix = data_matrix[idx_test, :].to(device)
+                            t_grid = t_grid_all[:, idx_test].to(device)
 
-            train_loader = get_iter(train_matrix, batch_size=500, shuffle=True)
-            test_loader = get_iter(test_matrix, batch_size=test_matrix.shape[0], shuffle=False)
+                            train_loader = get_iter(train_matrix, batch_size=500, shuffle=True)
+                            test_loader = get_iter(test_matrix, batch_size=test_matrix.shape[0], shuffle=False)
 
-            # reinitialize model
-            model._initialize_weights()
+                            # reinitialize model
+                            model._initialize_weights()
 
-            # define optimizer
-            optimizer = torch.optim.SGD(model.parameters(), lr=init_lr, momentum=momentum, weight_decay=wd,
-                                        nesterov=True)
+                            # define optimizer
+                            optimizer = torch.optim.SGD(model.parameters(), lr=init_lr, momentum=momentum, weight_decay=wd,
+                                                        nesterov=True)
 
-            if isTargetReg:
-                TargetReg1._initialize_weights()
-                TargetReg2._initialize_weights()
-                tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
-                tr_optimizer2 = torch.optim.SGD(TargetReg2.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
+                            if isTargetReg:
+                                TargetReg1._initialize_weights()
+                                TargetReg2._initialize_weights()
+                                tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
+                                tr_optimizer2 = torch.optim.SGD(TargetReg2.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
 
-            print('model : ', model_name)
-            for epoch in range(num_epoch):
-                for idx, (inputs, y2) in enumerate(train_loader):
-                    t = inputs[:, 0]
-                    x = inputs[:, 1:-2]
-                    y1 = inputs[:,-2]
+                            print('model : ', model_name)
+                            for epoch in range(num_epoch):
+                                for idx, (inputs, y2) in enumerate(train_loader):
+                                    t = inputs[:, 0]
+                                    x = inputs[:, 1:-2]
+                                    y1 = inputs[:,-2]
 
-                    if isTargetReg:
-                        if epoch <= 800:
-                            optimizer.zero_grad()
-                            out = model.forward(t, x)
-                            trg1,trg2 = TargetReg1(t),TargetReg2(t)
-                            loss = criterion_cvr(out, y1,y2,alpha=alpha) + criterion_TR(out, trg1, y1, beta=beta) + criterion_TR_cvr(out, trg2, y1, y2, beta=beta)
-                            loss.backward()
-                            optimizer.step()
+                                    if isTargetReg:
+                                        if epoch <= 800:
+                                            optimizer.zero_grad()
+                                            out = model.forward(t, x)
+                                            trg1,trg2 = TargetReg1(t),TargetReg2(t)
+                                            loss = criterion_cvr(out, y1,y2,alpha=alpha) + criterion_TR(out, trg1, y1, beta=beta) + criterion_TR_cvr(out, trg2, y1, y2, beta=beta)
+                                            loss.backward()
+                                            optimizer.step()
 
-                        tr_optimizer1.zero_grad()
-                        tr_optimizer2.zero_grad()
-                        out = model(t, x)
-                        trg1, trg2 = TargetReg1(t), TargetReg2(t)
-                        tr_loss1 = criterion_TR(out, trg1, y1, beta=beta)
-                        tr_loss2 = criterion_TR_cvr(out, trg2, y1, y2, beta=beta)
-                        tr_loss1.backward(retain_graph=True) 
-                        tr_optimizer1.step()
-                        tr_loss2.backward() 
-                        tr_optimizer2.step()
-                    else:
-                        optimizer.zero_grad()
-                        out = model.forward(t, x)
-                        loss = criterion_cvr(out, y1,y2,alpha=alpha)
-                        loss.backward()
-                        optimizer.step()
+                                        tr_optimizer1.zero_grad()
+                                        tr_optimizer2.zero_grad()
+                                        out = model(t, x)
+                                        trg1, trg2 = TargetReg1(t), TargetReg2(t)
+                                        tr_loss1 = criterion_TR(out, trg1, y1, beta=beta)
+                                        tr_loss2 = criterion_TR_cvr(out, trg2, y1, y2, beta=beta)
+                                        tr_loss1.backward(retain_graph=True) 
+                                        tr_optimizer1.step()
+                                        tr_loss2.backward() 
+                                        tr_optimizer2.step()
+                                    else:
+                                        optimizer.zero_grad()
+                                        out = model.forward(t, x)
+                                        loss = criterion_cvr(out, y1,y2,alpha=alpha)
+                                        loss.backward()
+                                        optimizer.step()
 
-                if epoch % verbose == 0:
-                    print('current epoch: ', epoch)
-                    print('loss: ', loss)
+                                if epoch % verbose == 0:
+                                    print('current epoch: ', epoch)
+                                    print('loss: ', loss)
 
-            if isTargetReg:
-                t_grid_hat, mse1, mse2 = curve_2(model, test_matrix, t_grid, TargetReg1, TargetReg2)
-                mse1, mse2 = float(mse1),float(mse2)
-                print('current loss: ', float(loss.data))
-                print('current mse1: ', mse1,' mse2: ',mse2)
-            else:
-                t_grid_hat, mse1, mse2 = curve_2(model, test_matrix, t_grid, TargetReg1, TargetReg2)
-                mse1, mse2 = float(mse1),float(mse2)
-                print('current loss: ', float(loss.data))
-                print('current mse1: ', mse1,' mse2: ',mse2)
+                            if isTargetReg:
+                                t_grid_hat, mse1, mse2 = curve_2(model, test_matrix, t_grid, TargetReg1, TargetReg2)
+                                mse1, mse2 = float(mse1),float(mse2)
+                                print('current loss: ', float(loss.data))
+                                print('current mse1: ', mse1,' mse2: ',mse2)
+                            else:
+                                t_grid_hat, mse1, mse2 = curve_2(model, test_matrix, t_grid, TargetReg1, TargetReg2)
+                                mse1, mse2 = float(mse1),float(mse2)
+                                print('current loss: ', float(loss.data))
+                                print('current mse1: ', mse1,' mse2: ',mse2)
 
-            print('-----------------------------------------------------------------')
-            save_checkpoint({
-                'model': model_name,
-                'best_test_loss': [mse1,mse2],
-                'model_state_dict': model.state_dict(),
-                'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()],
-            }, model_name=model_name, checkpoint_dir=cur_save_path)
-            print('-----------------------------------------------------------------')
+                            # print('-----------------------------------------------------------------')
+                            # save_checkpoint({
+                            #     'model': model_name,
+                            #     'best_test_loss': [mse1,mse2],
+                            #     'model_state_dict': model.state_dict(),
+                            #     'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()],
+                            # }, model_name=model_name, checkpoint_dir=cur_save_path)
+                            # print('-----------------------------------------------------------------')
 
-            Result[model_name].append([mse1,mse2])
+                            Result[model_name].append([mse1,mse2])
 
-            with open(save_path + '/result.json', 'w') as fp:
-                json.dump(Result, fp)
+                            with open(save_path + '/result.json', 'w') as fp:
+                                json.dump(Result, fp)
 
 

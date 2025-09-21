@@ -50,7 +50,7 @@ def criterion_cvr(out, y1, y2,alpha=0.5, epsilon=1e-9):
     out2 = out[1]*out[2]
     loss_y1 = (-y1 * torch.log(out[1] + epsilon).squeeze() - (1-y1) * torch.log(1 - out[1] + epsilon).squeeze()).mean()
     loss_y2 = (-y2 * torch.log(out2 + epsilon).squeeze() - (1-y2) * torch.log(1 - out2 + epsilon).squeeze()).mean()
-    return loss_pi + loss_y1 + loss_y2    
+    return loss_pi + loss_y1 + loss_y2
 
 def criterion_TR(out, trg, y, beta=1., epsilon=1e-9):
     return beta * ((y.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[1].squeeze())**2).mean()
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     # i/o
     parser.add_argument('--data_dir', type=str, default='/root/test01/research/CausalCVR/dataset/simu2/eval', help='dir of eval dataset')
-    parser.add_argument('--save_dir', type=str, default='logs/simu3/eval', help='dir to save result')
+    parser.add_argument('--save_dir', type=str, default='logs/simu4/eval', help='dir to save result')
 
     # common
     parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
@@ -106,17 +106,18 @@ if __name__ == "__main__":
 
 
     Result = {}
+    h = 16
     #for model_name in ['Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr', 'Vcnet', 'Vcnet_tr']:
-    for model_name in ['Vcnet','Vcnet_tr']: 
+    for model_name in ['Vcnet_tr']: #'Vcnet',
         Result[model_name]=[]
         if model_name == 'Vcnet' or model_name == 'Vcnet_tr':
-            cfg_density = [(8, 50, 1, 'relu'), (50, 50, 1, 'relu')]
+            cfg_density = [(8, h, 1, 'relu'), (h, h, 1, 'relu')]
             num_grid = 10
-            cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
+            cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
             degree = 2
             knots = [0.33, 0.66]
-            #model = Vcnet_2(cfg_density, num_grid, cfg, degree, knots).to(device)
-            model = MyNet(cfg_density, num_grid, cfg, degree, knots).to(device)
+            model = Vcnet_2(cfg_density, num_grid, cfg, degree, knots).to(device)
+            #model = MyNet(cfg_density, num_grid, cfg, degree, knots).to(device)
             model._initialize_weights()
 
         elif model_name == 'Drnet' or model_name == 'Drnet_tr':
@@ -180,14 +181,14 @@ if __name__ == "__main__":
 
         elif model_name == 'Vcnet':
             init_lr = 0.0001
-            alpha = 0.5
+            alpha = 0.1
 
             Result['Vcnet'] = []
 
         elif model_name == 'Vcnet_tr':
-            init_lr = 0.0001
-            alpha = 0.5
-            tr_init_lr = 0.001
+            init_lr = 1e-3 #0.0001
+            alpha = 0.1
+            tr_init_lr = 1e-4 #0.001
             beta = 1.
 
             Result['Vcnet_tr'] = []
@@ -232,6 +233,12 @@ if __name__ == "__main__":
                         optimizer.zero_grad()
                         out = model.forward(t, x)
                         trg1,trg2 = TargetReg1(t),TargetReg2(t)
+                        # loss = criterion_cvr(out, y1,y2,alpha=alpha)
+                        # loss_tr = criterion_TR(out, trg1, y1, beta=beta) + criterion_TR_cvr(out, trg2, y1, y2, beta=beta)
+                        
+                        # loss_tr.backward(retain_graph=True)
+                        # for p in model.backbone.parameters():
+                        #     p.grad = None
                         loss = criterion_cvr(out, y1,y2,alpha=alpha) + criterion_TR(out, trg1, y1, beta=beta) + criterion_TR_cvr(out, trg2, y1, y2, beta=beta)
                         loss.backward()
                         optimizer.step()
@@ -276,5 +283,5 @@ if __name__ == "__main__":
 
             Result[model_name].append([mse1,mse2])
 
-            with open(save_path + '/result.json', 'w') as fp:
+            with open(save_path + '/result_tr.json', 'w') as fp:
                 json.dump(Result, fp)

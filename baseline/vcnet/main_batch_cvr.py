@@ -56,16 +56,16 @@ if __name__ == "__main__":
 
     # i/o
     parser.add_argument('--data_dir', type=str, default='/root/test01/research/CausalCVR/dataset/simu2/eval', help='dir of eval dataset')
-    parser.add_argument('--save_dir', type=str, default='logs/simu2/eval', help='dir to save result')
+    parser.add_argument('--save_dir', type=str, default='logs/simu4/eval', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=20, help='num of datasets to train')
 
     # training
-    parser.add_argument('--n_epochs', type=int, default=800, help='num of epochs to train')
+    parser.add_argument('--n_epochs', type=int, default=500, help='num of epochs to train')
 
     # print train info
-    parser.add_argument('--verbose', type=int, default=100, help='print train info freq')
+    parser.add_argument('--verbose', type=int, default=20, help='print train info freq')
 
     args = parser.parse_args()
 
@@ -94,12 +94,13 @@ if __name__ == "__main__":
 
     Result = {}
     #for model_name in ['Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr', 'Vcnet', 'Vcnet_tr']:
-    for model_name in ['Vcnet','Vcnet_tr']: # 
+    h = 16
+    for model_name in ['Vcnet','Vcnet_tr']: # 'Vcnet',
         Result[model_name]=[]
         if model_name == 'Vcnet' or model_name == 'Vcnet_tr':
-            cfg_density = [(8, 50, 1, 'relu'), (50, 50, 1, 'relu')]
+            cfg_density = [(8, h, 1, 'relu'), (h, h, 1, 'relu')]
             num_grid = 10
-            cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
+            cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
             degree = 2
             knots = [0.33, 0.66]
             model = Vcnet_2(cfg_density, num_grid, cfg, degree, knots).to(device)
@@ -166,13 +167,13 @@ if __name__ == "__main__":
 
         elif model_name == 'Vcnet':
             init_lr = 0.0001
-            alpha = 0.5
+            alpha = 0.1
 
             Result['Vcnet'] = []
 
         elif model_name == 'Vcnet_tr':
             init_lr = 0.0001
-            alpha = 0.5
+            alpha = 0.1
             tr_init_lr = 0.001
             beta = 1.
 

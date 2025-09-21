@@ -322,10 +322,11 @@ class Vcnet_2(nn.Module):
                     m.bias.data.zero_()
 
 class Backbone(nn.Module):
-    def __init__(self,cfg):
+    def __init__(self,cfg,degree,knots):
+        super(Backbone, self).__init__()
         blocks = []
         for layer_cfg in cfg:
-            blocks.append(Dynamic_FC(layer_cfg[0], layer_cfg[1], self.degree, self.knots, act=layer_cfg[3], isbias=layer_cfg[2], islastlayer=0))
+            blocks.append(Dynamic_FC(layer_cfg[0], layer_cfg[1], degree, knots, act=layer_cfg[3], isbias=layer_cfg[2], islastlayer=0))
         self.backbone = nn.Sequential(*blocks)
 
     def forward(self,x):
@@ -333,7 +334,7 @@ class Backbone(nn.Module):
 
 
 class MyNet(nn.Module):
-    def __init__(self, cfg_density, num_grid, cfg, degree, knots,cfg_backbone=None):
+    def __init__(self, cfg_density, num_grid, cfg, degree, knots,cfg_backbone=[(50, 50, 1, 'relu')]):
         super(MyNet, self).__init__()
         # cfg/cfg_density = [(ind1, outd1, isbias1, activation),....]
         self.cfg_density = cfg_density
@@ -342,7 +343,7 @@ class MyNet(nn.Module):
         self.cfg = cfg
         self.degree = degree
         self.knots = knots
-        self.cfg_backbone = [(50, 50, 1, 'relu'), (50, 50, 1, 'relu')] if cfg_backbone is None else cfg_backbone
+        self.cfg_backbone = cfg_backbone
 
         # construct the density estimator
         density_blocks = []
@@ -371,7 +372,7 @@ class MyNet(nn.Module):
 
         self.density_hidden_dim = density_hidden_dim
         self.density_estimator_head = Density_Block(self.num_grid, density_hidden_dim, isbias=1)
-        self.backbone = Backbone(cfg_backbone)
+        self.backbone = Backbone(self.cfg_backbone,self.degree,self.knots)
 
         # construct the dynamics network
         tmp = []
