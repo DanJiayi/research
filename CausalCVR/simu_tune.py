@@ -287,14 +287,14 @@ if __name__ == "__main__":
                             mse1,mse2 = float(mse1),float(mse2)
                             print('current loss: ', float(loss.data))
                             print('current mse1: ', mse1,' mse2: ',mse2)
-                            print('-----------------------------------------------------------------')
-                            save_checkpoint({
-                                'model': model_name,
-                                'best_test_loss': [mse1,mse2],
-                                'model_state_dict': model.state_dict(),
-                                'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()] if isTargetReg else None
-                            }, model_name=model_name, checkpoint_dir=cur_save_path)
-                            print('-----------------------------------------------------------------')
+                            # print('-----------------------------------------------------------------')
+                            # save_checkpoint({
+                            #     'model': model_name,
+                            #     'best_test_loss': [mse1,mse2],
+                            #     'model_state_dict': model.state_dict(),
+                            #     'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()] if isTargetReg else None
+                            # }, model_name=model_name, checkpoint_dir=cur_save_path)
+                            # print('-----------------------------------------------------------------')
 
                             Result[model_name].append([mse1,mse2])
 
