@@ -53,7 +53,7 @@ def criterion_TR(out, trg, y, beta=1., epsilon=1e-9):
     return beta * ((y.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[1].squeeze())**2).mean()
 
 def criterion_TR_2(out, trg, y1, y2,beta=1., epsilon=1e-9):
-    return beta *  (y1.squeeze() *(y2.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[2].squeeze())**2).mean()
+    return beta *  (y1.squeeze() *(y2.squeeze() - trg.squeeze()/(out[0].detach().squeeze() + epsilon) - out[2].squeeze())**2).mean()
 
 def criterion_TR_cvr(out, trg, y1, y2, beta=1., epsilon=1e-9):
     out1,out2 = out[1],out[1]*out[2]
@@ -69,10 +69,10 @@ if __name__ == "__main__":
     parser.add_argument('--save_dir', type=str, default='logs/ihdp/eval', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=10, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
 
     # training
-    parser.add_argument('--n_epochs', type=int, default=800, help='num of epochs to train')
+    parser.add_argument('--n_epochs', type=int, default=200, help='num of epochs to train')
 
     # print train info
     parser.add_argument('--verbose', type=int, default=100, help='print train info freq')
@@ -113,11 +113,12 @@ if __name__ == "__main__":
     Result = {}
     for model_name in ['Vcnet', 'Vcnet_tr']: #, 'Drnet', 'Drnet_tr','Tarnet', 'Tarnet_tr'
         Result[model_name]=[]
+        h = 8
         # import model
         if model_name == 'Vcnet' or model_name == 'Vcnet_tr':
-            cfg_density = [(25, 50, 1, 'relu'), (50, 50, 1, 'relu')]
+            cfg_density = [(25, h, 1, 'relu'), (h, h, 1, 'relu')]
             num_grid = 10
-            cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
+            cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
             degree = 2
             knots = [0.33, 0.66]
             model = Vcnet_2(cfg_density, num_grid, cfg, degree, knots).to(device)

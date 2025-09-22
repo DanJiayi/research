@@ -116,13 +116,14 @@ if __name__ == "__main__":
     k = 0
 
     #for model_name in ['Vcnet', 'Vcnet_tr', 'Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr']:
-    for num_epoch in [200,400,600,800]:
+    for num_epoch in [400,600,800]:
         for h in [8,16,32,64]:
+            if num_epoch==400 and h==8: continue
             # for init_lr in [1e-4,1e-3,1e-2]:
             # for alpha in [0.1,0.5,1]:
             for alpha in [0.5]:
                 # for tr_init_lr in [1e-4,1e-3,1e-2]:
-                for beta in [0.1,0.5,1,1.5]:
+                for beta in [1]:
                     params = f'{num_epoch}_{h}_{alpha}_{beta}'
                     Result[params]={}
                     #Result[model_name]=[]
@@ -304,7 +305,7 @@ if __name__ == "__main__":
 
                             Result[params][model_name].append([mse1,mse2])
 
-                            with open(save_path + '/result.json', 'w') as fp:
+                            with open(save_path + '/result_2.json', 'w') as fp:
                                 json.dump(Result, fp)
 
                     avg_mse1 = sum([i[1] for i in Result[params]['Vcnet']])/len(Result[params]['Vcnet'])
