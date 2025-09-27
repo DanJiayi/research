@@ -745,8 +745,6 @@ class Drnet(nn.Module):
             density_hidden_dim = layer_cfg[1]
             if layer_cfg[3] == 'relu':
                 density_blocks.append(nn.ReLU(inplace=True))
-            elif layer_cfg[3] == 'elu':
-                density_blocks.append(nn.ELU(inplace=True))
             elif layer_cfg[3] == 'tanh':
                 density_blocks.append(nn.Tanh())
             elif layer_cfg[3] == 'sigmoid':
@@ -760,16 +758,19 @@ class Drnet(nn.Module):
         self.density_estimator_head = Density_Block(self.num_grid, density_hidden_dim, isbias=1)
 
         # multi-head outputs blocks
-        self.Q = Multi_head_ltee(cfg, isenhance)
-        self.Q.cuda()
+        self.Q1 = Multi_head(cfg, isenhance)
+        self.Q2 = Multi_head(cfg, isenhance)
+        self.sigmoid = nn.Sigmoid()
 
     def forward(self, t, x):
         hidden = self.hidden_features(x)
         t_hidden = torch.cat((torch.unsqueeze(t, 1), hidden), 1)
         g = self.density_estimator_head(t, hidden)
-        Q = self.Q(t_hidden)
+        # Q1 = self.sigmoid(self.Q1(t_hidden))
+        # Q2 = self.sigmoid(self.Q2(t_hidden))
+        # Q = self.sigmoid(self.Q(t_hidden))
 
-        return g, Q
+        return g, Q #Q1 ,Q2
 
     def _initialize_weights(self):
         # TODO: maybe add more distribution for initialization

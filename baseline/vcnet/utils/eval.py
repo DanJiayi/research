@@ -145,12 +145,13 @@ def curve(model, test_matrix, t_grid, targetreg=None):
         return t_grid_hat, mse
 
 
-def curve_2(model,test_matrix, t_grid, targetreg1=None, targetreg2=None):
+def curve_2(models,test_matrix, t_grid, targetreg1=None, targetreg2=None):
     n_test = t_grid.shape[1]
     t_grid_hat = torch.zeros(3, n_test)
     t_grid_hat[0, :] = t_grid[0, :]
 
     test_loader = get_iter(test_matrix, batch_size=test_matrix.shape[0], shuffle=False)
+    model1,model2 = models[0],models[1]
 
     if targetreg1 is None:
         for _ in range(n_test):
@@ -160,9 +161,9 @@ def curve_2(model,test_matrix, t_grid, targetreg1=None, targetreg2=None):
                 t += t_grid[0, _]
                 x = inputs[:, 1:-2]
                 break
-            out = model.forward(t, x)
-            out1,out2 = out[1].data.squeeze(),out[2].data.squeeze()
-            out1,out2 = out1.mean(),out2.mean()
+
+            out1,out2 = model1.forward(t, x),model2.forward(t, x)
+            out1,out2 = out1[1].data.squeeze().mean(),out2[1].data.squeeze().mean()
             t_grid_hat[1, _], t_grid_hat[2, _]= out1,out2
 
         device = t_grid_hat.device
@@ -179,10 +180,10 @@ def curve_2(model,test_matrix, t_grid, targetreg1=None, targetreg2=None):
                 t += t_grid[0, _]
                 x = inputs[:, 1:-2]
                 break
-            out = model.forward(t, x)
+            out1,out2 = model1.forward(t, x),model2.forward(t, x)
             tr_out1,tr_out2 = targetreg1(t).data, targetreg2(t).data
-            g = out[0].data.squeeze()
-            out1,out2 = out[1].data.squeeze() + tr_out1 / (g + 1e-6),out[2].data.squeeze() + tr_out2 / (g + 1e-6)
+            g1,g2 = out1[0].data.squeeze(),out2[0].data.squeeze()
+            out1,out2 = out1[1].data.squeeze() + tr_out1 / (g1 + 1e-6),out2[1].data.squeeze() + tr_out2 / (g2 + 1e-6)
             out1,out2 = out1.mean(),out2.mean()
             t_grid_hat[1, _], t_grid_hat[2, _]= out1,out2
         device = t_grid_hat.device
