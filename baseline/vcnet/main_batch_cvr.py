@@ -94,8 +94,9 @@ if __name__ == "__main__":
 
 
     Result = {}
-    for model_name in ['Vcnet','Vcnet_tr','Drnet', 'Drnet_tr','Dragonnet','Dragonnet_tr','Tarnet']:
-        h = 16
+    for model_name in ['Dragonnet_tr','Dragonnet','Drnet','Tarnet']: #'Vcnet_tr','Vcnet',
+    #for model_name in ['Vcnet_tr']:
+        h = 50
     #for model_name in ['Vcnet','Vcnet_tr']: # 'Vcnet',
     #for model_name in ['Tarnet_tr']: # 'Vcnet','Drnet', 
         Result[model_name]=[]
@@ -116,16 +117,20 @@ if __name__ == "__main__":
             num_grid = 10
             cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
             isenhance = 1
-            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
-            model._initialize_weights()
+            model1 = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
+            model1._initialize_weights()
+            model2 = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
+            model2._initialize_weights()
 
         elif model_name == 'Dragonnet' or model_name == 'Dragonnet_tr' or model_name == 'Tarnet':
             cfg_density = [(8, h, 1, 'relu'), (h, h, 1, 'relu')]
             num_grid = 10
             cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
             isenhance = 0
-            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
-            model._initialize_weights()
+            model1 = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
+            model1._initialize_weights()
+            model2 = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
+            model2._initialize_weights()
 
         # use Target Regularization
         if model_name == 'Vcnet_tr' or model_name == 'Drnet_tr' or model_name == 'Dragonnet_tr':
@@ -143,33 +148,33 @@ if __name__ == "__main__":
 
         # best cfg for each model
         if model_name == 'Dragonnet':
-            init_lr = 0.05
+            init_lr = 1e-6
             alpha = 1.0
 
             Result['Dragonnet'] = []
 
         elif model_name == 'Dragonnet_tr':
-            init_lr = 0.05
+            init_lr = 1e-6
             alpha = 0.5
-            tr_init_lr = 0.001
+            tr_init_lr = 1e-4
             beta = 1.
 
             Result['Dragonnet_tr'] = []
 
         elif model_name == 'Tarnet':
-            init_lr = 0.05
+            init_lr = 0.0001
             alpha = 0.0
 
             Result['Tarnet'] = []
 
         elif model_name == 'Drnet':
-            init_lr = 0.05
+            init_lr = 0.0001
             alpha = 1.
 
             Result['Drnet'] = []
 
         elif model_name == 'Drnet_tr':
-            init_lr = 0.05
+            init_lr = 0.0001
             alpha = 0.5
             tr_init_lr = 0.001
             beta = 1.
@@ -208,11 +213,12 @@ if __name__ == "__main__":
             test_loader = get_iter(test_matrix, batch_size=test_matrix.shape[0], shuffle=False)
 
             # reinitialize model
-            model._initialize_weights()
+            model1._initialize_weights()
+            model2._initialize_weights()
 
             # define optimizer
-            optimizer1 = torch.optim.SGD(model.parameters(), lr=init_lr, momentum=momentum, weight_decay=wd, nesterov=True)
-            optimizer2 = torch.optim.SGD(model.parameters(), lr=init_lr, momentum=momentum, weight_decay=wd, nesterov=True)
+            optimizer1 = torch.optim.SGD(model1.parameters(), lr=init_lr, momentum=momentum, weight_decay=wd, nesterov=True)
+            optimizer2 = torch.optim.SGD(model2.parameters(), lr=init_lr, momentum=momentum, weight_decay=wd, nesterov=True)
 
             if isTargetReg:
                 TargetReg1._initialize_weights()
@@ -250,12 +256,11 @@ if __name__ == "__main__":
                         tr_optimizer2.step()
                     else:
                         optimizer1.zero_grad()
-                        out1,out2 = model1.forward(t, x),model2.forward(t, x)
-                        trg1,trg2 = TargetReg1(t),TargetReg2(t)
-                        loss1 = criterion(out1, y1,alpha=alpha) + criterion_TR(out1, trg1, y1, beta=beta)
+                        out1,out2 = model1.forward(t, x),model2.forward(t, x)                     
+                        loss1 = criterion(out1, y1,alpha=alpha)
                         loss1.backward()
                         optimizer1.step()
-                        loss2 = criterion_2(out2, y1,y2,alpha=alpha) + criterion_TR_2(out2, trg2, y1, y2, beta=beta)
+                        loss2 = criterion_2(out2, y1,y2,alpha=alpha)
                         loss2.backward()
                         optimizer2.step()
 

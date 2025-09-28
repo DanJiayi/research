@@ -210,13 +210,14 @@ class Vcnet(nn.Module):
         blocks.append(last_layer)
 
         self.Q = nn.Sequential(*blocks)
+        self.sigmoid = nn.Sigmoid()
 
     def forward(self, t, x):
         hidden = self.hidden_features(x)
         t_hidden = torch.cat((torch.unsqueeze(t, 1), hidden), 1)
         #t_hidden = torch.cat((torch.unsqueeze(t, 1), x), 1)
         g = self.density_estimator_head(t, hidden)
-        Q = self.Q(t_hidden)
+        Q = self.sigmoid(self.Q(t_hidden))
 
         return g, Q
 
@@ -758,8 +759,8 @@ class Drnet(nn.Module):
         self.density_estimator_head = Density_Block(self.num_grid, density_hidden_dim, isbias=1)
 
         # multi-head outputs blocks
-        self.Q1 = Multi_head(cfg, isenhance)
-        self.Q2 = Multi_head(cfg, isenhance)
+        self.Q = Multi_head(cfg, isenhance)
+        # self.Q2 = Multi_head(cfg, isenhance)
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, t, x):
@@ -768,7 +769,7 @@ class Drnet(nn.Module):
         g = self.density_estimator_head(t, hidden)
         # Q1 = self.sigmoid(self.Q1(t_hidden))
         # Q2 = self.sigmoid(self.Q2(t_hidden))
-        # Q = self.sigmoid(self.Q(t_hidden))
+        Q = self.sigmoid(self.Q(t_hidden))
 
         return g, Q #Q1 ,Q2
 

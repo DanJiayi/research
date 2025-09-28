@@ -50,7 +50,7 @@ def criterion_cvr(out, y1, y2,alpha=0.5, epsilon=1e-9):
     return loss_pi + loss_y1 + loss_y2    
 
 def criterion_TR(out, trg, y, beta=1., epsilon=1e-9):
-    return beta * ((y.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[1].squeeze())**2).mean()
+    return beta * ((y.squeeze() - trg.squeeze()/(out[0].detach().squeeze() + epsilon) - out[1].squeeze())**2).mean()
 
 def criterion_TR_2(out, trg, y1, y2,beta=1., epsilon=1e-9):
     return beta *  (y1.squeeze() *(y2.squeeze() - trg.squeeze()/(out[0].detach().squeeze() + epsilon) - out[2].squeeze())**2).mean()
@@ -58,7 +58,7 @@ def criterion_TR_2(out, trg, y1, y2,beta=1., epsilon=1e-9):
 def criterion_TR_cvr(out, trg, y1, y2, beta=1., epsilon=1e-9):
     out1,out2 = out[1],out[1]*out[2]
     y1,y2,out1,out2,trg = y1.squeeze(),y2.squeeze(),out1.squeeze(),out2.squeeze(),trg.squeeze()
-    return beta * (( (y2 - out2)/(out1 + epsilon) - (y1-out1)*out2/(out1**2+epsilon) - trg/(out[0].squeeze()+epsilon) )**2).mean()
+    return beta * (( (y2 - out2)/(out1 + epsilon) - (y1-out1)*out2/(out1**2+epsilon) - trg/(out[0].detach().squeeze()+epsilon) )**2).mean()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='train with news data_utils')
@@ -69,7 +69,7 @@ if __name__ == "__main__":
     parser.add_argument('--save_dir', type=str, default='logs/news/tune', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=20, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=10, help='num of datasets to train')
 
     # training
     parser.add_argument('--n_epochs', type=int, default=800, help='num of epochs to train')
@@ -116,9 +116,9 @@ if __name__ == "__main__":
     k = 0
 
     #for model_name in ['Vcnet', 'Vcnet_tr', 'Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr']:
-    for num_epoch in [400,600,800]:
-        for h in [8,16,32,64]:
-            if num_epoch==400 and h==8: continue
+    for num_epoch in [200,400,600,800,1000]:
+        for h in [8,16,32,64,128]:
+            # if num_epoch==400 and h==8: continue
             # for init_lr in [1e-4,1e-3,1e-2]:
             # for alpha in [0.1,0.5,1]:
             for alpha in [0.5]:

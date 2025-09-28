@@ -53,7 +53,7 @@ def criterion_cvr(out, y1, y2,alpha=0.5, epsilon=1e-9):
     return loss_pi + loss_y1 + loss_y2
 
 def criterion_TR(out, trg, y, beta=1., epsilon=1e-9):
-    return beta * ((y.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[1].squeeze())**2).mean()
+    return beta * ((y.squeeze() - trg.squeeze()/(out[0].detach().squeeze() + epsilon) - out[1].squeeze())**2).mean()
 
 def criterion_TR_2(out, trg, y1, y2,beta=1., epsilon=1e-9):
     return beta *  (y1.squeeze() *(y2.squeeze() - trg.squeeze()/(out[0].detach().squeeze() + epsilon) - out[2].squeeze())**2).mean()
@@ -61,7 +61,7 @@ def criterion_TR_2(out, trg, y1, y2,beta=1., epsilon=1e-9):
 def criterion_TR_cvr(out, trg, y1, y2, beta=1., epsilon=1e-9):
     out1,out2 = out[1],out[1]*out[2]
     y1,y2,out1,out2,trg = y1.squeeze(),y2.squeeze(),out1.squeeze(),out2.squeeze(),trg.squeeze()
-    return beta * (( (y2 - out2)/(out1 + epsilon) - (y1-out1)*out2/(out1**2+epsilon) - trg/(out[0].squeeze()+epsilon) )**2).mean()
+    return beta * (( (y2 - out2)/(out1 + epsilon) - (y1-out1)*out2/(out1**2+epsilon) - trg/(out[0].detach().squeeze()+epsilon) )**2).mean()
 
 
 if __name__ == "__main__":
@@ -69,10 +69,10 @@ if __name__ == "__main__":
 
     # i/o
     parser.add_argument('--data_dir', type=str, default='/root/test01/research/CausalCVR/dataset/simu2/eval', help='dir of eval dataset')
-    parser.add_argument('--save_dir', type=str, default='logs/simu4/eval', help='dir to save result')
+    parser.add_argument('--save_dir', type=str, default='logs/simu4/tune', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=20, help='num of datasets to train')
 
     # training
     parser.add_argument('--n_epochs', type=int, default=200, help='num of epochs to train')
@@ -113,11 +113,11 @@ if __name__ == "__main__":
 
     #for model_name in ['Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr', 'Vcnet', 'Vcnet_tr']:
     for model_name in ['Vcnet_tr','Vcnet']:
-        for num_epoch in [800]:
-            for h in [16]:
+        for num_epoch in [200,400,600,800,1000]:
+            for h in [8,16,32,64,128]:
                 # for init_lr in [1e-4,1e-3,1e-2]:
                 # for alpha in [0.1,0.5,1]:
-                for alpha in [0.1]:
+                for alpha in [0.5]:
                     # for tr_init_lr in [1e-4,1e-3,1e-2]:
                     for beta in [1]:
                         params = f'{num_epoch}_{h}_{alpha}_{beta}'
@@ -301,10 +301,11 @@ if __name__ == "__main__":
                             with open(save_path + '/result.json', 'w') as fp:
                                 json.dump(Result, fp)
 
-                    # avg_mse = sum([i[1] for i in Result[params]])/len(Result[params])
-                    # if avg_mse<best_mse:
-                    #     best_mse, best_params = avg_mse, params
-                    # print('*** current params: ', params, ' num_tunes: ',k)
-                    # print('best mse: ',best_mse,' best_params: ',best_params)
+                    avg_mse1 = sum([i[1] for i in Result[params]['Vcnet']])/len(Result[params]['Vcnet'])
+                    avg_mse2 = sum([i[1] for i in Result[params]['Vcnet_tr']])/len(Result[params]['Vcnet_tr'])
+                    if avg_mse2<avg_mse1 and avg_mse2<best_mse:
+                        best_mse,best_mse1, best_params = avg_mse2, avg_mse1,params
+                    print('*** current mse: ',[avg_mse1,avg_mse2],' current params: ',params, ' num_tunes: ',k)
+                    print('best mse: ',[best_mse1,best_mse],' best_params: ',best_params)
 
                     

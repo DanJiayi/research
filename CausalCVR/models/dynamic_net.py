@@ -210,13 +210,14 @@ class Vcnet(nn.Module):
         blocks.append(last_layer)
 
         self.Q = nn.Sequential(*blocks)
+        self.sigmoid = nn.Sigmoid()
 
     def forward(self, t, x):
         hidden = self.hidden_features(x)
         t_hidden = torch.cat((torch.unsqueeze(t, 1), hidden), 1)
         #t_hidden = torch.cat((torch.unsqueeze(t, 1), x), 1)
         g = self.density_estimator_head(t, hidden)
-        Q = self.Q(t_hidden)
+        Q = self.sigmoid(self.Q(t_hidden))
 
         return g, Q
 
@@ -298,7 +299,7 @@ class Vcnet_2(nn.Module):
 
     def forward(self, t, x):
         hidden = self.hidden_features(x)
-        t_hidden = torch.cat((torch.unsqueeze(t, 1), hidden.detach()), 1) #.detach()
+        t_hidden = torch.cat((torch.unsqueeze(t, 1), hidden), 1) #.detach()
         #t_hidden = torch.cat((torch.unsqueeze(t, 1), x), 1)
         g = self.density_estimator_head(t, hidden)
         Q1 = self.sigmoid(self.Q1(t_hidden))
