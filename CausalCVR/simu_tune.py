@@ -69,10 +69,10 @@ if __name__ == "__main__":
 
     # i/o
     parser.add_argument('--data_dir', type=str, default='/root/test01/research/CausalCVR/dataset/simu2/eval', help='dir of eval dataset')
-    parser.add_argument('--save_dir', type=str, default='logs/simu4/tune', help='dir to save result')
+    parser.add_argument('--save_dir', type=str, default='logs/simu4/eval', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=20, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
 
     # training
     parser.add_argument('--n_epochs', type=int, default=200, help='num of epochs to train')
@@ -112,18 +112,19 @@ if __name__ == "__main__":
     k = 0
 
     #for model_name in ['Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr', 'Vcnet', 'Vcnet_tr']:
-    for model_name in ['Vcnet_tr','Vcnet']:
-        for num_epoch in [200,400,600,800,1000]:
-            for h in [8,16,32,64,128]:
-                # for init_lr in [1e-4,1e-3,1e-2]:
-                # for alpha in [0.1,0.5,1]:
-                for alpha in [0.5]:
-                    # for tr_init_lr in [1e-4,1e-3,1e-2]:
-                    for beta in [1]:
-                        params = f'{num_epoch}_{h}_{alpha}_{beta}'
-                        #Result[params]=[]
-                        Result[model_name]=[]
-                        k+=1
+    
+    for num_epoch in [600,1000]:
+        for h in [16]:
+            # for init_lr in [1e-4,1e-3,1e-2]:
+            # for alpha in [0.1,0.5,1]:
+            for alpha in [0.5]:
+                # for tr_init_lr in [1e-4,1e-3,1e-2]:
+                for beta in [1]:
+                    params = f'{num_epoch}_{h}_{alpha}_{beta}'
+                    Result[params]={}
+                    #Result[model_name]=[]
+                    k+=1
+                    for model_name in ['Vcnet_tr','Vcnet']:
 
                         if model_name == 'Vcnet' or model_name == 'Vcnet_tr':
                             cfg_density = [(8, h, 1, 'relu'), (h, h, 1, 'relu')]
@@ -170,7 +171,7 @@ if __name__ == "__main__":
                             init_lr = 0.05
                             alpha = 1.0
 
-                            Result['Tarnet'] = []
+                            Result[params]['Tarnet'] = []
 
                         elif model_name == 'Tarnet_tr':
                             init_lr = 0.05
@@ -178,13 +179,13 @@ if __name__ == "__main__":
                             tr_init_lr = 0.001
                             beta = 1.
 
-                            Result['Tarnet_tr'] = []
+                            Result[params]['Tarnet_tr'] = []
 
                         elif model_name == 'Drnet':
                             init_lr = 0.05
                             alpha = 1.
 
-                            Result['Drnet'] = []
+                            Result[params]['Drnet'] = []
 
                         elif model_name == 'Drnet_tr':
                             init_lr = 0.05
@@ -192,13 +193,13 @@ if __name__ == "__main__":
                             tr_init_lr = 0.001
                             beta = 1.
 
-                            Result['Drnet_tr'] = []
+                            Result[params]['Drnet_tr'] = []
 
                         elif model_name == 'Vcnet':
                             init_lr = 0.0001
                             alpha = 0.5
 
-                            Result['Vcnet'] = []
+                            Result[params]['Vcnet'] = []
 
                         elif model_name == 'Vcnet_tr':
                             init_lr = 0.0001
@@ -206,7 +207,7 @@ if __name__ == "__main__":
                             tr_init_lr = 0.001
                             beta = beta #1.
 
-                            Result['Vcnet_tr'] = []
+                            Result[params]['Vcnet_tr'] = []
 
                         for _ in range(num_dataset):
 
@@ -296,9 +297,9 @@ if __name__ == "__main__":
                             # }, model_name=model_name, checkpoint_dir=cur_save_path)
                             # print('-----------------------------------------------------------------')
 
-                            Result[model_name].append([mse1,mse2])
+                            Result[params][model_name].append([mse1,mse2])
 
-                            with open(save_path + '/result.json', 'w') as fp:
+                            with open(save_path + '/result_2.json', 'w') as fp:
                                 json.dump(Result, fp)
 
                     avg_mse1 = sum([i[1] for i in Result[params]['Vcnet']])/len(Result[params]['Vcnet'])

@@ -38,15 +38,16 @@ def criterion(out, y, alpha=0.5, epsilon=1e-6):
 
 def criterion_2(out, y1, y2,alpha=0.5, epsilon=1e-6):
     loss_pi = -alpha * torch.log(out[0] + epsilon).mean()
-    loss_y1 = (-y1 * torch.log(out[1] + epsilon).squeeze() - (1-y1) * torch.log(1 - out[1] + epsilon).squeeze()).mean()
-    loss_y2 = ((-y2 * torch.log(out[2] + epsilon).squeeze() - (1-y2) * torch.log(1 - out[2] + epsilon).squeeze()) * y1.squeeze()).mean()
-    return loss_pi + loss_y1 + loss_y2 
+    # loss_y1 = (-y1 * torch.log(out[1] + epsilon).squeeze() - (1-y1) * torch.log(1 - out[1] + epsilon).squeeze()).mean()
+    loss_y = ((-y2 * torch.log(out[1] + epsilon).squeeze() - (1-y2) * torch.log(1 - out[1] + epsilon).squeeze()) * y1.squeeze()).mean()
+    return loss_pi + loss_y 
 
 def criterion_TR(out, trg, y, beta=1., epsilon=1e-6):
     return beta * ((y.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[1].squeeze())**2).mean()
 
 def criterion_TR_2(out, trg, y1, y2,beta=1., epsilon=1e-6):
-    return beta *  (y1.squeeze() *(y2.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[2].squeeze())**2).mean()
+    #return beta *  (y1.squeeze() *(y2.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[2].squeeze())**2).mean()
+    return beta *  (y1.squeeze() *(y2.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[1].squeeze())**2).mean()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='train with news data_utils')
@@ -57,10 +58,10 @@ if __name__ == "__main__":
     parser.add_argument('--save_dir', type=str, default='logs/news/eval', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=20, help='num of datasets to train')
 
     # training
-    parser.add_argument('--n_epochs', type=int, default=800, help='num of epochs to train')
+    parser.add_argument('--n_epochs', type=int, default=600, help='num of epochs to train')
 
     # print train info
     parser.add_argument('--verbose', type=int, default=100, help='print train info freq')
@@ -98,94 +99,110 @@ if __name__ == "__main__":
 
     Result = {}
 
-    #for model_name in ['Vcnet', 'Vcnet_tr', 'Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr']:
-    for model_name in ['Vcnet', 'Vcnet_tr']:
+    for model_name in ['Vcnet_tr','Vcnet','Dragonnet_tr','Dragonnet','Drnet','Tarnet']:
+        h = 8
+    #for model_name in ['Vcnet', 'Vcnet_tr']:
         Result[model_name]=[]
         # import model
         if model_name == 'Vcnet' or model_name == 'Vcnet_tr':
-            cfg_density = [(498, 50, 1, 'relu'), (50, 50, 1, 'relu')]
+            cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
             num_grid = 10
-            cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
+            cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
             degree = 2
             knots = [0.33, 0.66]
-            model = Vcnet_2(cfg_density, num_grid, cfg, degree, knots).to(device)
-            model._initialize_weights()
+            #model = Vcnet_2(cfg_density, num_grid, cfg, degree, knots).to(device)
+            model1 = Vcnet(cfg_density, num_grid, cfg, degree, knots).to(device)
+            model2 = Vcnet(cfg_density, num_grid, cfg, degree, knots).to(device)
+            model1._initialize_weights()
+            model2._initialize_weights()
 
         elif model_name == 'Drnet' or model_name == 'Drnet_tr':
-            cfg_density = [(498, 50, 1, 'relu'), (50, 50, 1, 'relu')]
+            cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
             num_grid = 10
-            cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
+            cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
             isenhance = 1
-            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
-            model._initialize_weights()
+            model1 = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
+            model1._initialize_weights()
+            model2 = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
+            model2._initialize_weights()
 
-        elif model_name == 'Tarnet' or model_name == 'Tarnet_tr':
-            cfg_density = [(498, 50, 1, 'relu'), (50, 50, 1, 'relu')]
+        elif model_name == 'Dragonnet' or model_name == 'Dragonnet_tr' or model_name == 'Tarnet':
+            cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
             num_grid = 10
-            cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
+            cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
             isenhance = 0
-            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
-            model._initialize_weights()
+            model1 = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
+            model1._initialize_weights()
+            model2 = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
+            model2._initialize_weights()
 
-        # use Target Regularization?
-        if model_name == 'Vcnet_tr' or model_name == 'Drnet_tr' or model_name == 'Tarnet_tr':
+        # use Target Regularization
+        if model_name == 'Vcnet_tr' or model_name == 'Drnet_tr' or model_name == 'Dragonnet_tr':
             isTargetReg = 1
         else:
             isTargetReg = 0
 
-        tr_knots=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9]
-        tr_degree = 2
-        TargetReg1 = TR(tr_degree, tr_knots).to(device)
-        TargetReg1._initialize_weights()
-        TargetReg2 = TR(tr_degree, tr_knots).to(device)
-        TargetReg2._initialize_weights()
+        if isTargetReg:
+            tr_knots = list(np.arange(0.1, 1, 0.1))
+            tr_degree = 2
+            TargetReg1 = TR(tr_degree, tr_knots).to(device)
+            TargetReg2 = TR(tr_degree, tr_knots).to(device)
+            TargetReg1._initialize_weights()
+            TargetReg2._initialize_weights()
 
         # best cfg for each model
-        if model_name == 'Tarnet':
-            init_lr = 0.0005
+        if model_name == 'Dragonnet':
+            init_lr1 = 1e-3
+            init_lr2 = 5e-6
             alpha = 1.0
-            tr_init_lr = 0.001
+
+            Result['Dragonnet'] = []
+
+        elif model_name == 'Dragonnet_tr':
+            init_lr1 = 1e-3
+            init_lr2 = 5e-6
+            alpha = 0.5
+            tr_init_lr = 1e-4
             beta = 1.
+
+            Result['Dragonnet_tr'] = []
+
+        elif model_name == 'Tarnet':
+            init_lr1 = 1e-3
+            init_lr2 = 5e-6
+            alpha = 0.0
 
             Result['Tarnet'] = []
 
-        elif model_name == 'Tarnet_tr':
-            init_lr = 0.0005
-            alpha = 0.5
-            tr_init_lr = 0.0005
-            beta = 1.
-
-            Result['Tarnet_tr'] = []
-
         elif model_name == 'Drnet':
-            init_lr = 0.0005  # 0.005
+            init_lr1 = 1e-3
+            init_lr2 = 5e-6
             alpha = 1.
-            tr_init_lr = 0.0005
-            beta = 1.
 
             Result['Drnet'] = []
 
         elif model_name == 'Drnet_tr':
-            init_lr = 0.0005 # 0.005
+            init_lr1 = 1e-3
+            init_lr2 = 5e-6
             alpha = 0.5
-            tr_init_lr = 0.0005
+            tr_init_lr = 1e-4
             beta = 1.
 
             Result['Drnet_tr'] = []
 
         elif model_name == 'Vcnet':
-            init_lr = 0.0005
-            alpha = 0.5
-            tr_init_lr = 0.0005
-            beta = 1.
+            init_lr1 = 1e-3
+            init_lr2 = 5e-6
+            alpha = 0.1
 
             Result['Vcnet'] = []
 
         elif model_name == 'Vcnet_tr':
-            init_lr = 0.0005
-            alpha = 0.5
-            tr_init_lr = 0.0005
-            beta = 0.5
+            init_lr1 = 1e-3
+            init_lr2 = 5e-6
+            alpha = 0.1
+            tr_init_lr = 1e-4
+            beta = 1.
 
             Result['Vcnet_tr'] = []
 
@@ -205,11 +222,12 @@ if __name__ == "__main__":
             test_loader = get_iter(test_matrix, batch_size=test_matrix.shape[0], shuffle=False)
 
             # reinitialize model
-            model._initialize_weights()
+            model1._initialize_weights()
+            model2._initialize_weights()
 
             # define optimizer
-            optimizer = torch.optim.SGD(model.parameters(), lr=init_lr, momentum=momentum, weight_decay=wd,
-                                        nesterov=True)
+            optimizer1 = torch.optim.SGD(model1.parameters(), lr=init_lr1, momentum=momentum, weight_decay=wd, nesterov=True)
+            optimizer2 = torch.optim.SGD(model2.parameters(), lr=init_lr2, momentum=momentum, weight_decay=wd, nesterov=True)
 
             if isTargetReg:
                 TargetReg1._initialize_weights()
@@ -225,54 +243,57 @@ if __name__ == "__main__":
                     y1 = inputs[:,-2]
 
                     if isTargetReg:
-                        if epoch <= 800:
-                            optimizer.zero_grad()
-                            out = model.forward(t, x)
-                            trg1,trg2 = TargetReg1(t),TargetReg2(t)
-                            loss = criterion_2(out, y1,y2,alpha=alpha) + criterion_TR(out, trg1, y1, beta=beta) + criterion_TR_2(out, trg2, y1, y2, beta=beta)
-                            loss.backward()
-                            optimizer.step()
+                        optimizer1.zero_grad()
+                        out1,out2 = model1.forward(t, x),model2.forward(t, x)
+                        trg1,trg2 = TargetReg1(t),TargetReg2(t)
+                        loss1 = criterion(out1, y1,alpha=alpha) + criterion_TR(out1, trg1, y1, beta=beta)
+                        loss1.backward()
+                        optimizer1.step()
+                        loss2 = criterion_2(out2, y1,y2,alpha=alpha) + criterion_TR_2(out2, trg2, y1, y2, beta=beta)
+                        loss2.backward()
+                        optimizer2.step()
 
                         tr_optimizer1.zero_grad()
                         tr_optimizer2.zero_grad()
-                        out = model(t, x)
+                        out1,out2 = model1.forward(t, x),model2.forward(t, x)
                         trg1, trg2 = TargetReg1(t), TargetReg2(t)
-                        tr_loss1 = criterion_TR(out, trg1, y1, beta=beta)
-                        tr_loss2 = criterion_TR_2(out, trg2, y1, y2, beta=beta)
+                        tr_loss1 = criterion_TR(out1, trg1, y1, beta=beta)
+                        tr_loss2 = criterion_TR_2(out2, trg2, y1, y2, beta=beta)
                         tr_loss1.backward(retain_graph=True) 
                         tr_optimizer1.step()
                         tr_loss2.backward() 
                         tr_optimizer2.step()
                     else:
-                        optimizer.zero_grad()
-                        out = model.forward(t, x)
-                        loss = criterion_2(out, y1,y2,alpha=alpha)
-                        loss.backward()
-                        optimizer.step()
+                        optimizer1.zero_grad()
+                        out1,out2 = model1.forward(t, x),model2.forward(t, x)                     
+                        loss1 = criterion(out1, y1,alpha=alpha)
+                        loss1.backward()
+                        optimizer1.step()
+                        loss2 = criterion_2(out2, y1,y2,alpha=alpha)
+                        loss2.backward()
+                        optimizer2.step()
 
                 if epoch % verbose == 0:
                     print('current epoch: ', epoch)
-                    print('loss: ', loss)
+                    print('loss: ', loss1.data,', ',loss2.data)
 
             if isTargetReg:
-                t_grid_hat, mse1, mse2 = curve_2(model, test_matrix, t_grid, TargetReg1, TargetReg2)
-                mse1, mse2 = float(mse1),float(mse2)
-                print('current loss: ', float(loss.data))
-                print('current mse1: ', mse1,' mse2: ',mse2)
+                t_grid_hat, mse1, mse2 = curve_2([model1,model2],test_matrix, t_grid, TargetReg1,TargetReg2)
             else:
-                t_grid_hat, mse1, mse2 = curve_2(model, test_matrix, t_grid, TargetReg1, TargetReg2)
-                mse1, mse2 = float(mse1),float(mse2)
-                print('current loss: ', float(loss.data))
-                print('current mse1: ', mse1,' mse2: ',mse2)
+                t_grid_hat, mse1, mse2 = curve_2([model1,model2], test_matrix, t_grid)
 
-            # print('-----------------------------------------------------------------')
-            # save_checkpoint({
-            #     'model': model_name,
-            #     'best_test_loss': [mse1,mse2],
-            #     'model_state_dict': model.state_dict(),
-            #     'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()],
-            # }, model_name=model_name, checkpoint_dir=cur_save_path)
-            # print('-----------------------------------------------------------------')
+            mse1,mse2 = float(mse1),float(mse2)
+            print('current loss: ', float(loss1.data),', ',float(loss2.data))
+            print('current mse1: ', mse1,' mse2: ',mse2)
+
+            print('-----------------------------------------------------------------')
+            save_checkpoint({
+                'model': model_name,
+                'best_test_loss': [mse1,mse2],
+                'model_state_dict': [model1.state_dict(),model2.state_dict()],
+                'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()],
+            }, model_name=model_name, checkpoint_dir=cur_save_path)
+            print('-----------------------------------------------------------------')
 
             Result[model_name].append([mse1,mse2])
 

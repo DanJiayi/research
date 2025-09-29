@@ -50,7 +50,7 @@ def criterion_cvr(out, y1, y2,alpha=0.5, epsilon=1e-9):
     return loss_pi + loss_y1 + loss_y2    
 
 def criterion_TR(out, trg, y, beta=1., epsilon=1e-9):
-    return beta * ((y.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[1].squeeze())**2).mean()
+    return beta * ((y.squeeze() - trg.squeeze()/(out[0].detach().squeeze() + epsilon) - out[1].squeeze())**2).mean()
 
 def criterion_TR_2(out, trg, y1, y2,beta=1., epsilon=1e-9):
     return beta *  (y1.squeeze() *(y2.squeeze() - trg.squeeze()/(out[0].detach().squeeze() + epsilon) - out[2].squeeze())**2).mean()
@@ -58,7 +58,7 @@ def criterion_TR_2(out, trg, y1, y2,beta=1., epsilon=1e-9):
 def criterion_TR_cvr(out, trg, y1, y2, beta=1., epsilon=1e-9):
     out1,out2 = out[1],out[1]*out[2]
     y1,y2,out1,out2,trg = y1.squeeze(),y2.squeeze(),out1.squeeze(),out2.squeeze(),trg.squeeze()
-    return beta * (( (y2 - out2)/(out1 + epsilon) - (y1-out1)*out2/(out1**2+epsilon) - trg/(out[0].squeeze()+epsilon) )**2).mean()
+    return beta * (( (y2 - out2)/(out1 + epsilon) - (y1-out1)*out2/(out1**2+epsilon) - trg/(out[0].detach().squeeze()+epsilon) )**2).mean()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='train with news data_utils')
@@ -72,7 +72,7 @@ if __name__ == "__main__":
     parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
 
     # training
-    parser.add_argument('--n_epochs', type=int, default=400, help='num of epochs to train')
+    parser.add_argument('--n_epochs', type=int, default=600, help='num of epochs to train')
 
     # print train info
     parser.add_argument('--verbose', type=int, default=100, help='print train info freq')
@@ -113,7 +113,7 @@ if __name__ == "__main__":
     #for model_name in ['Vcnet', 'Vcnet_tr', 'Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr']:
     for model_name in ['Vcnet_tr','Vcnet']:
         Result[model_name]=[]
-        h = 16
+        h = 8
         # import model
         if model_name == 'Vcnet' or model_name == 'Vcnet_tr':
             cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]

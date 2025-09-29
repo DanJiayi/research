@@ -66,13 +66,13 @@ if __name__ == "__main__":
     # i/o
     parser.add_argument('--data_dir', type=str, default='/root/test01/research/CausalCVR/dataset/news', help='dir of data_utils matrix')
     parser.add_argument('--data_split_dir', type=str, default='/root/test01/research/CausalCVR/dataset/news/eval', help='dir of data_utils split')
-    parser.add_argument('--save_dir', type=str, default='logs/news/tune', help='dir to save result')
+    parser.add_argument('--save_dir', type=str, default='logs/news/eval', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=10, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=20, help='num of datasets to train')
 
     # training
-    parser.add_argument('--n_epochs', type=int, default=800, help='num of epochs to train')
+    parser.add_argument('--n_epochs', type=int, default=600, help='num of epochs to train')
 
     # print train info
     parser.add_argument('--verbose', type=int, default=100, help='print train info freq')
@@ -116,8 +116,8 @@ if __name__ == "__main__":
     k = 0
 
     #for model_name in ['Vcnet', 'Vcnet_tr', 'Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr']:
-    for num_epoch in [200,400,600,800,1000]:
-        for h in [8,16,32,64,128]:
+    for num_epoch in [600]:
+        for h in [8]:
             # if num_epoch==400 and h==8: continue
             # for init_lr in [1e-4,1e-3,1e-2]:
             # for alpha in [0.1,0.5,1]:
@@ -128,7 +128,7 @@ if __name__ == "__main__":
                     Result[params]={}
                     #Result[model_name]=[]
                     k+=1
-                    for model_name in ['Vcnet', 'Vcnet_tr']:
+                    for model_name in ['Vcnet_tr','Vcnet']:
                         Result[params][model_name]=[]
                         # import model
                         if model_name == 'Vcnet' or model_name == 'Vcnet_tr':
@@ -294,18 +294,18 @@ if __name__ == "__main__":
                                 print('current loss: ', float(loss.data))
                                 print('current mse1: ', mse1,' mse2: ',mse2)
 
-                            # print('-----------------------------------------------------------------')
-                            # save_checkpoint({
-                            #     'model': model_name,
-                            #     'best_test_loss': [mse1,mse2],
-                            #     'model_state_dict': model.state_dict(),
-                            #     'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()],
-                            # }, model_name=model_name, checkpoint_dir=cur_save_path)
-                            # print('-----------------------------------------------------------------')
+                            print('-----------------------------------------------------------------')
+                            save_checkpoint({
+                                'model': model_name,
+                                'best_test_loss': [mse1,mse2],
+                                'model_state_dict': model.state_dict(),
+                                'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()],
+                            }, model_name=model_name, checkpoint_dir=cur_save_path)
+                            print('-----------------------------------------------------------------')
 
                             Result[params][model_name].append([mse1,mse2])
 
-                            with open(save_path + '/result_2.json', 'w') as fp:
+                            with open(save_path + '/result.json', 'w') as fp:
                                 json.dump(Result, fp)
 
                     avg_mse1 = sum([i[1] for i in Result[params]['Vcnet']])/len(Result[params]['Vcnet'])
