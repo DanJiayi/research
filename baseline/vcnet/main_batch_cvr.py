@@ -149,14 +149,14 @@ if __name__ == "__main__":
         # best cfg for each model
         if model_name == 'Dragonnet':
             init_lr1 = 1e-3
-            init_lr2 = 5e-6
-            alpha = 1.0
+            init_lr2 = 1e-6
+            alpha = 0.5
 
             Result['Dragonnet'] = []
 
         elif model_name == 'Dragonnet_tr':
             init_lr1 = 1e-3
-            init_lr2 = 5e-6
+            init_lr2 = 1e-6
             alpha = 0.5
             tr_init_lr = 1e-4
             beta = 1.
@@ -165,21 +165,21 @@ if __name__ == "__main__":
 
         elif model_name == 'Tarnet':
             init_lr1 = 1e-3
-            init_lr2 = 5e-6
+            init_lr2 = 1e-6
             alpha = 0.0
 
             Result['Tarnet'] = []
 
         elif model_name == 'Drnet':
             init_lr1 = 1e-3
-            init_lr2 = 5e-6
-            alpha = 1.
+            init_lr2 = 1e-6
+            alpha = 0.5
 
             Result['Drnet'] = []
 
         elif model_name == 'Drnet_tr':
             init_lr1 = 1e-3
-            init_lr2 = 5e-6
+            init_lr2 = 1e-6
             alpha = 0.5
             tr_init_lr = 1e-4
             beta = 1.
@@ -188,15 +188,15 @@ if __name__ == "__main__":
 
         elif model_name == 'Vcnet':
             init_lr1 = 1e-3
-            init_lr2 = 5e-6
-            alpha = 0.1
+            init_lr2 = 1e-6
+            alpha = 0.5
 
             Result['Vcnet'] = []
 
         elif model_name == 'Vcnet_tr':
             init_lr1 = 1e-3
-            init_lr2 = 5e-6
-            alpha = 0.1
+            init_lr2 = 1e-6
+            alpha = 0.5
             tr_init_lr = 1e-4
             beta = 1.
 
@@ -283,16 +283,16 @@ if __name__ == "__main__":
             mse1,mse2 = float(mse1),float(mse2)
             print('current loss: ', float(loss1.data),', ',float(loss2.data))
             print('current mse1: ', mse1,' mse2: ',mse2)
-            print('-----------------------------------------------------------------')
-            save_checkpoint({
-                'model': model_name,
-                'best_test_loss': [mse1,mse2],
-                'model_state_dict': [model1.state_dict(),model2.state_dict()],
-                'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()] if isTargetReg else None
-            }, model_name=model_name, checkpoint_dir=cur_save_path)
-            print('-----------------------------------------------------------------')
+            # print('-----------------------------------------------------------------')
+            # save_checkpoint({
+            #     'model': model_name,
+            #     'best_test_loss': [mse1,mse2],
+            #     'model_state_dict': [model1.state_dict(),model2.state_dict()],
+            #     'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()] if isTargetReg else None
+            # }, model_name=model_name, checkpoint_dir=cur_save_path)
+            # print('-----------------------------------------------------------------')
 
             Result[model_name].append([mse1,mse2])
 
-            with open(save_path + '/result.json', 'w') as fp:
+            with open(save_path + '/result_2.json', 'w') as fp:
                 json.dump(Result, fp)
