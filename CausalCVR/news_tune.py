@@ -121,10 +121,10 @@ if __name__ == "__main__":
             # if num_epoch==400 and h==8: continue
             # for init_lr in [1e-4,1e-3,1e-2]:
             # for alpha in [0.1,0.5,1]:
-            for alpha in [0.5]:
+            for lr in [1e-8,1e-6,1e-5,1e-4,5e-4,1e-3]:
                 # for tr_init_lr in [1e-4,1e-3,1e-2]:
-                for beta in [1]:
-                    params = f'{num_epoch}_{h}_{alpha}_{beta}'
+                for lr_tr in [1e-4,5e-4]:
+                    params = f'{num_epoch}_{h}_{lr}_{lr_tr}'
                     Result[params]={}
                     #Result[model_name]=[]
                     k+=1
@@ -203,18 +203,18 @@ if __name__ == "__main__":
                             Result[params]['Drnet_tr'] = []
 
                         elif model_name == 'Vcnet':
-                            init_lr = 0.0005
+                            init_lr = lr #0.0005
                             alpha = 0.5
-                            tr_init_lr = 0.0005
+                            tr_init_lr = lr_tr #1e-4 #0.0005
                             beta = 1.
 
                             Result[params]['Vcnet'] = []
 
                         elif model_name == 'Vcnet_tr':
-                            init_lr = 0.0005
+                            init_lr = lr #0.0005
                             alpha = 0.5
-                            tr_init_lr = 0.0005
-                            beta = beta
+                            tr_init_lr = lr_tr #1e-4 #0.0005
+                            beta = 1. #beta
 
                             Result[params]['Vcnet_tr'] = []
 
@@ -294,18 +294,18 @@ if __name__ == "__main__":
                                 print('current loss: ', float(loss.data))
                                 print('current mse1: ', mse1,' mse2: ',mse2)
 
-                            print('-----------------------------------------------------------------')
-                            save_checkpoint({
-                                'model': model_name,
-                                'best_test_loss': [mse1,mse2],
-                                'model_state_dict': model.state_dict(),
-                                'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()],
-                            }, model_name=model_name, checkpoint_dir=cur_save_path)
-                            print('-----------------------------------------------------------------')
+                            # print('-----------------------------------------------------------------')
+                            # save_checkpoint({
+                            #     'model': model_name,
+                            #     'best_test_loss': [mse1,mse2],
+                            #     'model_state_dict': model.state_dict(),
+                            #     'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()],
+                            # }, model_name=model_name, checkpoint_dir=cur_save_path)
+                            # print('-----------------------------------------------------------------')
 
                             Result[params][model_name].append([mse1,mse2])
 
-                            with open(save_path + '/result.json', 'w') as fp:
+                            with open(save_path + '/result_3.json', 'w') as fp:
                                 json.dump(Result, fp)
 
                     avg_mse1 = sum([i[1] for i in Result[params]['Vcnet']])/len(Result[params]['Vcnet'])

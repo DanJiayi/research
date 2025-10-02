@@ -63,7 +63,9 @@ if __name__ == "__main__":
     parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
 
     # training
-    parser.add_argument('--n_epochs', type=int, default=1000, help='num of epochs to train')
+    parser.add_argument('--n_epochs', type=int, default=600, help='num of epochs to train')
+    parser.add_argument('--lr', type=float, default=1e-7, help='lr')
+    parser.add_argument('--lr_tr', type=float, default=1e-6, help='lr_tr')
 
     # print train info
     parser.add_argument('--verbose', type=int, default=100, help='print train info freq')
@@ -96,7 +98,10 @@ if __name__ == "__main__":
     Result = {}
     for model_name in ['Vcnet_tr','Vcnet','Dragonnet_tr','Dragonnet','Drnet','Tarnet']: #'Vcnet_tr','Vcnet',
     #for model_name in ['Vcnet_tr']:
-        h = 50
+        h = 32
+        lr1 = 1e-5
+        lr = args.lr
+        lr_tr = args.lr_tr
     #for model_name in ['Vcnet','Vcnet_tr']: # 'Vcnet',
     #for model_name in ['Tarnet_tr']: # 'Vcnet','Drnet', 
         Result[model_name]=[]
@@ -148,56 +153,56 @@ if __name__ == "__main__":
 
         # best cfg for each model
         if model_name == 'Dragonnet':
-            init_lr1 = 1e-3
-            init_lr2 = 1e-6
+            init_lr1 = lr1
+            init_lr2 = lr
             alpha = 0.5
 
             Result['Dragonnet'] = []
 
         elif model_name == 'Dragonnet_tr':
-            init_lr1 = 1e-3
-            init_lr2 = 1e-6
+            init_lr1 = lr1
+            init_lr2 = lr
             alpha = 0.5
-            tr_init_lr = 1e-4
+            tr_init_lr = lr_tr
             beta = 1.
 
             Result['Dragonnet_tr'] = []
 
         elif model_name == 'Tarnet':
-            init_lr1 = 1e-3
-            init_lr2 = 1e-6
+            init_lr1 = lr1
+            init_lr2 = lr
             alpha = 0.0
 
             Result['Tarnet'] = []
 
         elif model_name == 'Drnet':
-            init_lr1 = 1e-3
-            init_lr2 = 1e-6
+            init_lr1 = lr1
+            init_lr2 = lr
             alpha = 0.5
 
             Result['Drnet'] = []
 
         elif model_name == 'Drnet_tr':
-            init_lr1 = 1e-3
-            init_lr2 = 1e-6
+            init_lr1 = lr1
+            init_lr2 = lr
             alpha = 0.5
-            tr_init_lr = 1e-4
+            tr_init_lr = lr_tr
             beta = 1.
 
             Result['Drnet_tr'] = []
 
         elif model_name == 'Vcnet':
-            init_lr1 = 1e-3
-            init_lr2 = 1e-6
+            init_lr1 = lr1
+            init_lr2 = lr
             alpha = 0.5
 
             Result['Vcnet'] = []
 
         elif model_name == 'Vcnet_tr':
-            init_lr1 = 1e-3
-            init_lr2 = 1e-6
+            init_lr1 = lr1
+            init_lr2 = lr
             alpha = 0.5
-            tr_init_lr = 1e-4
+            tr_init_lr = lr_tr
             beta = 1.
 
             Result['Vcnet_tr'] = []
@@ -294,5 +299,5 @@ if __name__ == "__main__":
 
             Result[model_name].append([mse1,mse2])
 
-            with open(save_path + '/result_2.json', 'w') as fp:
+            with open(save_path + f'/result_{lr}_{lr_tr}.json', 'w') as fp:
                 json.dump(Result, fp)

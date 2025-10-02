@@ -101,6 +101,8 @@ if __name__ == "__main__":
 
     for model_name in ['Vcnet_tr','Vcnet','Dragonnet_tr','Dragonnet','Drnet','Tarnet']:
         h = 8
+        lr = 1e-6
+        lr_tr = 1e-4
     #for model_name in ['Vcnet', 'Vcnet_tr']:
         Result[model_name]=[]
         # import model
@@ -152,56 +154,56 @@ if __name__ == "__main__":
 
         # best cfg for each model
         if model_name == 'Dragonnet':
-            init_lr1 = 1e-3
-            init_lr2 = 1e-6
+            init_lr1 = lr
+            init_lr2 = lr
             alpha = 0.5
 
             Result['Dragonnet'] = []
 
         elif model_name == 'Dragonnet_tr':
-            init_lr1 = 1e-3
-            init_lr2 = 1e-6
+            init_lr1 = lr
+            init_lr2 = lr
             alpha = 0.5
-            tr_init_lr = 1e-4
+            tr_init_lr = lr_tr
             beta = 1.
 
             Result['Dragonnet_tr'] = []
 
         elif model_name == 'Tarnet':
-            init_lr1 = 1e-3
-            init_lr2 = 1e-6
+            init_lr1 = lr
+            init_lr2 = lr
             alpha = 0.0
 
             Result['Tarnet'] = []
 
         elif model_name == 'Drnet':
-            init_lr1 = 1e-3
-            init_lr2 = 1e-6
+            init_lr1 = lr
+            init_lr2 = lr
             alpha = 0.5
 
             Result['Drnet'] = []
 
         elif model_name == 'Drnet_tr':
-            init_lr1 = 1e-3
-            init_lr2 = 1e-6
+            init_lr1 = lr
+            init_lr2 = lr
             alpha = 0.5
-            tr_init_lr = 1e-4
+            tr_init_lr = lr_tr
             beta = 1.
 
             Result['Drnet_tr'] = []
 
         elif model_name == 'Vcnet':
-            init_lr1 = 1e-3
-            init_lr2 = 1e-6
+            init_lr1 = lr
+            init_lr2 = lr
             alpha = 0.5
 
             Result['Vcnet'] = []
 
         elif model_name == 'Vcnet_tr':
-            init_lr1 = 1e-3
-            init_lr2 = 1e-6
+            init_lr1 = lr
+            init_lr2 = lr
             alpha = 0.5
-            tr_init_lr = 1e-4
+            tr_init_lr = lr_tr
             beta = 1.
 
             Result['Vcnet_tr'] = []
@@ -297,7 +299,7 @@ if __name__ == "__main__":
 
             Result[model_name].append([mse1,mse2])
 
-            with open(save_path + '/result_2.json', 'w') as fp:
+            with open(save_path + '/result_3.json', 'w') as fp:
                 json.dump(Result, fp)
 
 

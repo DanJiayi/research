@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     # i/o
     parser.add_argument('--data_dir', type=str, default='/root/test01/research/CausalCVR/dataset/simu2/eval', help='dir of eval dataset')
-    parser.add_argument('--save_dir', type=str, default='logs/simu4/eval', help='dir to save result')
+    parser.add_argument('--save_dir', type=str, default='/root/test01/research/CausalCVR/logs/simu4/eval', help='dir to save result')
 
     # common
     parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
@@ -113,14 +113,14 @@ if __name__ == "__main__":
 
     #for model_name in ['Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr', 'Vcnet', 'Vcnet_tr']:
     
-    for num_epoch in [600,1000]:
-        for h in [16]:
+    for num_epoch in [600]:
+        for h in [32]:
             # for init_lr in [1e-4,1e-3,1e-2]:
             # for alpha in [0.1,0.5,1]:
-            for alpha in [0.5]:
+            for lr in [1e-5]:
                 # for tr_init_lr in [1e-4,1e-3,1e-2]:
-                for beta in [1]:
-                    params = f'{num_epoch}_{h}_{alpha}_{beta}'
+                for lr_tr in [1e-3]:
+                    params = f'{num_epoch}_{h}_{lr}_{lr_tr}'
                     Result[params]={}
                     #Result[model_name]=[]
                     k+=1
@@ -196,16 +196,16 @@ if __name__ == "__main__":
                             Result[params]['Drnet_tr'] = []
 
                         elif model_name == 'Vcnet':
-                            init_lr = 0.0001
+                            init_lr = lr #0.0001
                             alpha = 0.5
 
                             Result[params]['Vcnet'] = []
 
                         elif model_name == 'Vcnet_tr':
-                            init_lr = 0.0001
-                            alpha = alpha #0.5
-                            tr_init_lr = 0.001
-                            beta = beta #1.
+                            init_lr = lr #0.0001
+                            alpha = 0.5 #alpha #0.5
+                            tr_init_lr = lr_tr #0.001
+                            beta = 1. #beta #1.
 
                             Result[params]['Vcnet_tr'] = []
 
@@ -288,18 +288,18 @@ if __name__ == "__main__":
                             mse1,mse2 = float(mse1),float(mse2)
                             print('current loss: ', float(loss.data))
                             print('current mse1: ', mse1,' mse2: ',mse2)
-                            # print('-----------------------------------------------------------------')
-                            # save_checkpoint({
-                            #     'model': model_name,
-                            #     'best_test_loss': [mse1,mse2],
-                            #     'model_state_dict': model.state_dict(),
-                            #     'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()] if isTargetReg else None
-                            # }, model_name=model_name, checkpoint_dir=cur_save_path)
-                            # print('-----------------------------------------------------------------')
+                            print('-----------------------------------------------------------------')
+                            save_checkpoint({
+                                'model': model_name,
+                                'best_test_loss': [mse1,mse2],
+                                'model_state_dict': model.state_dict(),
+                                'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()] if isTargetReg else None
+                            }, model_name=model_name, checkpoint_dir=cur_save_path)
+                            print('-----------------------------------------------------------------')
 
                             Result[params][model_name].append([mse1,mse2])
 
-                            with open(save_path + '/result_2.json', 'w') as fp:
+                            with open(save_path + '/result_4.json', 'w') as fp:
                                 json.dump(Result, fp)
 
                     avg_mse1 = sum([i[1] for i in Result[params]['Vcnet']])/len(Result[params]['Vcnet'])

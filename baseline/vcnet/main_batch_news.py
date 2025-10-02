@@ -164,7 +164,7 @@ if __name__ == "__main__":
         elif model_name == 'Vcnet':
             init_lr = 0.0005
             alpha = 0.5
-            tr_init_lr = 0.0005
+            tr_init_lr = 1e-4 #0.0005
             beta = 1.
 
             Result['Vcnet'] = []
@@ -172,7 +172,7 @@ if __name__ == "__main__":
         elif model_name == 'Vcnet_tr':
             init_lr = 0.0005
             alpha = 0.5
-            tr_init_lr = 0.0005
+            tr_init_lr = 1e-4 #0.0005
             beta = 0.5
 
             Result['Vcnet_tr'] = []
