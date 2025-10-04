@@ -96,7 +96,7 @@ if __name__ == "__main__":
 
 
     Result = {}
-    for model_name in ['Vcnet_tr','Vcnet','Dragonnet_tr','Dragonnet','Drnet','Tarnet']: #'Vcnet_tr','Vcnet',
+    for model_name in ['Vcnet_tr','Dragonnet_tr','Drnet','Tarnet']: #'Vcnet_tr','Vcnet',
     #for model_name in ['Vcnet_tr']:
         h = 32
         lr1 = 1e-5
@@ -235,7 +235,7 @@ if __name__ == "__main__":
             if isTargetReg:
                 TargetReg1._initialize_weights()
                 TargetReg2._initialize_weights()
-                tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
+                tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=1e-4, weight_decay=tr_wd)
                 tr_optimizer2 = torch.optim.SGD(TargetReg2.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
 
             print('model : ', model_name)
@@ -299,5 +299,5 @@ if __name__ == "__main__":
 
             Result[model_name].append([mse1,mse2])
 
-            with open(save_path + f'/result_{lr}_{lr_tr}.json', 'w') as fp:
+            with open(save_path + f'/result_2_{lr}_{lr_tr}.json', 'w') as fp:
                 json.dump(Result, fp)
