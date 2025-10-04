@@ -60,7 +60,7 @@ if __name__ == "__main__":
     parser.add_argument('--save_dir', type=str, default='logs/simu4/eval', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=50, help='num of datasets to train')
 
     # training
     parser.add_argument('--n_epochs', type=int, default=600, help='num of epochs to train')
