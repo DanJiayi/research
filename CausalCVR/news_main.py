@@ -33,10 +33,10 @@ def save_checkpoint(state, model_name='', checkpoint_dir='.'):
     torch.save(state, filename)
 
 # criterion
-def criterion(out, y, alpha=0.5, epsilon=1e-6):
+def criterion(out, y, alpha=0.5, epsilon=1e-9):
     return ((out[1].squeeze() - y.squeeze())**2).mean() - alpha * torch.log(out[0] + epsilon).mean()
 
-def criterion_2(out, y1, y2,alpha=0.5, epsilon=1e-6):
+def criterion_2(out, y1, y2,alpha=0.5, epsilon=1e-9):
     loss_pi = -alpha * torch.log(out[0] + epsilon).mean()
     loss_y1 = (-y1 * torch.log(out[1] + epsilon).squeeze() - (1-y1) * torch.log(1 - out[1] + epsilon).squeeze()).mean()
     loss_y2 = ((-y2 * torch.log(out[2] + epsilon).squeeze() - (1-y2) * torch.log(1 - out[2] + epsilon).squeeze()) * y1.squeeze()).mean()
@@ -47,18 +47,26 @@ def criterion_cvr(out, y1, y2,alpha=0.5, epsilon=1e-9):
     out2 = out[1]*out[2]
     loss_y1 = (-y1 * torch.log(out[1] + epsilon).squeeze() - (1-y1) * torch.log(1 - out[1] + epsilon).squeeze()).mean()
     loss_y2 = (-y2 * torch.log(out2 + epsilon).squeeze() - (1-y2) * torch.log(1 - out2 + epsilon).squeeze()).mean()
-    return loss_pi + loss_y1 + loss_y2    
+    return loss_pi + loss_y1 + loss_y2
 
-def criterion_TR(out, trg, y, beta=1., epsilon=1e-9):
-    return beta * ((y.squeeze() - trg.squeeze()/(out[0].detach().squeeze() + epsilon) - out[1].squeeze())**2).mean()
+def criterion_id(out, y1, y2,alpha=0.5, epsilon=1e-9):
+    loss_pi = -alpha * torch.log(out[0] + epsilon).mean()
+    loss_y1 = (-y1 * torch.log(out[1] + epsilon).squeeze() - (1-y1) * torch.log(1 - out[1] + epsilon).squeeze()).mean()
+    loss_y2 = ((-y2 * torch.log(out[2] + epsilon).squeeze() - (1-y2) * torch.log(1 - out[2] + epsilon).squeeze()) * y1.squeeze() / (out[1].detach().squeeze()+1e-9)).mean()
+    return loss_pi + loss_y1 + loss_y2 
 
-def criterion_TR_2(out, trg, y1, y2,beta=1., epsilon=1e-9):
-    return beta *  (y1.squeeze() *(y2.squeeze() - trg.squeeze()/(out[0].detach().squeeze() + epsilon) - out[2].squeeze())**2).mean()
+def criterion_TR(out, trg, y, beta=1., epsilon=1e-9,detach=False):
+    if detach:
+        return beta * ((y.squeeze() - trg.squeeze()/(out[0].detach().squeeze() + epsilon) - out[1].squeeze())**2).mean()
+    return beta * ((y.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[1].squeeze())**2).mean()
 
 def criterion_TR_cvr(out, trg, y1, y2, beta=1., epsilon=1e-9):
     out1,out2 = out[1],out[1]*out[2]
     y1,y2,out1,out2,trg = y1.squeeze(),y2.squeeze(),out1.squeeze(),out2.squeeze(),trg.squeeze()
     return beta * (( (y2 - out2)/(out1 + epsilon) - (y1-out1)*out2/(out1**2+epsilon) - trg/(out[0].detach().squeeze()+epsilon) )**2).mean()
+
+def criterion_TR_id(out, trg, y1, y2,beta=1., epsilon=1e-9):
+    return beta *  (y1.squeeze()*(y2.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[2].squeeze())**2 / (out[1].detach().squeeze()+1e-9) ).mean()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='train with news data_utils')
@@ -121,43 +129,26 @@ if __name__ == "__main__":
             # if num_epoch==400 and h==8: continue
             # for init_lr in [1e-4,1e-3,1e-2]:
             # for alpha in [0.1,0.5,1]:
-            for lr in [1e-8,1e-6,1e-5,1e-4,5e-4,1e-3]:
+            for lr in [5e-4]:
                 # for tr_init_lr in [1e-4,1e-3,1e-2]:
-                for lr_tr in [1e-4,5e-4]:
+                for lr_tr in [5e-4]:
                     params = f'{num_epoch}_{h}_{lr}_{lr_tr}'
                     Result[params]={}
                     #Result[model_name]=[]
                     k+=1
-                    for model_name in ['Vcnet_tr','Vcnet']:
+                    for model_name in ['Vcnet_id_tr','Vcnet_id']: #'Vcnet_tr'
                         Result[params][model_name]=[]
                         # import model
-                        if model_name == 'Vcnet' or model_name == 'Vcnet_tr':
-                            cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
-                            num_grid = 10
-                            cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
-                            degree = 2
-                            knots = [0.33, 0.66]
-                            model = Vcnet_2(cfg_density, num_grid, cfg, degree, knots).to(device)
-                            model._initialize_weights()
-
-                        elif model_name == 'Drnet' or model_name == 'Drnet_tr':
-                            cfg_density = [(498, 50, 1, 'relu'), (50, 50, 1, 'relu')]
-                            num_grid = 10
-                            cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
-                            isenhance = 1
-                            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
-                            model._initialize_weights()
-
-                        elif model_name == 'Tarnet' or model_name == 'Tarnet_tr':
-                            cfg_density = [(498, 50, 1, 'relu'), (50, 50, 1, 'relu')]
-                            num_grid = 10
-                            cfg = [(50, 50, 1, 'relu'), (50, 1, 1, 'id')]
-                            isenhance = 0
-                            model = Drnet(cfg_density, num_grid, cfg, isenhance=isenhance).to(device)
-                            model._initialize_weights()
+                        cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
+                        num_grid = 10
+                        cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
+                        degree = 2
+                        knots = [0.33, 0.66]
+                        model = Vcnet_2(cfg_density, num_grid, cfg, degree, knots).to(device)
+                        model._initialize_weights()
 
                         # use Target Regularization?
-                        if model_name == 'Vcnet_tr' or model_name == 'Drnet_tr' or model_name == 'Tarnet_tr':
+                        if model_name == 'Vcnet_tr' or model_name == 'Vcnet_id_tr':
                             isTargetReg = 1
                         else:
                             isTargetReg = 0
@@ -170,53 +161,35 @@ if __name__ == "__main__":
                         TargetReg2._initialize_weights()
 
                         # best cfg for each model
-                        if model_name == 'Tarnet':
-                            init_lr = 0.0005
-                            alpha = 1.0
-                            tr_init_lr = 0.001
-                            beta = 1.
-
-                            Result[params]['Tarnet'] = []
-
-                        elif model_name == 'Tarnet_tr':
+                        if model_name == 'Vcnet':
                             init_lr = 0.0005
                             alpha = 0.5
-                            tr_init_lr = 0.0005
-                            beta = 1.
-
-                            Result[params]['Tarnet_tr'] = []
-
-                        elif model_name == 'Drnet':
-                            init_lr = 0.0005  # 0.005
-                            alpha = 1.
-                            tr_init_lr = 0.0005
-                            beta = 1.
-
-                            Result[params]['Drnet'] = []
-
-                        elif model_name == 'Drnet_tr':
-                            init_lr = 0.0005 # 0.005
-                            alpha = 0.5
-                            tr_init_lr = 0.0005
-                            beta = 1.
-
-                            Result[params]['Drnet_tr'] = []
-
-                        elif model_name == 'Vcnet':
-                            init_lr = lr #0.0005
-                            alpha = 0.5
-                            tr_init_lr = lr_tr #1e-4 #0.0005
                             beta = 1.
 
                             Result[params]['Vcnet'] = []
 
                         elif model_name == 'Vcnet_tr':
-                            init_lr = lr #0.0005
+                            init_lr = 0.0005
                             alpha = 0.5
                             tr_init_lr = lr_tr #1e-4 #0.0005
                             beta = 1. #beta
 
                             Result[params]['Vcnet_tr'] = []
+
+                        elif model_name == 'Vcnet_id':
+                            init_lr = 0.001
+                            alpha = 0.5
+                            beta = 1.
+
+                            Result[params]['Vcnet_id'] = []
+
+                        elif model_name == 'Vcnet_id_tr':
+                            init_lr = 0.001
+                            alpha = 0.5
+                            tr_init_lr = lr_tr
+                            beta = 1.
+
+                            Result[params]['Vcnet_id_tr'] = []
 
                         for _ in range(num_dataset):
                             cur_save_path = save_path + '/' + str(_)
@@ -258,7 +231,10 @@ if __name__ == "__main__":
                                             optimizer.zero_grad()
                                             out = model.forward(t, x)
                                             trg1,trg2 = TargetReg1(t),TargetReg2(t)
-                                            loss = criterion_cvr(out, y1,y2,alpha=alpha) + criterion_TR(out, trg1, y1, beta=beta) + criterion_TR_cvr(out, trg2, y1, y2, beta=beta)
+                                            if model_name in ['Vcnet_id','Vcnet_id_tr']:
+                                                loss = criterion_id(out, y1,y2,alpha=alpha) + criterion_TR(out, trg1, y1, beta=beta) + criterion_TR_id(out, trg2, y1, y2, beta=beta)
+                                            else:
+                                                loss = criterion_cvr(out, y1,y2,alpha=alpha) + criterion_TR(out, trg1, y1, beta=beta,detach=True) + criterion_TR_cvr(out, trg2, y1, y2, beta=beta)
                                             loss.backward()
                                             optimizer.step()
 
@@ -266,8 +242,12 @@ if __name__ == "__main__":
                                         tr_optimizer2.zero_grad()
                                         out = model(t, x)
                                         trg1, trg2 = TargetReg1(t), TargetReg2(t)
-                                        tr_loss1 = criterion_TR(out, trg1, y1, beta=beta)
-                                        tr_loss2 = criterion_TR_cvr(out, trg2, y1, y2, beta=beta)
+                                        if model_name in ['Vcnet_id','Vcnet_id_tr']:
+                                            tr_loss1 = criterion_TR(out, trg1, y1, beta=beta)
+                                            tr_loss2 = criterion_TR_id(out, trg2, y1, y2, beta=beta)
+                                        else:
+                                            tr_loss1 = criterion_TR(out, trg1, y1, beta=beta,detach=True)
+                                            tr_loss2 = criterion_TR_cvr(out, trg2, y1, y2, beta=beta)
                                         tr_loss1.backward(retain_graph=True) 
                                         tr_optimizer1.step()
                                         tr_loss2.backward() 
@@ -275,7 +255,10 @@ if __name__ == "__main__":
                                     else:
                                         optimizer.zero_grad()
                                         out = model.forward(t, x)
-                                        loss = criterion_cvr(out, y1,y2,alpha=alpha)
+                                        if model_name in ['Vcnet_id','Vcnet_id_tr']:
+                                            loss = criterion_id(out, y1,y2,alpha=alpha)
+                                        else:
+                                            loss = criterion_cvr(out, y1,y2,alpha=alpha)
                                         loss.backward()
                                         optimizer.step()
 
@@ -305,14 +288,14 @@ if __name__ == "__main__":
 
                             Result[params][model_name].append([mse1,mse2])
 
-                            with open(save_path + '/result_3.json', 'w') as fp:
+                            with open(save_path + '/result_id_2.json', 'w') as fp:
                                 json.dump(Result, fp)
 
-                    avg_mse1 = sum([i[1] for i in Result[params]['Vcnet']])/len(Result[params]['Vcnet'])
-                    avg_mse2 = sum([i[1] for i in Result[params]['Vcnet_tr']])/len(Result[params]['Vcnet_tr'])
-                    if avg_mse2<avg_mse1 and avg_mse2<best_mse:
-                        best_mse,best_mse1, best_params = avg_mse2, avg_mse1,params
-                    print('*** current mse: ',[avg_mse1,avg_mse2],' current params: ',params, ' num_tunes: ',k)
-                    print('best mse: ',[best_mse1,best_mse],' best_params: ',best_params)
+                    # avg_mse1 = sum([i[1] for i in Result[params]['Vcnet']])/len(Result[params]['Vcnet'])
+                    # avg_mse2 = sum([i[1] for i in Result[params]['Vcnet_tr']])/len(Result[params]['Vcnet_tr'])
+                    # if avg_mse2<avg_mse1 and avg_mse2<best_mse:
+                    #     best_mse,best_mse1, best_params = avg_mse2, avg_mse1,params
+                    # print('*** current mse: ',[avg_mse1,avg_mse2],' current params: ',params, ' num_tunes: ',k)
+                    # print('best mse: ',[best_mse1,best_mse],' best_params: ',best_params)
 
 

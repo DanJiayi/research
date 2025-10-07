@@ -34,10 +34,11 @@ if __name__ == "__main__":
 
     # i/o
     parser.add_argument('--data_dir', type=str, default='/root/test01/research/CausalCVR/dataset/news', help='dir of eval dataset')
+    parser.add_argument('--data_split_dir', type=str, default='/root/test01/research/CausalCVR/dataset/news/eval', help='dir of data_utils split')
     parser.add_argument('--save_dir', type=str, default='logs/news/eval', help='dir to save result')
-
+    
     # common
-    parser.add_argument('--num_dataset', type=int, default=5, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=20, help='num of datasets to train')
 
     args = parser.parse_args()
     # data_utils

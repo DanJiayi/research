@@ -37,7 +37,7 @@ if __name__ == "__main__":
     parser.add_argument('--save_dir', type=str, default='logs/simu/eval', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=5, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
 
     args = parser.parse_args()
     # data_utils

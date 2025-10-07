@@ -60,7 +60,7 @@ if __name__ == "__main__":
     parser.add_argument('--save_dir', type=str, default='logs/simu4/eval', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=50, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
 
     # training
     parser.add_argument('--n_epochs', type=int, default=600, help='num of epochs to train')
@@ -96,7 +96,7 @@ if __name__ == "__main__":
 
 
     Result = {}
-    for model_name in ['Vcnet_tr','Dragonnet_tr','Drnet','Tarnet']: #'Vcnet_tr','Vcnet',
+    for model_name in ['Vcnet_tr','Dragonnet_tr','Drnet','Tarnet','Vcnet','Dragonnet']: #'Vcnet_tr','Vcnet',
     #for model_name in ['Vcnet_tr']:
         h = 32
         lr1 = 1e-5
@@ -154,55 +154,55 @@ if __name__ == "__main__":
         # best cfg for each model
         if model_name == 'Dragonnet':
             init_lr1 = lr1
-            init_lr2 = lr
+            init_lr2 = 1e-7
             alpha = 0.5
 
             Result['Dragonnet'] = []
 
         elif model_name == 'Dragonnet_tr':
             init_lr1 = lr1
-            init_lr2 = lr
+            init_lr2 = 1e-7
             alpha = 0.5
-            tr_init_lr = lr_tr
+            tr_init_lr = 1e-6
             beta = 1.
 
             Result['Dragonnet_tr'] = []
 
         elif model_name == 'Tarnet':
             init_lr1 = lr1
-            init_lr2 = lr
+            init_lr2 = 1e-7
             alpha = 0.0
 
             Result['Tarnet'] = []
 
         elif model_name == 'Drnet':
             init_lr1 = lr1
-            init_lr2 = lr
+            init_lr2 = 1e-6
             alpha = 0.5
 
             Result['Drnet'] = []
 
         elif model_name == 'Drnet_tr':
             init_lr1 = lr1
-            init_lr2 = lr
+            init_lr2 = 1e-6
             alpha = 0.5
-            tr_init_lr = lr_tr
+            tr_init_lr = 1e-6
             beta = 1.
 
             Result['Drnet_tr'] = []
 
         elif model_name == 'Vcnet':
             init_lr1 = lr1
-            init_lr2 = lr
+            init_lr2 = 1e-7
             alpha = 0.5
 
             Result['Vcnet'] = []
 
         elif model_name == 'Vcnet_tr':
             init_lr1 = lr1
-            init_lr2 = lr
+            init_lr2 = 1e-7
             alpha = 0.5
-            tr_init_lr = lr_tr
+            tr_init_lr = 1e-6
             beta = 1.
 
             Result['Vcnet_tr'] = []
@@ -288,16 +288,16 @@ if __name__ == "__main__":
             mse1,mse2 = float(mse1),float(mse2)
             print('current loss: ', float(loss1.data),', ',float(loss2.data))
             print('current mse1: ', mse1,' mse2: ',mse2)
-            # print('-----------------------------------------------------------------')
-            # save_checkpoint({
-            #     'model': model_name,
-            #     'best_test_loss': [mse1,mse2],
-            #     'model_state_dict': [model1.state_dict(),model2.state_dict()],
-            #     'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()] if isTargetReg else None
-            # }, model_name=model_name, checkpoint_dir=cur_save_path)
-            # print('-----------------------------------------------------------------')
+            print('-----------------------------------------------------------------')
+            save_checkpoint({
+                'model': model_name,
+                'best_test_loss': [mse1,mse2],
+                'model_state_dict': [model1.state_dict(),model2.state_dict()],
+                'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()] if isTargetReg else None
+            }, model_name=model_name, checkpoint_dir=cur_save_path)
+            print('-----------------------------------------------------------------')
 
             Result[model_name].append([mse1,mse2])
 
-            with open(save_path + f'/result_2_{lr}_{lr_tr}.json', 'w') as fp:
+            with open(save_path + f'/result.json', 'w') as fp:
                 json.dump(Result, fp)
