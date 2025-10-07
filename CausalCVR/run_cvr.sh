@@ -6,5 +6,5 @@ python3 simu_sens.py
 python3 news_sens.py
 cd /root/test01/research
 git add .
-git commit -m "1006"
+git commit -m "1007"
 git push origin main

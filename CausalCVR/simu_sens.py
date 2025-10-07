@@ -121,15 +121,17 @@ if __name__ == "__main__":
 
     #for model_name in ['Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr', 'Vcnet', 'Vcnet_tr']:
     
-    #for alpha in [0.01,0.1,0.5,1,1.5,2]:
-    for alpha in [5e-4,5e-3,5e-2,0.5,5]:
+    for h in [8,16,32,64,128]:
+    #for alpha in [5e-4,5e-3,5e-2,0.5,5]:
         # for tr_init_lr in [1e-4,1e-3,1e-2]:
-        for beta in [1e-4,1e-3,1e-2,0.1,1,10]: #1e-4,1e-3,1e-2,0.1,1,10
-            if alpha != 0.5 and beta != 1: continue
-            h = 32
+        #for beta in [1e-4,1e-3,1e-2,0.1,1,10]: #1e-4,1e-3,1e-2,0.1,1,10
+        for beta in [1.]: #1e-4,1e-3,1e-2,0.1,1,10
+            #if alpha != 0.5 and beta != 1: continue
+            #h = 32
+            alpha = 0.5
             init_lr = 1e-5 
             tr_init_lr = 1e-3
-            params = f'{alpha}_{beta}'
+            params = f'{h}_{alpha}_{beta}'
             
             Result[params]={}
             #Result[model_name]=[]
@@ -278,7 +280,7 @@ if __name__ == "__main__":
 
                     Result[params][model_name].append([mse1,mse2])
 
-                    with open(save_path + '/result_sens.json', 'w') as fp:
+                    with open(save_path + '/result_sens2.json', 'w') as fp:
                         json.dump(Result, fp)
 
                     # avg_mse1 = sum([i[1] for i in Result[params]['Vcnet']])/len(Result[params]['Vcnet'])

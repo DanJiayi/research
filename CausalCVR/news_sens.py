@@ -123,17 +123,20 @@ if __name__ == "__main__":
     best_params = None
     k = 0
 
-    for alpha in [5e-4,5e-3,5e-2,0.5,5]:
+    #for alpha in [5e-4,5e-3,5e-2,0.5,5]:
+    for h in [8,16,32,64,128]:
         # for tr_init_lr in [1e-4,1e-3,1e-2]:
-        for beta in [1e-4,1e-3,1e-2,0.1,1,10]: #1e-4,1e-3,1e-2,0.1,1,10
-            if alpha != 0.5 and beta != 1: continue
-            params = f'{alpha}_{beta}'
+        #for beta in [1e-4,1e-3,1e-2,0.1,1,10]: #1e-4,1e-3,1e-2,0.1,1,10
+        for beta in [1.]:
+            #if alpha != 0.5 and beta != 1: continue
+            alpha = 0.5
+            params = f'{h}_{alpha}_{beta}'
             k+=1
             print('***',k,params)
             Result[params]={}
             #Result[model_name]=[]
             k+=1
-            h = 8
+            #h = 8
             lr = 5e-4
             lr_tr = 5e-4
             for model_name in ['Vcnet_tr']:
@@ -288,7 +291,7 @@ if __name__ == "__main__":
 
                     Result[params][model_name].append([mse1,mse2])
 
-                    with open(save_path + '/result_sens.json', 'w') as fp:
+                    with open(save_path + '/result_sens2.json', 'w') as fp:
                         json.dump(Result, fp)
 
             # avg_mse1 = sum([i[1] for i in Result[params]['Vcnet']])/len(Result[params]['Vcnet'])
