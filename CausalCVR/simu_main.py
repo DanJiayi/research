@@ -36,14 +36,14 @@ def save_checkpoint(state, model_name='', checkpoint_dir='.'):
     torch.save(state, filename)
 
 # criterion
-def criterion(out, y, alpha=0.5, epsilon=1e-9):
-    return ((out[1].squeeze() - y.squeeze())**2).mean() - alpha * torch.log(out[0] + epsilon).mean()
+# def criterion(out, y, alpha=0.5, epsilon=1e-9):
+#     return ((out[1].squeeze() - y.squeeze())**2).mean() - alpha * torch.log(out[0] + epsilon).mean()
 
-def criterion_2(out, y1, y2,alpha=0.5, epsilon=1e-9):
-    loss_pi = -alpha * torch.log(out[0] + epsilon).mean()
-    loss_y1 = (-y1 * torch.log(out[1] + epsilon).squeeze() - (1-y1) * torch.log(1 - out[1] + epsilon).squeeze()).mean()
-    loss_y2 = ((-y2 * torch.log(out[2] + epsilon).squeeze() - (1-y2) * torch.log(1 - out[2] + epsilon).squeeze()) * y1.squeeze()).mean()
-    return loss_pi + loss_y1 + loss_y2 
+# def criterion_2(out, y1, y2,alpha=0.5, epsilon=1e-9):
+#     loss_pi = -alpha * torch.log(out[0] + epsilon).mean()
+#     loss_y1 = (-y1 * torch.log(out[1] + epsilon).squeeze() - (1-y1) * torch.log(1 - out[1] + epsilon).squeeze()).mean()
+#     loss_y2 = ((-y2 * torch.log(out[2] + epsilon).squeeze() - (1-y2) * torch.log(1 - out[2] + epsilon).squeeze()) * y1.squeeze()).mean()
+#     return loss_pi + loss_y1 + loss_y2 
 
 def criterion_cvr(out, y1, y2,alpha=0.5, epsilon=1e-9):
     loss_pi = -alpha * torch.log(out[0] + epsilon).mean()

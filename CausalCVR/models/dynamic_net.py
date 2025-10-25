@@ -322,6 +322,137 @@ class Vcnet_2(nn.Module):
                 if m.isbias:
                     m.bias.data.zero_()
 
+class TR_Binary(nn.Module):
+    def __init__(self):
+        super(TR_Binary, self).__init__()
+        self.epsilon = nn.Parameter(torch.randn(1, 1))
+
+    def forward(self, inputs):
+        # 返回形状与 inputs[:, 0:1] 一样的张量，每个元素都等于 self.epsilon
+        return self.epsilon * torch.ones_like(inputs[:, 0:1])
+    
+    def _initialize_weights(self):
+        #self.weight.data_utils.normal_(0, 0.01)
+        nn.init.zeros_(self.epsilon)
+
+class MyNet_Binary(nn.Module):
+    def __init__(self,cfg_density,cfg):
+        super(MyNet_Binary, self).__init__()
+        # construct the density estimator
+        density_blocks = self.get_blocks(cfg_density)
+        density_hidden_dim = cfg_density[-1][1]
+        self.hidden_features = nn.Sequential(*density_blocks)
+        self.density_estimator_head = nn.Linear(in_features=density_hidden_dim, out_features=1)
+
+        self.tasks = nn.ModuleList([
+            nn.ModuleList([
+                nn.Sequential(*self.get_blocks(cfg)),
+                nn.Sequential(*self.get_blocks(cfg))
+            ])
+            for _ in range(2)
+        ])
+        self.sigmoid = nn.Sigmoid()
+
+    def forward(self,x):
+        hidden = self.hidden_features(x)
+        p = self.sigmoid(self.density_estimator_head(hidden))
+        mu = []
+        for i in range(2):
+            Q0,Q1 = self.tasks[i][0],self.tasks[i][1]
+            mu0,mu1 = self.sigmoid(Q0(hidden)),self.sigmoid(Q1(hidden))
+            mu.append([mu0,mu1])
+        return [p] + mu
+
+    def get_blocks(self,cfg):
+        blocks = []
+        for layer_idx, layer_cfg in enumerate(cfg):
+            # fc layer
+            blocks.append(nn.Linear(in_features=layer_cfg[0], out_features=layer_cfg[1], bias=layer_cfg[2]))
+            if layer_cfg[3] == 'relu':
+                blocks.append(nn.ReLU(inplace=True))
+            elif layer_cfg[3] == 'elu':
+                blocks.append(nn.ELU(inplace=True))
+            elif layer_cfg[3] == 'tanh':
+                blocks.append(nn.Tanh())
+            elif layer_cfg[3] == 'sigmoid':
+                blocks.append(nn.Sigmoid())
+            # else:
+            #     print('No activation')
+        return blocks
+    
+    def _initialize_weights(self):
+        # TODO: maybe add more distribution for initialization
+        for m in self.modules():
+            if isinstance(m, Dynamic_FC):
+                m.weight.data.normal_(0, 1.)
+                if m.isbias:
+                    m.bias.data.zero_()
+            elif isinstance(m, nn.Linear):
+                m.weight.data.normal_(0, 0.01)
+                if m.bias is not None:
+                    m.bias.data.zero_()
+            elif isinstance(m, Density_Block):
+                m.weight.data.normal_(0, 0.01)
+                if m.isbias:
+                    m.bias.data.zero_()
+
+
+class Dragonnet_Binary(nn.Module):
+    def __init__(self,cfg_density,cfg):
+        super(Dragonnet_Binary, self).__init__()
+        # construct the density estimator
+        density_blocks = self.get_blocks(cfg_density)
+        density_hidden_dim = cfg_density[-1][1]
+        self.hidden_features = nn.Sequential(*density_blocks)
+        self.density_estimator_head = nn.Linear(in_features=density_hidden_dim, out_features=1)
+
+        self.out = []
+        for _ in range(2):
+            blocks = self.get_blocks(cfg)
+            self.out .append(nn.Sequential(*blocks))
+        self.sigmoid = nn.Sigmoid()
+
+    def forward(self,x):
+        hidden = self.hidden_features(x)
+        p = self.sigmoid(self.density_estimator_head(hidden))
+        Q0,Q1 = self.out[0],self.out[1]
+        mu0,mu1 = self.sigmoid(Q0(hidden)),self.sigmoid(Q1(hidden))
+        return [p] + [mu0,mu1]
+
+    def get_blocks(self,cfg):
+        blocks = []
+        for layer_idx, layer_cfg in enumerate(cfg):
+            # fc layer
+            blocks.append(nn.Linear(in_features=layer_cfg[0], out_features=layer_cfg[1], bias=layer_cfg[2]))
+            if layer_cfg[3] == 'relu':
+                blocks.append(nn.ReLU(inplace=True))
+            elif layer_cfg[3] == 'elu':
+                blocks.append(nn.ELU(inplace=True))
+            elif layer_cfg[3] == 'tanh':
+                blocks.append(nn.Tanh())
+            elif layer_cfg[3] == 'sigmoid':
+                blocks.append(nn.Sigmoid())
+            else:
+                print('No activation')
+        return blocks
+    
+    def _initialize_weights(self):
+        # TODO: maybe add more distribution for initialization
+        for m in self.modules():
+            if isinstance(m, Dynamic_FC):
+                m.weight.data.normal_(0, 1.)
+                if m.isbias:
+                    m.bias.data.zero_()
+            elif isinstance(m, nn.Linear):
+                m.weight.data.normal_(0, 0.01)
+                if m.bias is not None:
+                    m.bias.data.zero_()
+            elif isinstance(m, Density_Block):
+                m.weight.data.normal_(0, 0.01)
+                if m.isbias:
+                    m.bias.data.zero_()
+
+
 class Backbone(nn.Module):
     def __init__(self,cfg,degree,knots):
         super(Backbone, self).__init__()
@@ -956,6 +1087,8 @@ class LTEE_Drnet(nn.Module):
                     m.bias.data.zero_()
 
 
+
+
 """
 cfg_density = [(3,4,1,'relu'), (4,6,1,'relu')]
 cfg = [(6,4,1,'relu'), (4,1,1,'id')]
@@ -968,3 +1101,13 @@ t = torch.rand(10)
 y = torch.rand(10)
 out = D.forward(t, x)
 """
+
+# cfg_density = [(3,4,1,'relu'), (4,6,1,'relu')]
+# cfg = [(6,4,1,'relu'), (4,1,1,'id')]
+# model = MyNet_Binary(cfg_density, cfg)
+# model._initialize_weights()
+# x = torch.rand(10, 3)
+# p,mu = model.forward(x)
+# m10,m11,m20,m21 = mu[0][0],mu[0][1],mu[1][0],mu[1][1]
+# # print(p,m10,m11,m20,m21)
+# print(p.shape,m10.shape,m11.shape,m20.shape,m21.shape)

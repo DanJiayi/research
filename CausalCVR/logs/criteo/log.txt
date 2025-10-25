@@ -1,0 +1,2371 @@
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(0.8924, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/MyNet_tr_ckpt_1_32_1e-05_1e-05_0.0099_0.0258_0.0068_0.0114.pth.tar
+-----------------------------------------------------------------
+current auuc:  [0.009938581200989009, 0.025810401945526324]  current qini:  [0.006837321020345502, 0.011374669616155611] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(0.8366, device='cuda:0')
+current epoch:  3
+current loss:  tensor(0.7788, device='cuda:0')
+current epoch:  4
+current loss:  tensor(0.7395, device='cuda:0')
+current epoch:  5
+current loss:  tensor(0.6888, device='cuda:0')
+current epoch:  6
+current loss:  tensor(0.6982, device='cuda:0')
+current epoch:  7
+current loss:  tensor(0.6112, device='cuda:0')
+current epoch:  8
+current loss:  tensor(0.6559, device='cuda:0')
+current epoch:  9
+current loss:  tensor(0.6099, device='cuda:0')
+current epoch:  10
+current loss:  tensor(0.5888, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/MyNet_tr_ckpt_10_32_1e-05_1e-05_0.0017_0.0048_0.0067_0.0115.pth.tar
+-----------------------------------------------------------------
+current auuc:  [0.0017240681123474352, 0.004818341292120895]  current qini:  [0.0066645426023063635, 0.011544198775501838] best res:  [0, 0]  best_params:  None
+current epoch:  11
+current loss:  tensor(0.5753, device='cuda:0')
+current epoch:  12
+current loss:  tensor(0.5822, device='cuda:0')
+current epoch:  13
+current loss:  tensor(0.6098, device='cuda:0')
+current epoch:  14
+current loss:  tensor(0.5107, device='cuda:0')
+current epoch:  15
+current loss:  tensor(0.5383, device='cuda:0')
+current epoch:  16
+current loss:  tensor(0.5000, device='cuda:0')
+current epoch:  17
+current loss:  tensor(0.4352, device='cuda:0')
+current epoch:  18
+current loss:  tensor(0.4742, device='cuda:0')
+current epoch:  19
+current loss:  tensor(0.4610, device='cuda:0')
+current epoch:  20
+current loss:  tensor(0.4497, device='cuda:0')
+current auuc:  [-0.020958554292392705, -0.052900950938718196]  current qini:  [0.007556380309370064, 0.013302232164518991] best res:  [0, 0]  best_params:  None
+current epoch:  21
+current loss:  tensor(0.3886, device='cuda:0')
+current epoch:  22
+current loss:  tensor(0.4406, device='cuda:0')
+current epoch:  23
+current loss:  tensor(0.4470, device='cuda:0')
+current epoch:  24
+current loss:  tensor(0.5107, device='cuda:0')
+current epoch:  25
+current loss:  tensor(0.4218, device='cuda:0')
+current epoch:  26
+current loss:  tensor(0.4293, device='cuda:0')
+current epoch:  27
+current loss:  tensor(0.2934, device='cuda:0')
+current epoch:  28
+current loss:  tensor(0.2716, device='cuda:0')
+current epoch:  29
+current loss:  tensor(0.3044, device='cuda:0')
+current epoch:  30
+current loss:  tensor(0.3218, device='cuda:0')
+current auuc:  [-0.03667953616825478, -0.09276945632635486]  current qini:  [-0.005507585158923603, -0.010531354595606241] best res:  [0, 0]  best_params:  None
+current epoch:  31
+current loss:  tensor(0.2735, device='cuda:0')
+current epoch:  32
+current loss:  tensor(0.3808, device='cuda:0')
+current epoch:  33
+current loss:  tensor(0.2716, device='cuda:0')
+current epoch:  34
+current loss:  tensor(0.1433, device='cuda:0')
+current epoch:  35
+current loss:  tensor(0.2090, device='cuda:0')
+current epoch:  36
+current loss:  tensor(0.4489, device='cuda:0')
+current epoch:  37
+current loss:  tensor(0.2125, device='cuda:0')
+current epoch:  38
+current loss:  tensor(0.1809, device='cuda:0')
+current epoch:  39
+current loss:  tensor(0.2752, device='cuda:0')
+current epoch:  40
+current loss:  tensor(0.2026, device='cuda:0')
+current auuc:  [-0.04078926598638817, -0.10319110528137765]  current qini:  [-0.004798985826493742, -0.009197587860078254] best res:  [0, 0]  best_params:  None
+current epoch:  41
+current loss:  tensor(0.1940, device='cuda:0')
+current epoch:  42
+current loss:  tensor(0.1688, device='cuda:0')
+current epoch:  43
+current loss:  tensor(0.1329, device='cuda:0')
+current epoch:  44
+current loss:  tensor(0.2161, device='cuda:0')
+current epoch:  45
+current loss:  tensor(0.1087, device='cuda:0')
+current epoch:  46
+current loss:  tensor(0.0915, device='cuda:0')
+current epoch:  47
+current loss:  tensor(0.1158, device='cuda:0')
+current epoch:  48
+current loss:  tensor(-0.0212, device='cuda:0')
+current epoch:  49
+current loss:  tensor(-0.1208, device='cuda:0')
+current epoch:  50
+current loss:  tensor(-0.3154, device='cuda:0')
+current auuc:  [-0.04197050539262898, -0.10619641979532739]  current qini:  [-0.004965189101684524, -0.009563981607219989] best res:  [0, 0]  best_params:  None
+current epoch:  51
+current loss:  tensor(-1.4008, device='cuda:0')
+current epoch:  52
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  53
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  54
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  55
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  56
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  57
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  58
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  59
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  60
+current loss:  tensor(nan, device='cuda:0')
+current auuc:  [-0.0041094139110894965, -0.01038266048839628]  current qini:  [-0.005379650476821878, -0.010554018611542728] best res:  [0, 0]  best_params:  None
+current epoch:  61
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  62
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  63
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  64
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  65
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  66
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  67
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  68
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  69
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  70
+current loss:  tensor(nan, device='cuda:0')
+current auuc:  [-0.0041094139110894965, -0.01038266048839628]  current qini:  [-0.005379650476821878, -0.010554018611542728] best res:  [0, 0]  best_params:  None
+current epoch:  71
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  72
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  73
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  74
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  75
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  76
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  77
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  78
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  79
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  80
+current loss:  tensor(nan, device='cuda:0')
+current auuc:  [-0.0041094139110894965, -0.01038266048839628]  current qini:  [-0.005379650476821878, -0.010554018611542728] best res:  [0, 0]  best_params:  None
+current epoch:  81
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  82
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  83
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  84
+current loss:  tensor(nan, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main.py", line 232, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 21, in __getitem__
+    sample = self.data_matrix[idx, :]
+KeyboardInterrupt
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(0.8780, device='cuda:0')
+current auuc:  [-0.011754150476048048, -0.02937746773054491]  current qini:  [-0.012443637311307114, -0.02316211157821523] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(0.8462, device='cuda:0')
+current epoch:  3
+current loss:  tensor(0.8036, device='cuda:0')
+current epoch:  4
+current loss:  tensor(0.7675, device='cuda:0')
+current epoch:  5
+current loss:  tensor(0.7502, device='cuda:0')
+current epoch:  6
+current loss:  tensor(0.7354, device='cuda:0')
+current epoch:  7
+current loss:  tensor(0.7213, device='cuda:0')
+current epoch:  8
+current loss:  tensor(0.6203, device='cuda:0')
+current epoch:  9
+current loss:  tensor(0.6979, device='cuda:0')
+current epoch:  10
+current loss:  tensor(0.6253, device='cuda:0')
+current auuc:  [-0.05421491982887391, -0.13721609752789693]  current qini:  [-0.03520197038294388, -0.06818218477498263] best res:  [0, 0]  best_params:  None
+current epoch:  11
+current loss:  tensor(0.5674, device='cuda:0')
+current epoch:  12
+current loss:  tensor(0.5587, device='cuda:0')
+current epoch:  13
+current loss:  tensor(0.4737, device='cuda:0')
+current epoch:  14
+current loss:  tensor(0.5841, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main.py", line 232, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 21, in __getitem__
+    sample = self.data_matrix[idx, :]
+KeyboardInterrupt
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(0.9004, device='cuda:0')
+current auuc:  [-0.05156843623864133, -0.13050554086933172]  current qini:  [-0.0028427927441355447, -0.0050264334150087265] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(0.8482, device='cuda:0')
+current epoch:  3
+current loss:  tensor(0.8078, device='cuda:0')
+current epoch:  4
+current loss:  tensor(0.7918, device='cuda:0')
+current epoch:  5
+current loss:  tensor(0.7444, device='cuda:0')
+current epoch:  6
+current loss:  tensor(0.7145, device='cuda:0')
+current epoch:  7
+current loss:  tensor(0.6818, device='cuda:0')
+current epoch:  8
+current loss:  tensor(0.6371, device='cuda:0')
+current epoch:  9
+current loss:  tensor(0.6450, device='cuda:0')
+current epoch:  10
+current loss:  tensor(0.6236, device='cuda:0')
+current auuc:  [-0.0493364316410594, -0.12473780671859502]  current qini:  [0.012512003594240715, 0.022993399275505096] best res:  [0, 0]  best_params:  None
+current epoch:  11
+current loss:  tensor(0.5444, device='cuda:0')
+current epoch:  12
+current loss:  tensor(0.5887, device='cuda:0')
+current epoch:  13
+current loss:  tensor(0.5127, device='cuda:0')
+current epoch:  14
+current loss:  tensor(0.5446, device='cuda:0')
+current epoch:  15
+current loss:  tensor(0.5442, device='cuda:0')
+current epoch:  16
+current loss:  tensor(0.4766, device='cuda:0')
+current epoch:  17
+current loss:  tensor(0.4454, device='cuda:0')
+current epoch:  18
+current loss:  tensor(0.4421, device='cuda:0')
+current epoch:  19
+current loss:  tensor(0.4318, device='cuda:0')
+current epoch:  20
+current loss:  tensor(0.4185, device='cuda:0')
+current auuc:  [-0.045849959797289265, -0.11592467998984894]  current qini:  [0.008568262988596599, 0.016191145571540437] best res:  [0, 0]  best_params:  None
+current epoch:  21
+current loss:  tensor(0.4904, device='cuda:0')
+current epoch:  22
+current loss:  tensor(0.3809, device='cuda:0')
+current epoch:  23
+current loss:  tensor(0.4093, device='cuda:0')
+current epoch:  24
+current loss:  tensor(0.3643, device='cuda:0')
+current epoch:  25
+current loss:  tensor(0.4102, device='cuda:0')
+current epoch:  26
+current loss:  tensor(0.3729, device='cuda:0')
+current epoch:  27
+current loss:  tensor(0.3143, device='cuda:0')
+current epoch:  28
+current loss:  tensor(0.3257, device='cuda:0')
+current epoch:  29
+current loss:  tensor(0.3209, device='cuda:0')
+current epoch:  30
+current loss:  tensor(0.3079, device='cuda:0')
+current auuc:  [-0.04417698703762483, -0.11176050885424799]  current qini:  [-0.0021530908711336516, -0.0040986462845741325] best res:  [0, 0]  best_params:  None
+current epoch:  31
+current loss:  tensor(0.2622, device='cuda:0')
+current epoch:  32
+current loss:  tensor(0.3372, device='cuda:0')
+current epoch:  33
+current loss:  tensor(0.2696, device='cuda:0')
+current epoch:  34
+current loss:  tensor(0.2825, device='cuda:0')
+current epoch:  35
+current loss:  tensor(0.2484, device='cuda:0')
+current epoch:  36
+current loss:  tensor(0.1992, device='cuda:0')
+current epoch:  37
+current loss:  tensor(0.2528, device='cuda:0')
+current epoch:  38
+current loss:  tensor(0.1557, device='cuda:0')
+current epoch:  39
+current loss:  tensor(0.1438, device='cuda:0')
+current epoch:  40
+current loss:  tensor(0.3605, device='cuda:0')
+current auuc:  [-0.04285084487852395, -0.10842077152563515]  current qini:  [-0.00436363664951139, -0.008395343545204971] best res:  [0, 0]  best_params:  None
+current epoch:  41
+current loss:  tensor(0.0785, device='cuda:0')
+current epoch:  42
+current loss:  tensor(-0.0106, device='cuda:0')
+current epoch:  43
+current loss:  tensor(-0.1385, device='cuda:0')
+current epoch:  44
+current loss:  tensor(-0.5555, device='cuda:0')
+current epoch:  45
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  46
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  47
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  48
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  49
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  50
+current loss:  tensor(nan, device='cuda:0')
+current auuc:  [-0.0041094139110894965, -0.01038266048839628]  current qini:  [-0.005379650476821878, -0.010554018611542728] best res:  [0, 0]  best_params:  None
+current epoch:  51
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  52
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  53
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  54
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  55
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  56
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  57
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  58
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  59
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  60
+current loss:  tensor(nan, device='cuda:0')
+current auuc:  [-0.0041094139110894965, -0.01038266048839628]  current qini:  [-0.005379650476821878, -0.010554018611542728] best res:  [0, 0]  best_params:  None
+current epoch:  61
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  62
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  63
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  64
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  65
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  66
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  67
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  68
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  69
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  70
+current loss:  tensor(nan, device='cuda:0')
+current auuc:  [-0.0041094139110894965, -0.01038266048839628]  current qini:  [-0.005379650476821878, -0.010554018611542728] best res:  [0, 0]  best_params:  None
+current epoch:  71
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  72
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  73
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  74
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  75
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  76
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  77
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  78
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  79
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  80
+current loss:  tensor(nan, device='cuda:0')
+current auuc:  [-0.0041094139110894965, -0.01038266048839628]  current qini:  [-0.005379650476821878, -0.010554018611542728] best res:  [0, 0]  best_params:  None
+current epoch:  81
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  82
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  83
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  84
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  85
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  86
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  87
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  88
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  89
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  90
+current loss:  tensor(nan, device='cuda:0')
+current auuc:  [-0.0041094139110894965, -0.01038266048839628]  current qini:  [-0.005379650476821878, -0.010554018611542728] best res:  [0, 0]  best_params:  None
+current epoch:  91
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  92
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  93
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  94
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  95
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  96
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  97
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  98
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  99
+current loss:  tensor(nan, device='cuda:0')
+current epoch:  100
+current loss:  tensor(nan, device='cuda:0')
+current auuc:  [-0.0041094139110894965, -0.01038266048839628]  current qini:  [-0.005379650476821878, -0.010554018611542728] best res:  [0, 0]  best_params:  None
+model :  MyNet
+current epoch:  1
+current loss:  tensor(0.6149, device='cuda:0')
+current auuc:  [0.001679635096477583, 0.005246584220376472]  current qini:  [-0.0034463506354139215, -0.0067653252881100185] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(0.5865, device='cuda:0')
+current epoch:  3
+current loss:  tensor(0.5597, device='cuda:0')
+current epoch:  4
+current loss:  tensor(0.5349, device='cuda:0')
+current epoch:  5
+current loss:  tensor(0.5174, device='cuda:0')
+current epoch:  6
+current loss:  tensor(0.4811, device='cuda:0')
+current epoch:  7
+current loss:  tensor(0.4667, device='cuda:0')
+current epoch:  8
+current loss:  tensor(0.4603, device='cuda:0')
+current epoch:  9
+current loss:  tensor(0.4512, device='cuda:0')
+current epoch:  10
+current loss:  tensor(0.4109, device='cuda:0')
+current auuc:  [-0.003776724748959716, -0.009479980863479209]  current qini:  [-0.005773854487515744, -0.010648500677469874] best res:  [0, 0]  best_params:  None
+current epoch:  11
+current loss:  tensor(0.4018, device='cuda:0')
+current epoch:  12
+current loss:  tensor(0.3811, device='cuda:0')
+current epoch:  13
+current loss:  tensor(0.3594, device='cuda:0')
+current epoch:  14
+current loss:  tensor(0.3425, device='cuda:0')
+current epoch:  15
+current loss:  tensor(0.3181, device='cuda:0')
+current epoch:  16
+current loss:  tensor(0.3036, device='cuda:0')
+current epoch:  17
+current loss:  tensor(0.3210, device='cuda:0')
+current epoch:  18
+current loss:  tensor(0.2736, device='cuda:0')
+current epoch:  19
+current loss:  tensor(0.2787, device='cuda:0')
+current epoch:  20
+current loss:  tensor(0.2336, device='cuda:0')
+current auuc:  [-0.01278089116701447, -0.03252214755357029]  current qini:  [-0.0071184173615996115, -0.013610676067984398] best res:  [0, 0]  best_params:  None
+Traceback (most recent call last):
+  File "criteo_main.py", line 232, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+KeyboardInterrupt
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(0.9413, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/MyNet_tr_ckpt_1_32_1e-06_1e-06_0.0390_0.0998_-0.0104_-0.0196.pth.tar
+-----------------------------------------------------------------
+current auuc:  [0.03896534711575158, 0.09981332140176406]  current qini:  [-0.01036016710257249, -0.019612581336809983] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(0.9059, device='cuda:0')
+current epoch:  3
+current loss:  tensor(0.9161, device='cuda:0')
+current epoch:  4
+current loss:  tensor(0.9067, device='cuda:0')
+current epoch:  5
+current loss:  tensor(0.9487, device='cuda:0')
+current epoch:  6
+current loss:  tensor(0.8927, device='cuda:0')
+current epoch:  7
+current loss:  tensor(0.9007, device='cuda:0')
+current epoch:  8
+current loss:  tensor(0.8931, device='cuda:0')
+current epoch:  9
+current loss:  tensor(0.9004, device='cuda:0')
+current epoch:  10
+current loss:  tensor(0.9070, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/MyNet_tr_ckpt_10_32_1e-06_1e-06_0.0381_0.0974_-0.0187_-0.0358.pth.tar
+-----------------------------------------------------------------
+current auuc:  [0.03811301921525057, 0.09740608068647]  current qini:  [-0.018747169281234426, -0.03577664099703518] best res:  [0, 0]  best_params:  None
+current epoch:  11
+current loss:  tensor(0.8853, device='cuda:0')
+current epoch:  12
+current loss:  tensor(0.8751, device='cuda:0')
+current epoch:  13
+current loss:  tensor(0.8556, device='cuda:0')
+current epoch:  14
+current loss:  tensor(0.8868, device='cuda:0')
+current epoch:  15
+current loss:  tensor(0.8315, device='cuda:0')
+current epoch:  16
+current loss:  tensor(0.8674, device='cuda:0')
+current epoch:  17
+current loss:  tensor(0.8494, device='cuda:0')
+current epoch:  18
+current loss:  tensor(0.8234, device='cuda:0')
+current epoch:  19
+current loss:  tensor(0.8473, device='cuda:0')
+current epoch:  20
+current loss:  tensor(0.8346, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/MyNet_tr_ckpt_20_32_1e-06_1e-06_0.0343_0.0870_-0.0260_-0.0498.pth.tar
+-----------------------------------------------------------------
+current auuc:  [0.034287150670185895, 0.08701085236260205]  current qini:  [-0.02595300582580623, -0.0498240213775143] best res:  [0, 0]  best_params:  None
+current epoch:  21
+current loss:  tensor(0.8462, device='cuda:0')
+current epoch:  22
+current loss:  tensor(0.8675, device='cuda:0')
+current epoch:  23
+current loss:  tensor(0.8603, device='cuda:0')
+current epoch:  24
+current loss:  tensor(0.8586, device='cuda:0')
+current epoch:  25
+current loss:  tensor(0.8383, device='cuda:0')
+current epoch:  26
+current loss:  tensor(0.8261, device='cuda:0')
+current epoch:  27
+current loss:  tensor(0.8177, device='cuda:0')
+current epoch:  28
+current loss:  tensor(0.7704, device='cuda:0')
+current epoch:  29
+current loss:  tensor(0.8060, device='cuda:0')
+current epoch:  30
+current loss:  tensor(0.8177, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/MyNet_tr_ckpt_30_32_1e-06_1e-06_0.0267_0.0667_-0.0319_-0.0615.pth.tar
+-----------------------------------------------------------------
+current auuc:  [0.026664830401212834, 0.06674575339057691]  current qini:  [-0.03192171697331892, -0.061480421841806694] best res:  [0, 0]  best_params:  None
+current epoch:  31
+current loss:  tensor(0.7894, device='cuda:0')
+current epoch:  32
+current loss:  tensor(0.7625, device='cuda:0')
+current epoch:  33
+current loss:  tensor(0.7606, device='cuda:0')
+current epoch:  34
+current loss:  tensor(0.8028, device='cuda:0')
+current epoch:  35
+current loss:  tensor(0.7864, device='cuda:0')
+current epoch:  36
+current loss:  tensor(0.7863, device='cuda:0')
+current epoch:  37
+current loss:  tensor(0.7968, device='cuda:0')
+current epoch:  38
+current loss:  tensor(0.7538, device='cuda:0')
+current epoch:  39
+current loss:  tensor(0.7908, device='cuda:0')
+current epoch:  40
+current loss:  tensor(0.7680, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/MyNet_tr_ckpt_40_32_1e-06_1e-06_0.0094_0.0228_-0.0367_-0.0709.pth.tar
+-----------------------------------------------------------------
+current auuc:  [0.009449423667750069, 0.022846066255725266]  current qini:  [-0.036663794296362164, -0.07085251251333802] best res:  [0, 0]  best_params:  None
+current epoch:  41
+current loss:  tensor(0.7967, device='cuda:0')
+current epoch:  42
+current loss:  tensor(0.7712, device='cuda:0')
+current epoch:  43
+current loss:  tensor(0.7277, device='cuda:0')
+current epoch:  44
+current loss:  tensor(0.7304, device='cuda:0')
+current epoch:  45
+current loss:  tensor(0.7628, device='cuda:0')
+current epoch:  46
+current loss:  tensor(0.7425, device='cuda:0')
+current epoch:  47
+current loss:  tensor(0.7392, device='cuda:0')
+current epoch:  48
+current loss:  tensor(0.7187, device='cuda:0')
+current epoch:  49
+current loss:  tensor(0.7183, device='cuda:0')
+current epoch:  50
+current loss:  tensor(0.7012, device='cuda:0')
+current auuc:  [-0.018235164943694548, -0.047005568635916026]  current qini:  [-0.0401259637279624, -0.07769987621946883] best res:  [0, 0]  best_params:  None
+current epoch:  51
+current loss:  tensor(0.7377, device='cuda:0')
+current epoch:  52
+current loss:  tensor(0.6616, device='cuda:0')
+current epoch:  53
+current loss:  tensor(0.7310, device='cuda:0')
+current epoch:  54
+current loss:  tensor(0.7173, device='cuda:0')
+current epoch:  55
+current loss:  tensor(0.6880, device='cuda:0')
+current epoch:  56
+current loss:  tensor(0.6981, device='cuda:0')
+current epoch:  57
+current loss:  tensor(0.6695, device='cuda:0')
+current epoch:  58
+current loss:  tensor(0.6652, device='cuda:0')
+current epoch:  59
+current loss:  tensor(0.6788, device='cuda:0')
+current epoch:  60
+current loss:  tensor(0.6495, device='cuda:0')
+current auuc:  [-0.045191031815547546, -0.11458826192710099]  current qini:  [-0.041861420492226596, -0.0811421438692472] best res:  [0, 0]  best_params:  None
+current epoch:  61
+current loss:  tensor(0.6706, device='cuda:0')
+current epoch:  62
+current loss:  tensor(0.6877, device='cuda:0')
+current epoch:  63
+current loss:  tensor(0.6522, device='cuda:0')
+current epoch:  64
+current loss:  tensor(0.6512, device='cuda:0')
+current epoch:  65
+current loss:  tensor(0.6783, device='cuda:0')
+current epoch:  66
+current loss:  tensor(0.6636, device='cuda:0')
+current epoch:  67
+current loss:  tensor(0.6902, device='cuda:0')
+current epoch:  68
+current loss:  tensor(0.6729, device='cuda:0')
+current epoch:  69
+current loss:  tensor(0.6682, device='cuda:0')
+current epoch:  70
+current loss:  tensor(0.7115, device='cuda:0')
+current auuc:  [-0.05438001866856092, -0.13762486822761133]  current qini:  [-0.044755848099090785, -0.08683339832824931] best res:  [0, 0]  best_params:  None
+current epoch:  71
+current loss:  tensor(0.6596, device='cuda:0')
+current epoch:  72
+current loss:  tensor(0.6281, device='cuda:0')
+current epoch:  73
+current loss:  tensor(0.6452, device='cuda:0')
+current epoch:  74
+current loss:  tensor(0.6336, device='cuda:0')
+current epoch:  75
+current loss:  tensor(0.6804, device='cuda:0')
+current epoch:  76
+current loss:  tensor(0.6601, device='cuda:0')
+current epoch:  77
+current loss:  tensor(0.6913, device='cuda:0')
+current epoch:  78
+current loss:  tensor(0.6024, device='cuda:0')
+current epoch:  79
+current loss:  tensor(0.6344, device='cuda:0')
+current epoch:  80
+current loss:  tensor(0.6492, device='cuda:0')
+current auuc:  [-0.05525826172512252, -0.1398359640652577]  current qini:  [-0.04723859630554417, -0.09176607942704089] best res:  [0, 0]  best_params:  None
+current epoch:  81
+current loss:  tensor(0.6599, device='cuda:0')
+current epoch:  82
+current loss:  tensor(0.6309, device='cuda:0')
+current epoch:  83
+current loss:  tensor(0.7003, device='cuda:0')
+current epoch:  84
+current loss:  tensor(0.6051, device='cuda:0')
+current epoch:  85
+current loss:  tensor(0.5537, device='cuda:0')
+current epoch:  86
+current loss:  tensor(0.6187, device='cuda:0')
+current epoch:  87
+current loss:  tensor(0.5556, device='cuda:0')
+current epoch:  88
+current loss:  tensor(0.6362, device='cuda:0')
+current epoch:  89
+current loss:  tensor(0.5810, device='cuda:0')
+current epoch:  90
+current loss:  tensor(0.6283, device='cuda:0')
+current auuc:  [-0.05507447994285073, -0.13934295937243046]  current qini:  [-0.049770715623608006, -0.09683407611815244] best res:  [0, 0]  best_params:  None
+current epoch:  91
+current loss:  tensor(0.6179, device='cuda:0')
+current epoch:  92
+current loss:  tensor(0.5928, device='cuda:0')
+current epoch:  93
+current loss:  tensor(0.6062, device='cuda:0')
+current epoch:  94
+current loss:  tensor(0.6015, device='cuda:0')
+current epoch:  95
+current loss:  tensor(0.6122, device='cuda:0')
+current epoch:  96
+current loss:  tensor(0.5909, device='cuda:0')
+current epoch:  97
+current loss:  tensor(0.6322, device='cuda:0')
+current epoch:  98
+current loss:  tensor(0.5901, device='cuda:0')
+current epoch:  99
+current loss:  tensor(0.5973, device='cuda:0')
+current epoch:  100
+current loss:  tensor(0.5880, device='cuda:0')
+current auuc:  [-0.05462011501753998, -0.13818777271712318]  current qini:  [-0.05133625428615341, -0.100040014453889] best res:  [0, 0]  best_params:  None
+current epoch:  101
+current loss:  tensor(0.5956, device='cuda:0')
+current epoch:  102
+current loss:  tensor(0.5700, device='cuda:0')
+current epoch:  103
+current loss:  tensor(0.5786, device='cuda:0')
+current epoch:  104
+current loss:  tensor(0.5741, device='cuda:0')
+current epoch:  105
+current loss:  tensor(0.6172, device='cuda:0')
+current epoch:  106
+current loss:  tensor(0.6023, device='cuda:0')
+current epoch:  107
+current loss:  tensor(0.5989, device='cuda:0')
+current epoch:  108
+current loss:  tensor(0.6481, device='cuda:0')
+current epoch:  109
+current loss:  tensor(0.5540, device='cuda:0')
+current epoch:  110
+current loss:  tensor(0.5653, device='cuda:0')
+current auuc:  [-0.05416814392834373, -0.13703937400996227]  current qini:  [-0.05136851896213787, -0.10027446339798152] best res:  [0, 0]  best_params:  None
+current epoch:  111
+current loss:  tensor(0.5487, device='cuda:0')
+current epoch:  112
+current loss:  tensor(0.5761, device='cuda:0')
+current epoch:  113
+current loss:  tensor(0.6001, device='cuda:0')
+current epoch:  114
+current loss:  tensor(0.5917, device='cuda:0')
+current epoch:  115
+current loss:  tensor(0.5243, device='cuda:0')
+current epoch:  116
+current loss:  tensor(0.5187, device='cuda:0')
+current epoch:  117
+current loss:  tensor(0.5619, device='cuda:0')
+current epoch:  118
+current loss:  tensor(0.5276, device='cuda:0')
+current epoch:  119
+current loss:  tensor(0.4985, device='cuda:0')
+current epoch:  120
+current loss:  tensor(0.5635, device='cuda:0')
+current auuc:  [-0.05376693501034809, -0.13601471785706337]  current qini:  [-0.05111237945246987, -0.09987772853860319] best res:  [0, 0]  best_params:  None
+current epoch:  121
+current loss:  tensor(0.5282, device='cuda:0')
+current epoch:  122
+current loss:  tensor(0.5534, device='cuda:0')
+current epoch:  123
+current loss:  tensor(0.5519, device='cuda:0')
+current epoch:  124
+current loss:  tensor(0.6182, device='cuda:0')
+current epoch:  125
+current loss:  tensor(0.5389, device='cuda:0')
+current epoch:  126
+current loss:  tensor(0.5282, device='cuda:0')
+current epoch:  127
+current loss:  tensor(0.5029, device='cuda:0')
+current epoch:  128
+current loss:  tensor(0.4932, device='cuda:0')
+current epoch:  129
+current loss:  tensor(0.5543, device='cuda:0')
+current epoch:  130
+current loss:  tensor(0.5616, device='cuda:0')
+current auuc:  [-0.053491934489346235, -0.1353059565426108]  current qini:  [-0.04925008403609524, -0.09624529903053974] best res:  [0, 0]  best_params:  None
+current epoch:  131
+current loss:  tensor(0.4679, device='cuda:0')
+current epoch:  132
+current loss:  tensor(0.5230, device='cuda:0')
+current epoch:  133
+current loss:  tensor(0.5253, device='cuda:0')
+current epoch:  134
+current loss:  tensor(0.5504, device='cuda:0')
+current epoch:  135
+current loss:  tensor(0.5321, device='cuda:0')
+current epoch:  136
+current loss:  tensor(0.5036, device='cuda:0')
+current epoch:  137
+current loss:  tensor(0.4757, device='cuda:0')
+current epoch:  138
+current loss:  tensor(0.5888, device='cuda:0')
+current epoch:  139
+current loss:  tensor(0.4476, device='cuda:0')
+current epoch:  140
+current loss:  tensor(0.5514, device='cuda:0')
+current auuc:  [-0.05301663333048408, -0.1340941859116026]  current qini:  [-0.04688998820777771, -0.09147780019083278] best res:  [0, 0]  best_params:  None
+current epoch:  141
+current loss:  tensor(0.4678, device='cuda:0')
+current epoch:  142
+current loss:  tensor(0.5044, device='cuda:0')
+current epoch:  143
+current loss:  tensor(0.5298, device='cuda:0')
+current epoch:  144
+current loss:  tensor(0.4432, device='cuda:0')
+current epoch:  145
+current loss:  tensor(0.4601, device='cuda:0')
+current epoch:  146
+current loss:  tensor(0.5196, device='cuda:0')
+current epoch:  147
+current loss:  tensor(0.4175, device='cuda:0')
+current epoch:  148
+current loss:  tensor(0.5411, device='cuda:0')
+current epoch:  149
+current loss:  tensor(0.4404, device='cuda:0')
+current epoch:  150
+current loss:  tensor(0.4915, device='cuda:0')
+current auuc:  [-0.05240572551697009, -0.13254787619733324]  current qini:  [-0.03887700612733829, -0.07557891536339004] best res:  [0, 0]  best_params:  None
+current epoch:  151
+current loss:  tensor(0.5042, device='cuda:0')
+current epoch:  152
+current loss:  tensor(0.4312, device='cuda:0')
+current epoch:  153
+current loss:  tensor(0.5086, device='cuda:0')
+current epoch:  154
+current loss:  tensor(0.4776, device='cuda:0')
+current epoch:  155
+current loss:  tensor(0.5074, device='cuda:0')
+current epoch:  156
+current loss:  tensor(0.5222, device='cuda:0')
+current epoch:  157
+current loss:  tensor(0.5769, device='cuda:0')
+current epoch:  158
+current loss:  tensor(0.4560, device='cuda:0')
+current epoch:  159
+current loss:  tensor(0.4588, device='cuda:0')
+current epoch:  160
+current loss:  tensor(0.4757, device='cuda:0')
+current auuc:  [-0.051839703215844, -0.13112006976696267]  current qini:  [-0.031268949941753534, -0.060419852710362244] best res:  [0, 0]  best_params:  None
+current epoch:  161
+current loss:  tensor(0.5380, device='cuda:0')
+current epoch:  162
+current loss:  tensor(0.5293, device='cuda:0')
+current epoch:  163
+current loss:  tensor(0.4282, device='cuda:0')
+current epoch:  164
+current loss:  tensor(0.4407, device='cuda:0')
+current epoch:  165
+current loss:  tensor(0.3990, device='cuda:0')
+current epoch:  166
+current loss:  tensor(0.3641, device='cuda:0')
+current epoch:  167
+current loss:  tensor(0.4084, device='cuda:0')
+current epoch:  168
+current loss:  tensor(0.4612, device='cuda:0')
+current epoch:  169
+current loss:  tensor(0.4611, device='cuda:0')
+current epoch:  170
+current loss:  tensor(0.4370, device='cuda:0')
+current auuc:  [-0.0513180219888751, -0.12980252834064304]  current qini:  [-0.024582332465723163, -0.047115685063984475] best res:  [0, 0]  best_params:  None
+current epoch:  171
+current loss:  tensor(0.5003, device='cuda:0')
+current epoch:  172
+current loss:  tensor(0.4950, device='cuda:0')
+current epoch:  173
+current loss:  tensor(0.4267, device='cuda:0')
+current epoch:  174
+current loss:  tensor(0.5335, device='cuda:0')
+current epoch:  175
+current loss:  tensor(0.4905, device='cuda:0')
+current epoch:  176
+current loss:  tensor(0.5394, device='cuda:0')
+current epoch:  177
+current loss:  tensor(0.4715, device='cuda:0')
+current epoch:  178
+current loss:  tensor(0.4192, device='cuda:0')
+current epoch:  179
+current loss:  tensor(0.4634, device='cuda:0')
+current epoch:  180
+current loss:  tensor(0.4648, device='cuda:0')
+current auuc:  [-0.0506522266844402, -0.12812142297244541]  current qini:  [-0.020440626066001204, -0.039014683904885654] best res:  [0, 0]  best_params:  None
+current epoch:  181
+current loss:  tensor(0.4414, device='cuda:0')
+current epoch:  182
+current loss:  tensor(0.4948, device='cuda:0')
+current epoch:  183
+current loss:  tensor(0.4899, device='cuda:0')
+current epoch:  184
+current loss:  tensor(0.4257, device='cuda:0')
+current epoch:  185
+current loss:  tensor(0.4682, device='cuda:0')
+current epoch:  186
+current loss:  tensor(0.4186, device='cuda:0')
+current epoch:  187
+current loss:  tensor(0.4456, device='cuda:0')
+current epoch:  188
+current loss:  tensor(0.4745, device='cuda:0')
+current epoch:  189
+current loss:  tensor(0.4556, device='cuda:0')
+current epoch:  190
+current loss:  tensor(0.4484, device='cuda:0')
+current auuc:  [-0.05010672912268669, -0.12674406585642603]  current qini:  [-0.01707700887017651, -0.03248631283989313] best res:  [0, 0]  best_params:  None
+current epoch:  191
+current loss:  tensor(0.4205, device='cuda:0')
+current epoch:  192
+current loss:  tensor(0.4632, device='cuda:0')
+current epoch:  193
+current loss:  tensor(0.4302, device='cuda:0')
+current epoch:  194
+current loss:  tensor(0.3924, device='cuda:0')
+current epoch:  195
+current loss:  tensor(0.3986, device='cuda:0')
+current epoch:  196
+current loss:  tensor(0.4196, device='cuda:0')
+current epoch:  197
+current loss:  tensor(0.4516, device='cuda:0')
+current epoch:  198
+current loss:  tensor(0.4625, device='cuda:0')
+current epoch:  199
+current loss:  tensor(0.4804, device='cuda:0')
+current epoch:  200
+current loss:  tensor(0.3869, device='cuda:0')
+current auuc:  [-0.04971106436080911, -0.12574556458396596]  current qini:  [-0.014487238322398866, -0.02751804844478265] best res:  [0, 0]  best_params:  None
+model :  MyNet
+current epoch:  1
+current loss:  tensor(0.6437, device='cuda:0')
+current auuc:  [-0.04081338729259587, -0.1033029372851082]  current qini:  [-0.021754623308029946, -0.04127989187561817] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(0.6331, device='cuda:0')
+current epoch:  3
+current loss:  tensor(0.6262, device='cuda:0')
+current epoch:  4
+current loss:  tensor(0.6234, device='cuda:0')
+current epoch:  5
+current loss:  tensor(0.6253, device='cuda:0')
+current epoch:  6
+current loss:  tensor(0.6181, device='cuda:0')
+current epoch:  7
+current loss:  tensor(0.6156, device='cuda:0')
+current epoch:  8
+current loss:  tensor(0.6178, device='cuda:0')
+current epoch:  9
+current loss:  tensor(0.6151, device='cuda:0')
+current epoch:  10
+current loss:  tensor(0.6116, device='cuda:0')
+current auuc:  [-0.044786243886458944, -0.11346900757762557]  current qini:  [-0.027619010815284062, -0.05300402266188343] best res:  [0, 0]  best_params:  None
+current epoch:  11
+current loss:  tensor(0.6054, device='cuda:0')
+current epoch:  12
+current loss:  tensor(0.6061, device='cuda:0')
+current epoch:  13
+current loss:  tensor(0.6003, device='cuda:0')
+current epoch:  14
+current loss:  tensor(0.5971, device='cuda:0')
+current epoch:  15
+current loss:  tensor(0.5954, device='cuda:0')
+current epoch:  16
+current loss:  tensor(0.5988, device='cuda:0')
+current epoch:  17
+current loss:  tensor(0.5902, device='cuda:0')
+current epoch:  18
+current loss:  tensor(0.5863, device='cuda:0')
+current epoch:  19
+current loss:  tensor(0.5879, device='cuda:0')
+current epoch:  20
+current loss:  tensor(0.5847, device='cuda:0')
+current auuc:  [-0.048470737140830646, -0.12274431586670807]  current qini:  [-0.03118719488397531, -0.06010153096273827] best res:  [0, 0]  best_params:  None
+current epoch:  21
+current loss:  tensor(0.5853, device='cuda:0')
+current epoch:  22
+current loss:  tensor(0.5773, device='cuda:0')
+current epoch:  23
+current loss:  tensor(0.5734, device='cuda:0')
+current epoch:  24
+current loss:  tensor(0.5749, device='cuda:0')
+current epoch:  25
+current loss:  tensor(0.5786, device='cuda:0')
+current epoch:  26
+current loss:  tensor(0.5667, device='cuda:0')
+current epoch:  27
+current loss:  tensor(0.5662, device='cuda:0')
+current epoch:  28
+current loss:  tensor(0.5692, device='cuda:0')
+current epoch:  29
+current loss:  tensor(0.5614, device='cuda:0')
+current epoch:  30
+current loss:  tensor(0.5582, device='cuda:0')
+current auuc:  [-0.04815667969190993, -0.12193191804374151]  current qini:  [-0.03136186993990793, -0.06042533293571971] best res:  [0, 0]  best_params:  None
+current epoch:  31
+current loss:  tensor(0.5681, device='cuda:0')
+current epoch:  32
+current loss:  tensor(0.5607, device='cuda:0')
+current epoch:  33
+current loss:  tensor(0.5518, device='cuda:0')
+current epoch:  34
+current loss:  tensor(0.5479, device='cuda:0')
+current epoch:  35
+current loss:  tensor(0.5561, device='cuda:0')
+current epoch:  36
+current loss:  tensor(0.5459, device='cuda:0')
+current epoch:  37
+current loss:  tensor(0.5387, device='cuda:0')
+current epoch:  38
+current loss:  tensor(0.5437, device='cuda:0')
+current epoch:  39
+current loss:  tensor(0.5376, device='cuda:0')
+current epoch:  40
+current loss:  tensor(0.5356, device='cuda:0')
+current auuc:  [-0.04871362888578961, -0.12331570637672691]  current qini:  [-0.030863301075443408, -0.05942140232965814] best res:  [0, 0]  best_params:  None
+current epoch:  41
+current loss:  tensor(0.5395, device='cuda:0')
+current epoch:  42
+current loss:  tensor(0.5396, device='cuda:0')
+current epoch:  43
+current loss:  tensor(0.5334, device='cuda:0')
+current epoch:  44
+current loss:  tensor(0.5229, device='cuda:0')
+current epoch:  45
+current loss:  tensor(0.5373, device='cuda:0')
+current epoch:  46
+current loss:  tensor(0.5206, device='cuda:0')
+current epoch:  47
+current loss:  tensor(0.5213, device='cuda:0')
+current epoch:  48
+current loss:  tensor(0.5220, device='cuda:0')
+current epoch:  49
+current loss:  tensor(0.5169, device='cuda:0')
+current epoch:  50
+current loss:  tensor(0.5158, device='cuda:0')
+current auuc:  [-0.04928033456130392, -0.12470931804014482]  current qini:  [-0.030213140981822536, -0.0581400501089368] best res:  [0, 0]  best_params:  None
+current epoch:  51
+current loss:  tensor(0.5177, device='cuda:0')
+current epoch:  52
+current loss:  tensor(0.5134, device='cuda:0')
+current epoch:  53
+current loss:  tensor(0.5015, device='cuda:0')
+current epoch:  54
+current loss:  tensor(0.4973, device='cuda:0')
+current epoch:  55
+current loss:  tensor(0.4964, device='cuda:0')
+current epoch:  56
+current loss:  tensor(0.5067, device='cuda:0')
+current epoch:  57
+current loss:  tensor(0.4900, device='cuda:0')
+current epoch:  58
+current loss:  tensor(0.4936, device='cuda:0')
+current epoch:  59
+current loss:  tensor(0.4912, device='cuda:0')
+current epoch:  60
+current loss:  tensor(0.4958, device='cuda:0')
+current auuc:  [-0.049801364980450714, -0.12598487066995265]  current qini:  [-0.029407785470172185, -0.056577205406681715] best res:  [0, 0]  best_params:  None
+current epoch:  61
+current loss:  tensor(0.4923, device='cuda:0')
+current epoch:  62
+current loss:  tensor(0.4929, device='cuda:0')
+current epoch:  63
+current loss:  tensor(0.4806, device='cuda:0')
+current epoch:  64
+current loss:  tensor(0.4684, device='cuda:0')
+current epoch:  65
+current loss:  tensor(0.4864, device='cuda:0')
+current epoch:  66
+current loss:  tensor(0.4849, device='cuda:0')
+current epoch:  67
+current loss:  tensor(0.4721, device='cuda:0')
+current epoch:  68
+current loss:  tensor(0.4805, device='cuda:0')
+current epoch:  69
+current loss:  tensor(0.4810, device='cuda:0')
+current epoch:  70
+current loss:  tensor(0.4674, device='cuda:0')
+current auuc:  [-0.04975850854572087, -0.12586744309268116]  current qini:  [-0.028726226944917017, -0.05527978482435878] best res:  [0, 0]  best_params:  None
+current epoch:  71
+current loss:  tensor(0.4763, device='cuda:0')
+current epoch:  72
+current loss:  tensor(0.4763, device='cuda:0')
+current epoch:  73
+current loss:  tensor(0.4647, device='cuda:0')
+current epoch:  74
+current loss:  tensor(0.4620, device='cuda:0')
+current epoch:  75
+current loss:  tensor(0.4630, device='cuda:0')
+current epoch:  76
+current loss:  tensor(0.4784, device='cuda:0')
+current epoch:  77
+current loss:  tensor(0.4563, device='cuda:0')
+current epoch:  78
+current loss:  tensor(0.4582, device='cuda:0')
+current epoch:  79
+current loss:  tensor(0.4532, device='cuda:0')
+current epoch:  80
+current loss:  tensor(0.4421, device='cuda:0')
+current auuc:  [-0.04945943458887501, -0.12510616849034506]  current qini:  [-0.027791201538105857, -0.05346908499488595] best res:  [0, 0]  best_params:  None
+current epoch:  81
+current loss:  tensor(0.4590, device='cuda:0')
+current epoch:  82
+current loss:  tensor(0.4496, device='cuda:0')
+current epoch:  83
+current loss:  tensor(0.4474, device='cuda:0')
+current epoch:  84
+current loss:  tensor(0.4565, device='cuda:0')
+current epoch:  85
+current loss:  tensor(0.4362, device='cuda:0')
+current epoch:  86
+current loss:  tensor(0.4428, device='cuda:0')
+current epoch:  87
+current loss:  tensor(0.4466, device='cuda:0')
+current epoch:  88
+current loss:  tensor(0.4364, device='cuda:0')
+current epoch:  89
+current loss:  tensor(0.4197, device='cuda:0')
+current epoch:  90
+current loss:  tensor(0.4393, device='cuda:0')
+current auuc:  [-0.04959543497795819, -0.1254512319251274]  current qini:  [-0.027524013908637342, -0.052953478050576444] best res:  [0, 0]  best_params:  None
+current epoch:  91
+current loss:  tensor(0.4186, device='cuda:0')
+current epoch:  92
+current loss:  tensor(0.4349, device='cuda:0')
+current epoch:  93
+current loss:  tensor(0.4180, device='cuda:0')
+current epoch:  94
+current loss:  tensor(0.4244, device='cuda:0')
+current epoch:  95
+current loss:  tensor(0.4285, device='cuda:0')
+current epoch:  96
+current loss:  tensor(0.4070, device='cuda:0')
+current epoch:  97
+current loss:  tensor(0.4045, device='cuda:0')
+current epoch:  98
+current loss:  tensor(0.4158, device='cuda:0')
+current epoch:  99
+current loss:  tensor(0.4068, device='cuda:0')
+current epoch:  100
+current loss:  tensor(0.4294, device='cuda:0')
+current auuc:  [-0.047073155021992455, -0.11910420294375247]  current qini:  [-0.026290983490930137, -0.05054657927652371] best res:  [0, 0]  best_params:  None
+current epoch:  101
+current loss:  tensor(0.4041, device='cuda:0')
+current epoch:  102
+current loss:  tensor(0.4196, device='cuda:0')
+current epoch:  103
+current loss:  tensor(0.4137, device='cuda:0')
+current epoch:  104
+current loss:  tensor(0.4076, device='cuda:0')
+current epoch:  105
+current loss:  tensor(0.3972, device='cuda:0')
+current epoch:  106
+current loss:  tensor(0.3974, device='cuda:0')
+current epoch:  107
+current loss:  tensor(0.4039, device='cuda:0')
+current epoch:  108
+current loss:  tensor(0.3847, device='cuda:0')
+current epoch:  109
+current loss:  tensor(0.3993, device='cuda:0')
+current epoch:  110
+current loss:  tensor(0.3858, device='cuda:0')
+current auuc:  [-0.04749479966913432, -0.1201296360860857]  current qini:  [-0.025330684327496782, -0.04866198634916834] best res:  [0, 0]  best_params:  None
+current epoch:  111
+current loss:  tensor(0.3761, device='cuda:0')
+current epoch:  112
+current loss:  tensor(0.3985, device='cuda:0')
+current epoch:  113
+current loss:  tensor(0.3941, device='cuda:0')
+current epoch:  114
+current loss:  tensor(0.3942, device='cuda:0')
+current epoch:  115
+current loss:  tensor(0.3851, device='cuda:0')
+current epoch:  116
+current loss:  tensor(0.3907, device='cuda:0')
+current epoch:  117
+current loss:  tensor(0.3898, device='cuda:0')
+current epoch:  118
+current loss:  tensor(0.3642, device='cuda:0')
+current epoch:  119
+current loss:  tensor(0.3725, device='cuda:0')
+current epoch:  120
+current loss:  tensor(0.3661, device='cuda:0')
+current auuc:  [-0.041613273998042044, -0.10509373058975773]  current qini:  [-0.024647558824384602, -0.04731867745448818] best res:  [0, 0]  best_params:  None
+current epoch:  121
+current loss:  tensor(0.3768, device='cuda:0')
+current epoch:  122
+current loss:  tensor(0.3745, device='cuda:0')
+current epoch:  123
+current loss:  tensor(0.3646, device='cuda:0')
+current epoch:  124
+current loss:  tensor(0.3692, device='cuda:0')
+current epoch:  125
+current loss:  tensor(0.3603, device='cuda:0')
+current epoch:  126
+current loss:  tensor(0.3654, device='cuda:0')
+current epoch:  127
+current loss:  tensor(0.3520, device='cuda:0')
+current epoch:  128
+current loss:  tensor(0.3815, device='cuda:0')
+current epoch:  129
+current loss:  tensor(0.3704, device='cuda:0')
+current epoch:  130
+current loss:  tensor(0.3535, device='cuda:0')
+current auuc:  [-0.04079371459218142, -0.10310030418674049]  current qini:  [-0.024416049043206527, -0.04685381900786805] best res:  [0, 0]  best_params:  None
+current epoch:  131
+current loss:  tensor(0.3499, device='cuda:0')
+current epoch:  132
+current loss:  tensor(0.3456, device='cuda:0')
+current epoch:  133
+current loss:  tensor(0.3593, device='cuda:0')
+current epoch:  134
+current loss:  tensor(0.3417, device='cuda:0')
+current epoch:  135
+current loss:  tensor(0.3457, device='cuda:0')
+current epoch:  136
+current loss:  tensor(0.3352, device='cuda:0')
+current epoch:  137
+current loss:  tensor(0.3809, device='cuda:0')
+current epoch:  138
+current loss:  tensor(0.3593, device='cuda:0')
+current epoch:  139
+current loss:  tensor(0.3420, device='cuda:0')
+current epoch:  140
+current loss:  tensor(0.3649, device='cuda:0')
+current auuc:  [-0.040776713306266234, -0.10314503563664554]  current qini:  [-0.024056436082701693, -0.0461413897308161] best res:  [0, 0]  best_params:  None
+current epoch:  141
+current loss:  tensor(0.3528, device='cuda:0')
+current epoch:  142
+current loss:  tensor(0.3481, device='cuda:0')
+current epoch:  143
+current loss:  tensor(0.3351, device='cuda:0')
+current epoch:  144
+current loss:  tensor(0.3223, device='cuda:0')
+current epoch:  145
+current loss:  tensor(0.3338, device='cuda:0')
+current epoch:  146
+current loss:  tensor(0.3300, device='cuda:0')
+current epoch:  147
+current loss:  tensor(0.3335, device='cuda:0')
+current epoch:  148
+current loss:  tensor(0.3399, device='cuda:0')
+current epoch:  149
+current loss:  tensor(0.3329, device='cuda:0')
+current epoch:  150
+current loss:  tensor(0.3287, device='cuda:0')
+current auuc:  [-0.040376124685052514, -0.10222240065748198]  current qini:  [-0.023902779012220016, -0.04583889934945758] best res:  [0, 0]  best_params:  None
+current epoch:  151
+current loss:  tensor(0.3178, device='cuda:0')
+current epoch:  152
+current loss:  tensor(0.3052, device='cuda:0')
+current epoch:  153
+current loss:  tensor(0.3447, device='cuda:0')
+current epoch:  154
+current loss:  tensor(0.3074, device='cuda:0')
+current epoch:  155
+current loss:  tensor(0.3090, device='cuda:0')
+current epoch:  156
+current loss:  tensor(0.3200, device='cuda:0')
+current epoch:  157
+current loss:  tensor(0.3118, device='cuda:0')
+current epoch:  158
+current loss:  tensor(0.3078, device='cuda:0')
+current epoch:  159
+current loss:  tensor(0.3090, device='cuda:0')
+current epoch:  160
+current loss:  tensor(0.3025, device='cuda:0')
+current auuc:  [-0.03999308879659505, -0.1013279092630202]  current qini:  [-0.02416863163472348, -0.04634762557258002] best res:  [0, 0]  best_params:  None
+current epoch:  161
+current loss:  tensor(0.3277, device='cuda:0')
+current epoch:  162
+current loss:  tensor(0.2848, device='cuda:0')
+current epoch:  163
+current loss:  tensor(0.3169, device='cuda:0')
+current epoch:  164
+current loss:  tensor(0.3105, device='cuda:0')
+current epoch:  165
+current loss:  tensor(0.3049, device='cuda:0')
+current epoch:  166
+current loss:  tensor(0.2694, device='cuda:0')
+current epoch:  167
+current loss:  tensor(0.3059, device='cuda:0')
+current epoch:  168
+current loss:  tensor(0.3409, device='cuda:0')
+current epoch:  169
+current loss:  tensor(0.3048, device='cuda:0')
+current epoch:  170
+current loss:  tensor(0.2982, device='cuda:0')
+current auuc:  [-0.036365558883649646, -0.09221215039586748]  current qini:  [-0.024111368587627566, -0.04623078145241943] best res:  [0, 0]  best_params:  None
+current epoch:  171
+current loss:  tensor(0.2986, device='cuda:0')
+current epoch:  172
+current loss:  tensor(0.3000, device='cuda:0')
+current epoch:  173
+current loss:  tensor(0.3011, device='cuda:0')
+current epoch:  174
+current loss:  tensor(0.3014, device='cuda:0')
+current epoch:  175
+current loss:  tensor(0.2762, device='cuda:0')
+current epoch:  176
+current loss:  tensor(0.2870, device='cuda:0')
+current epoch:  177
+current loss:  tensor(0.2749, device='cuda:0')
+current epoch:  178
+current loss:  tensor(0.2792, device='cuda:0')
+current epoch:  179
+current loss:  tensor(0.2742, device='cuda:0')
+current epoch:  180
+current loss:  tensor(0.2944, device='cuda:0')
+current auuc:  [-0.03096731211870629, -0.07861321079988455]  current qini:  [-0.024040314214112447, -0.0461012040974222] best res:  [0, 0]  best_params:  None
+current epoch:  181
+current loss:  tensor(0.3075, device='cuda:0')
+current epoch:  182
+current loss:  tensor(0.2566, device='cuda:0')
+current epoch:  183
+current loss:  tensor(0.2816, device='cuda:0')
+current epoch:  184
+current loss:  tensor(0.2768, device='cuda:0')
+current epoch:  185
+current loss:  tensor(0.2862, device='cuda:0')
+current epoch:  186
+current loss:  tensor(0.2563, device='cuda:0')
+current epoch:  187
+current loss:  tensor(0.2848, device='cuda:0')
+current epoch:  188
+current loss:  tensor(0.2830, device='cuda:0')
+current epoch:  189
+current loss:  tensor(0.2975, device='cuda:0')
+current epoch:  190
+current loss:  tensor(0.2583, device='cuda:0')
+current auuc:  [-0.024097527370136207, -0.0613021681027883]  current qini:  [-0.023857379081580907, -0.045751184673534555] best res:  [0, 0]  best_params:  None
+current epoch:  191
+current loss:  tensor(0.2508, device='cuda:0')
+current epoch:  192
+current loss:  tensor(0.2715, device='cuda:0')
+current epoch:  193
+current loss:  tensor(0.2469, device='cuda:0')
+current epoch:  194
+current loss:  tensor(0.2529, device='cuda:0')
+current epoch:  195
+current loss:  tensor(0.2580, device='cuda:0')
+current epoch:  196
+current loss:  tensor(0.2330, device='cuda:0')
+current epoch:  197
+current loss:  tensor(0.2541, device='cuda:0')
+current epoch:  198
+current loss:  tensor(0.2419, device='cuda:0')
+current epoch:  199
+current loss:  tensor(0.2261, device='cuda:0')
+current epoch:  200
+current loss:  tensor(0.2576, device='cuda:0')
+current auuc:  [-0.018789270748605466, -0.04792397097152636]  current qini:  [-0.023667030365056265, -0.0453810862637016] best res:  [0, 0]  best_params:  None
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(0.9388, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/MyNet_tr_ckpt_1_32_1e-06_1e-08_0.0255_0.0667_0.0032_0.0067.pth.tar
+-----------------------------------------------------------------
+current auuc:  [0.02551804027219718, 0.06669648835962041]  current qini:  [0.0031853908350043467, 0.0066673038561120695] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(0.9487, device='cuda:0')
+current epoch:  3
+current loss:  tensor(0.9497, device='cuda:0')
+current epoch:  4
+current loss:  tensor(0.9112, device='cuda:0')
+current epoch:  5
+current loss:  tensor(0.9184, device='cuda:0')
+current epoch:  6
+current loss:  tensor(0.9151, device='cuda:0')
+current epoch:  7
+current loss:  tensor(0.9260, device='cuda:0')
+current epoch:  8
+current loss:  tensor(0.9068, device='cuda:0')
+current epoch:  9
+current loss:  tensor(0.8817, device='cuda:0')
+current epoch:  10
+current loss:  tensor(0.9087, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/MyNet_tr_ckpt_10_32_1e-06_1e-08_0.0273_0.0698_0.0037_0.0077.pth.tar
+-----------------------------------------------------------------
+current auuc:  [0.027252079848929977, 0.06984028077289761]  current qini:  [0.0037347601088299903, 0.007702808683071103] best res:  [0, 0]  best_params:  None
+current epoch:  11
+current loss:  tensor(0.8858, device='cuda:0')
+current epoch:  12
+current loss:  tensor(0.8824, device='cuda:0')
+current epoch:  13
+current loss:  tensor(0.8714, device='cuda:0')
+current epoch:  14
+current loss:  tensor(0.8658, device='cuda:0')
+current epoch:  15
+current loss:  tensor(0.8950, device='cuda:0')
+current epoch:  16
+current loss:  tensor(0.8711, device='cuda:0')
+current epoch:  17
+current loss:  tensor(0.8666, device='cuda:0')
+current epoch:  18
+current loss:  tensor(0.8390, device='cuda:0')
+current epoch:  19
+current loss:  tensor(0.8542, device='cuda:0')
+current epoch:  20
+current loss:  tensor(0.8512, device='cuda:0')
+current auuc:  [-0.002486624971639384, -0.0064874687665937465]  current qini:  [0.004135193189610985, 0.00834871126205606] best res:  [0, 0]  best_params:  None
+current epoch:  21
+current loss:  tensor(0.8692, device='cuda:0')
+current epoch:  22
+current loss:  tensor(0.8511, device='cuda:0')
+current epoch:  23
+current loss:  tensor(0.8511, device='cuda:0')
+current epoch:  24
+current loss:  tensor(0.8527, device='cuda:0')
+current epoch:  25
+current loss:  tensor(0.8253, device='cuda:0')
+current epoch:  26
+current loss:  tensor(0.8424, device='cuda:0')
+current epoch:  27
+current loss:  tensor(0.8205, device='cuda:0')
+current epoch:  28
+current loss:  tensor(0.8447, device='cuda:0')
+current epoch:  29
+current loss:  tensor(0.8372, device='cuda:0')
+current epoch:  30
+current loss:  tensor(0.8470, device='cuda:0')
+current auuc:  [-0.018539705992443072, -0.047232488895703854]  current qini:  [0.001985160513292358, 0.0042331493152092635] best res:  [0, 0]  best_params:  None
+current epoch:  31
+current loss:  tensor(0.7811, device='cuda:0')
+current epoch:  32
+current loss:  tensor(0.8121, device='cuda:0')
+current epoch:  33
+current loss:  tensor(0.8276, device='cuda:0')
+current epoch:  34
+current loss:  tensor(0.8324, device='cuda:0')
+current epoch:  35
+current loss:  tensor(0.8234, device='cuda:0')
+current epoch:  36
+current loss:  tensor(0.7777, device='cuda:0')
+current epoch:  37
+current loss:  tensor(0.8191, device='cuda:0')
+current epoch:  38
+current loss:  tensor(0.8096, device='cuda:0')
+current epoch:  39
+current loss:  tensor(0.8071, device='cuda:0')
+current epoch:  40
+current loss:  tensor(0.7641, device='cuda:0')
+current auuc:  [-0.027357924793785706, -0.06950842621487427]  current qini:  [0.000633605979388589, 0.0016508014842120007] best res:  [0, 0]  best_params:  None
+current epoch:  41
+current loss:  tensor(0.7985, device='cuda:0')
+current epoch:  42
+current loss:  tensor(0.7587, device='cuda:0')
+current epoch:  43
+current loss:  tensor(0.8090, device='cuda:0')
+current epoch:  44
+current loss:  tensor(0.7826, device='cuda:0')
+current epoch:  45
+current loss:  tensor(0.8106, device='cuda:0')
+current epoch:  46
+current loss:  tensor(0.7639, device='cuda:0')
+current epoch:  47
+current loss:  tensor(0.7629, device='cuda:0')
+current epoch:  48
+current loss:  tensor(0.7814, device='cuda:0')
+current epoch:  49
+current loss:  tensor(0.7571, device='cuda:0')
+current epoch:  50
+current loss:  tensor(0.7701, device='cuda:0')
+current auuc:  [-0.031705674669124245, -0.08045963124999443]  current qini:  [0.00024198287078655705, 0.0008864421231513176] best res:  [0, 0]  best_params:  None
+current epoch:  51
+current loss:  tensor(0.7555, device='cuda:0')
+current epoch:  52
+current loss:  tensor(0.7099, device='cuda:0')
+current epoch:  53
+current loss:  tensor(0.7475, device='cuda:0')
+current epoch:  54
+current loss:  tensor(0.7983, device='cuda:0')
+current epoch:  55
+current loss:  tensor(0.7566, device='cuda:0')
+current epoch:  56
+current loss:  tensor(0.7424, device='cuda:0')
+current epoch:  57
+current loss:  tensor(0.7240, device='cuda:0')
+current epoch:  58
+current loss:  tensor(0.7165, device='cuda:0')
+current epoch:  59
+current loss:  tensor(0.7457, device='cuda:0')
+current epoch:  60
+current loss:  tensor(0.7077, device='cuda:0')
+current auuc:  [-0.03743397515252923, -0.09488084366666699]  current qini:  [0.00030732896153845996, 0.0009970133257909298] best res:  [0, 0]  best_params:  None
+current epoch:  61
+current loss:  tensor(0.6924, device='cuda:0')
+current epoch:  62
+current loss:  tensor(0.6769, device='cuda:0')
+current epoch:  63
+current loss:  tensor(0.7242, device='cuda:0')
+current epoch:  64
+current loss:  tensor(0.7137, device='cuda:0')
+current epoch:  65
+current loss:  tensor(0.7027, device='cuda:0')
+current epoch:  66
+current loss:  tensor(0.7127, device='cuda:0')
+current epoch:  67
+current loss:  tensor(0.6811, device='cuda:0')
+current epoch:  68
+current loss:  tensor(0.7068, device='cuda:0')
+current epoch:  69
+current loss:  tensor(0.7018, device='cuda:0')
+current epoch:  70
+current loss:  tensor(0.7197, device='cuda:0')
+current auuc:  [-0.0424190212225559, -0.10743046947970383]  current qini:  [0.00022955668328303324, 0.0008305985373607561] best res:  [0, 0]  best_params:  None
+current epoch:  71
+current loss:  tensor(0.7116, device='cuda:0')
+current epoch:  72
+current loss:  tensor(0.6837, device='cuda:0')
+current epoch:  73
+current loss:  tensor(0.6969, device='cuda:0')
+current epoch:  74
+current loss:  tensor(0.6618, device='cuda:0')
+current epoch:  75
+current loss:  tensor(0.6888, device='cuda:0')
+current epoch:  76
+current loss:  tensor(0.6919, device='cuda:0')
+current epoch:  77
+current loss:  tensor(0.6730, device='cuda:0')
+current epoch:  78
+current loss:  tensor(0.7084, device='cuda:0')
+current epoch:  79
+current loss:  tensor(0.6724, device='cuda:0')
+current epoch:  80
+current loss:  tensor(0.6525, device='cuda:0')
+current auuc:  [-0.04335875338624781, -0.10980462927956294]  current qini:  [-0.0002514333531857038, -0.00011769382170405018] best res:  [0, 0]  best_params:  None
+current epoch:  81
+current loss:  tensor(0.6532, device='cuda:0')
+current epoch:  82
+current loss:  tensor(0.7312, device='cuda:0')
+current epoch:  83
+current loss:  tensor(0.7056, device='cuda:0')
+current epoch:  84
+current loss:  tensor(0.7019, device='cuda:0')
+current epoch:  85
+current loss:  tensor(0.6576, device='cuda:0')
+current epoch:  86
+current loss:  tensor(0.6554, device='cuda:0')
+current epoch:  87
+current loss:  tensor(0.6483, device='cuda:0')
+current epoch:  88
+current loss:  tensor(0.6181, device='cuda:0')
+current epoch:  89
+current loss:  tensor(0.6082, device='cuda:0')
+current epoch:  90
+current loss:  tensor(0.6330, device='cuda:0')
+current auuc:  [-0.0434850291134722, -0.11012303188283966]  current qini:  [-0.001389291510403846, -0.002327036985016792] best res:  [0, 0]  best_params:  None
+current epoch:  91
+current loss:  tensor(0.6368, device='cuda:0')
+current epoch:  92
+current loss:  tensor(0.6597, device='cuda:0')
+current epoch:  93
+current loss:  tensor(0.5870, device='cuda:0')
+current epoch:  94
+current loss:  tensor(0.5894, device='cuda:0')
+current epoch:  95
+current loss:  tensor(0.6230, device='cuda:0')
+current epoch:  96
+current loss:  tensor(0.6508, device='cuda:0')
+current epoch:  97
+current loss:  tensor(0.6208, device='cuda:0')
+current epoch:  98
+current loss:  tensor(0.6075, device='cuda:0')
+current epoch:  99
+current loss:  tensor(0.6206, device='cuda:0')
+current epoch:  100
+current loss:  tensor(0.6786, device='cuda:0')
+current auuc:  [-0.04340800876715995, -0.1099292299751662]  current qini:  [-0.0017164045592006636, -0.0029798249426325955] best res:  [0, 0]  best_params:  None
+current epoch:  101
+current loss:  tensor(0.5996, device='cuda:0')
+current epoch:  102
+current loss:  tensor(0.6282, device='cuda:0')
+current epoch:  103
+current loss:  tensor(0.6297, device='cuda:0')
+current epoch:  104
+current loss:  tensor(0.6277, device='cuda:0')
+current epoch:  105
+current loss:  tensor(0.5838, device='cuda:0')
+current epoch:  106
+current loss:  tensor(0.6548, device='cuda:0')
+current epoch:  107
+current loss:  tensor(0.6523, device='cuda:0')
+current epoch:  108
+current loss:  tensor(0.5585, device='cuda:0')
+current epoch:  109
+current loss:  tensor(0.5416, device='cuda:0')
+current epoch:  110
+current loss:  tensor(0.5901, device='cuda:0')
+current auuc:  [-0.043428338741425154, -0.10998301752635654]  current qini:  [-0.00138730150146638, -0.0023835404224736784] best res:  [0, 0]  best_params:  None
+current epoch:  111
+current loss:  tensor(0.6462, device='cuda:0')
+current epoch:  112
+current loss:  tensor(0.5772, device='cuda:0')
+current epoch:  113
+current loss:  tensor(0.6315, device='cuda:0')
+current epoch:  114
+current loss:  tensor(0.5585, device='cuda:0')
+current epoch:  115
+current loss:  tensor(0.5907, device='cuda:0')
+current epoch:  116
+current loss:  tensor(0.5526, device='cuda:0')
+current epoch:  117
+current loss:  tensor(0.5530, device='cuda:0')
+current epoch:  118
+current loss:  tensor(0.5231, device='cuda:0')
+current epoch:  119
+current loss:  tensor(0.5531, device='cuda:0')
+current epoch:  120
+current loss:  tensor(0.5607, device='cuda:0')
+current auuc:  [-0.04368810140089592, -0.1106378439475225]  current qini:  [-0.001502424627919544, -0.002638873478179714] best res:  [0, 0]  best_params:  None
+current epoch:  121
+current loss:  tensor(0.5931, device='cuda:0')
+current epoch:  122
+current loss:  tensor(0.5856, device='cuda:0')
+current epoch:  123
+current loss:  tensor(0.6294, device='cuda:0')
+current epoch:  124
+current loss:  tensor(0.5546, device='cuda:0')
+current epoch:  125
+current loss:  tensor(0.5439, device='cuda:0')
+current epoch:  126
+current loss:  tensor(0.6206, device='cuda:0')
+current epoch:  127
+current loss:  tensor(0.6256, device='cuda:0')
+current epoch:  128
+current loss:  tensor(0.5400, device='cuda:0')
+current epoch:  129
+current loss:  tensor(0.5515, device='cuda:0')
+current epoch:  130
+current loss:  tensor(0.5370, device='cuda:0')
+current auuc:  [-0.04461149451609473, -0.11296942569152515]  current qini:  [-0.0018054649547974044, -0.0032580411370103273] best res:  [0, 0]  best_params:  None
+current epoch:  131
+current loss:  tensor(0.5856, device='cuda:0')
+current epoch:  132
+current loss:  tensor(0.5307, device='cuda:0')
+current epoch:  133
+current loss:  tensor(0.6029, device='cuda:0')
+current epoch:  134
+current loss:  tensor(0.5630, device='cuda:0')
+current epoch:  135
+current loss:  tensor(0.5370, device='cuda:0')
+current epoch:  136
+current loss:  tensor(0.5564, device='cuda:0')
+current epoch:  137
+current loss:  tensor(0.5369, device='cuda:0')
+current epoch:  138
+current loss:  tensor(0.5706, device='cuda:0')
+current epoch:  139
+current loss:  tensor(0.4971, device='cuda:0')
+current epoch:  140
+current loss:  tensor(0.5529, device='cuda:0')
+current auuc:  [-0.04563120373304357, -0.1155406500967642]  current qini:  [-0.002759190033742308, -0.00512186239439268] best res:  [0, 0]  best_params:  None
+current epoch:  141
+current loss:  tensor(0.5607, device='cuda:0')
+current epoch:  142
+current loss:  tensor(0.4824, device='cuda:0')
+current epoch:  143
+current loss:  tensor(0.5330, device='cuda:0')
+current epoch:  144
+current loss:  tensor(0.4869, device='cuda:0')
+current epoch:  145
+current loss:  tensor(0.4980, device='cuda:0')
+current epoch:  146
+current loss:  tensor(0.4530, device='cuda:0')
+current epoch:  147
+current loss:  tensor(0.5689, device='cuda:0')
+current epoch:  148
+current loss:  tensor(0.4962, device='cuda:0')
+current epoch:  149
+current loss:  tensor(0.5149, device='cuda:0')
+current epoch:  150
+current loss:  tensor(0.5528, device='cuda:0')
+current auuc:  [-0.04684546508491279, -0.11860869133929042]  current qini:  [-0.0022503907965796353, -0.004158286662647254] best res:  [0, 0]  best_params:  None
+current epoch:  151
+current loss:  tensor(0.5579, device='cuda:0')
+current epoch:  152
+current loss:  tensor(0.5393, device='cuda:0')
+current epoch:  153
+current loss:  tensor(0.5184, device='cuda:0')
+current epoch:  154
+current loss:  tensor(0.5431, device='cuda:0')
+current epoch:  155
+current loss:  tensor(0.5375, device='cuda:0')
+current epoch:  156
+current loss:  tensor(0.5285, device='cuda:0')
+current epoch:  157
+current loss:  tensor(0.5001, device='cuda:0')
+current epoch:  158
+current loss:  tensor(0.5003, device='cuda:0')
+current epoch:  159
+current loss:  tensor(0.4664, device='cuda:0')
+current epoch:  160
+current loss:  tensor(0.5301, device='cuda:0')
+current auuc:  [-0.04796272595820775, -0.12141882280307628]  current qini:  [-0.0024558237526496164, -0.004564065184991529] best res:  [0, 0]  best_params:  None
+current epoch:  161
+current loss:  tensor(0.5779, device='cuda:0')
+current epoch:  162
+current loss:  tensor(0.5069, device='cuda:0')
+current epoch:  163
+current loss:  tensor(0.4965, device='cuda:0')
+current epoch:  164
+current loss:  tensor(0.4406, device='cuda:0')
+current epoch:  165
+current loss:  tensor(0.4956, device='cuda:0')
+current epoch:  166
+current loss:  tensor(0.5114, device='cuda:0')
+current epoch:  167
+current loss:  tensor(0.4530, device='cuda:0')
+current epoch:  168
+current loss:  tensor(0.4750, device='cuda:0')
+current epoch:  169
+current loss:  tensor(0.5264, device='cuda:0')
+current epoch:  170
+current loss:  tensor(0.4971, device='cuda:0')
+current auuc:  [-0.048842855851977396, -0.12363235359019367]  current qini:  [-0.0022260863029324443, -0.004135806583931673] best res:  [0, 0]  best_params:  None
+current epoch:  171
+current loss:  tensor(0.4524, device='cuda:0')
+current epoch:  172
+current loss:  tensor(0.5495, device='cuda:0')
+current epoch:  173
+current loss:  tensor(0.5264, device='cuda:0')
+current epoch:  174
+current loss:  tensor(0.4818, device='cuda:0')
+current epoch:  175
+current loss:  tensor(0.4758, device='cuda:0')
+current epoch:  176
+current loss:  tensor(0.5478, device='cuda:0')
+current epoch:  177
+current loss:  tensor(0.4467, device='cuda:0')
+current epoch:  178
+current loss:  tensor(0.3923, device='cuda:0')
+current epoch:  179
+current loss:  tensor(0.4752, device='cuda:0')
+current epoch:  180
+current loss:  tensor(0.5050, device='cuda:0')
+current auuc:  [-0.049786736739741065, -0.12601728761774308]  current qini:  [-0.0017600048050298081, -0.003241283351475876] best res:  [0, 0]  best_params:  None
+current epoch:  181
+current loss:  tensor(0.4733, device='cuda:0')
+current epoch:  182
+current loss:  tensor(0.5031, device='cuda:0')
+current epoch:  183
+current loss:  tensor(0.4359, device='cuda:0')
+current epoch:  184
+current loss:  tensor(0.4235, device='cuda:0')
+current epoch:  185
+current loss:  tensor(0.5515, device='cuda:0')
+current epoch:  186
+current loss:  tensor(0.4898, device='cuda:0')
+current epoch:  187
+current loss:  tensor(0.4480, device='cuda:0')
+current epoch:  188
+current loss:  tensor(0.4919, device='cuda:0')
+current epoch:  189
+current loss:  tensor(0.5180, device='cuda:0')
+current epoch:  190
+current loss:  tensor(0.4583, device='cuda:0')
+current auuc:  [-0.05036544734864538, -0.1274762499516147]  current qini:  [-0.001929937867241279, -0.0035691427574053355] best res:  [0, 0]  best_params:  None
+current epoch:  191
+current loss:  tensor(0.4323, device='cuda:0')
+current epoch:  192
+current loss:  tensor(0.4524, device='cuda:0')
+current epoch:  193
+current loss:  tensor(0.4071, device='cuda:0')
+current epoch:  194
+current loss:  tensor(0.4630, device='cuda:0')
+current epoch:  195
+current loss:  tensor(0.3995, device='cuda:0')
+current epoch:  196
+current loss:  tensor(0.4222, device='cuda:0')
+current epoch:  197
+current loss:  tensor(0.4268, device='cuda:0')
+current epoch:  198
+current loss:  tensor(0.3849, device='cuda:0')
+current epoch:  199
+current loss:  tensor(0.4209, device='cuda:0')
+current epoch:  200
+current loss:  tensor(0.3959, device='cuda:0')
+current auuc:  [-0.050887999623761275, -0.12879595643373615]  current qini:  [-0.0017471625702733548, -0.0032108432643564] best res:  [0, 0]  best_params:  None
+model :  MyNet
+current epoch:  1
+current loss:  tensor(0.6315, device='cuda:0')
+current auuc:  [0.02984919567909256, 0.07823437736111603]  current qini:  [-0.007195476950566839, -0.013282884913982494] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(0.6288, device='cuda:0')
+current epoch:  3
+current loss:  tensor(0.6261, device='cuda:0')
+current epoch:  4
+current loss:  tensor(0.6231, device='cuda:0')
+current epoch:  5
+current loss:  tensor(0.6208, device='cuda:0')
+current epoch:  6
+current loss:  tensor(0.6221, device='cuda:0')
+current epoch:  7
+current loss:  tensor(0.6158, device='cuda:0')
+current epoch:  8
+current loss:  tensor(0.6127, device='cuda:0')
+current epoch:  9
+current loss:  tensor(0.6188, device='cuda:0')
+current epoch:  10
+current loss:  tensor(0.6122, device='cuda:0')
+current auuc:  [0.029794818898939198, 0.07819901762802321]  current qini:  [-0.007118948369409387, -0.013136435639114163] best res:  [0, 0]  best_params:  None
+current epoch:  11
+current loss:  tensor(0.6037, device='cuda:0')
+current epoch:  12
+current loss:  tensor(0.6129, device='cuda:0')
+current epoch:  13
+current loss:  tensor(0.5981, device='cuda:0')
+current epoch:  14
+current loss:  tensor(0.6006, device='cuda:0')
+current epoch:  15
+current loss:  tensor(0.5930, device='cuda:0')
+current epoch:  16
+current loss:  tensor(0.5999, device='cuda:0')
+current epoch:  17
+current loss:  tensor(0.5946, device='cuda:0')
+current epoch:  18
+current loss:  tensor(0.5912, device='cuda:0')
+current epoch:  19
+current loss:  tensor(0.5844, device='cuda:0')
+current epoch:  20
+current loss:  tensor(0.5863, device='cuda:0')
+current auuc:  [0.029972130152164597, 0.07864379127941983]  current qini:  [-0.007256356779490257, -0.013398996642485794] best res:  [0, 0]  best_params:  None
+current epoch:  21
+current loss:  tensor(0.5789, device='cuda:0')
+current epoch:  22
+current loss:  tensor(0.5812, device='cuda:0')
+current epoch:  23
+current loss:  tensor(0.5782, device='cuda:0')
+current epoch:  24
+current loss:  tensor(0.5764, device='cuda:0')
+current epoch:  25
+current loss:  tensor(0.5716, device='cuda:0')
+current epoch:  26
+current loss:  tensor(0.5691, device='cuda:0')
+current epoch:  27
+current loss:  tensor(0.5685, device='cuda:0')
+current epoch:  28
+current loss:  tensor(0.5616, device='cuda:0')
+current epoch:  29
+current loss:  tensor(0.5638, device='cuda:0')
+current epoch:  30
+current loss:  tensor(0.5631, device='cuda:0')
+current auuc:  [0.03053156601822429, 0.08001947286294203]  current qini:  [-0.007114341096591604, -0.013120214977521243] best res:  [0, 0]  best_params:  None
+current epoch:  31
+current loss:  tensor(0.5547, device='cuda:0')
+current epoch:  32
+current loss:  tensor(0.5527, device='cuda:0')
+current epoch:  33
+current loss:  tensor(0.5550, device='cuda:0')
+current epoch:  34
+current loss:  tensor(0.5450, device='cuda:0')
+current epoch:  35
+current loss:  tensor(0.5586, device='cuda:0')
+current epoch:  36
+current loss:  tensor(0.5417, device='cuda:0')
+current epoch:  37
+current loss:  tensor(0.5510, device='cuda:0')
+current epoch:  38
+current loss:  tensor(0.5373, device='cuda:0')
+current epoch:  39
+current loss:  tensor(0.5519, device='cuda:0')
+current epoch:  40
+current loss:  tensor(0.5375, device='cuda:0')
+current auuc:  [0.030884213596759084, 0.08088260724287866]  current qini:  [-0.00736450264766705, -0.01360720473448454] best res:  [0, 0]  best_params:  None
+current epoch:  41
+current loss:  tensor(0.5369, device='cuda:0')
+current epoch:  42
+current loss:  tensor(0.5360, device='cuda:0')
+current epoch:  43
+current loss:  tensor(0.5173, device='cuda:0')
+current epoch:  44
+current loss:  tensor(0.5330, device='cuda:0')
+current epoch:  45
+current loss:  tensor(0.5186, device='cuda:0')
+current epoch:  46
+current loss:  tensor(0.5274, device='cuda:0')
+current epoch:  47
+current loss:  tensor(0.5141, device='cuda:0')
+current epoch:  48
+current loss:  tensor(0.5205, device='cuda:0')
+current epoch:  49
+current loss:  tensor(0.5238, device='cuda:0')
+current epoch:  50
+current loss:  tensor(0.5095, device='cuda:0')
+current auuc:  [0.031019615053219308, 0.08120890262910022]  current qini:  [-0.007204736468049866, -0.01330724282583096] best res:  [0, 0]  best_params:  None
+current epoch:  51
+current loss:  tensor(0.5248, device='cuda:0')
+current epoch:  52
+current loss:  tensor(0.5154, device='cuda:0')
+current epoch:  53
+current loss:  tensor(0.4975, device='cuda:0')
+current epoch:  54
+current loss:  tensor(0.4989, device='cuda:0')
+current epoch:  55
+current loss:  tensor(0.5247, device='cuda:0')
+current epoch:  56
+current loss:  tensor(0.5021, device='cuda:0')
+current epoch:  57
+current loss:  tensor(0.5151, device='cuda:0')
+current epoch:  58
+current loss:  tensor(0.4849, device='cuda:0')
+current epoch:  59
+current loss:  tensor(0.5132, device='cuda:0')
+current epoch:  60
+current loss:  tensor(0.4982, device='cuda:0')
+current auuc:  [0.031097648915894047, 0.08138407764676471]  current qini:  [-0.007052008859003087, -0.013014114207751224] best res:  [0, 0]  best_params:  None
+current epoch:  61
+current loss:  tensor(0.4871, device='cuda:0')
+current epoch:  62
+current loss:  tensor(0.4921, device='cuda:0')
+current epoch:  63
+current loss:  tensor(0.4806, device='cuda:0')
+current epoch:  64
+current loss:  tensor(0.4829, device='cuda:0')
+current epoch:  65
+current loss:  tensor(0.4757, device='cuda:0')
+current epoch:  66
+current loss:  tensor(0.4819, device='cuda:0')
+current epoch:  67
+current loss:  tensor(0.4804, device='cuda:0')
+current epoch:  68
+current loss:  tensor(0.4698, device='cuda:0')
+current epoch:  69
+current loss:  tensor(0.4685, device='cuda:0')
+current epoch:  70
+current loss:  tensor(0.4618, device='cuda:0')
+current auuc:  [0.031171489904030365, 0.08155271511396384]  current qini:  [-0.006949834339391865, -0.012841222843064944] best res:  [0, 0]  best_params:  None
+current epoch:  71
+current loss:  tensor(0.4659, device='cuda:0')
+current epoch:  72
+current loss:  tensor(0.4784, device='cuda:0')
+current epoch:  73
+current loss:  tensor(0.4654, device='cuda:0')
+current epoch:  74
+current loss:  tensor(0.4817, device='cuda:0')
+current epoch:  75
+current loss:  tensor(0.4738, device='cuda:0')
+current epoch:  76
+current loss:  tensor(0.4491, device='cuda:0')
+current epoch:  77
+current loss:  tensor(0.4412, device='cuda:0')
+current epoch:  78
+current loss:  tensor(0.4711, device='cuda:0')
+current epoch:  79
+current loss:  tensor(0.4627, device='cuda:0')
+current epoch:  80
+current loss:  tensor(0.4777, device='cuda:0')
+current auuc:  [0.031210742250822755, 0.08164660962825308]  current qini:  [-0.006588480754405741, -0.012151856359024103] best res:  [0, 0]  best_params:  None
+current epoch:  81
+current loss:  tensor(0.4517, device='cuda:0')
+current epoch:  82
+current loss:  tensor(0.4559, device='cuda:0')
+current epoch:  83
+current loss:  tensor(0.4442, device='cuda:0')
+current epoch:  84
+current loss:  tensor(0.4489, device='cuda:0')
+current epoch:  85
+current loss:  tensor(0.4365, device='cuda:0')
+current epoch:  86
+current loss:  tensor(0.4476, device='cuda:0')
+current epoch:  87
+current loss:  tensor(0.4249, device='cuda:0')
+current epoch:  88
+current loss:  tensor(0.4317, device='cuda:0')
+current epoch:  89
+current loss:  tensor(0.4512, device='cuda:0')
+current epoch:  90
+current loss:  tensor(0.4283, device='cuda:0')
+current auuc:  [0.03122643716314213, 0.0816733307585086]  current qini:  [-0.006650120206626609, -0.012282826867289633] best res:  [0, 0]  best_params:  None
+current epoch:  91
+current loss:  tensor(0.4400, device='cuda:0')
+current epoch:  92
+current loss:  tensor(0.4189, device='cuda:0')
+current epoch:  93
+current loss:  tensor(0.4248, device='cuda:0')
+current epoch:  94
+current loss:  tensor(0.4328, device='cuda:0')
+current epoch:  95
+current loss:  tensor(0.4222, device='cuda:0')
+current epoch:  96
+current loss:  tensor(0.4106, device='cuda:0')
+current epoch:  97
+current loss:  tensor(0.4183, device='cuda:0')
+current epoch:  98
+current loss:  tensor(0.4173, device='cuda:0')
+current epoch:  99
+current loss:  tensor(0.4113, device='cuda:0')
+current epoch:  100
+current loss:  tensor(0.4116, device='cuda:0')
+current auuc:  [0.03128646070367132, 0.08181957504345887]  current qini:  [-0.006162581419920416, -0.011349830098194617] best res:  [0, 0]  best_params:  None
+current epoch:  101
+current loss:  tensor(0.4172, device='cuda:0')
+current epoch:  102
+current loss:  tensor(0.4026, device='cuda:0')
+current epoch:  103
+current loss:  tensor(0.4118, device='cuda:0')
+current epoch:  104
+current loss:  tensor(0.4066, device='cuda:0')
+current epoch:  105
+current loss:  tensor(0.4212, device='cuda:0')
+current epoch:  106
+current loss:  tensor(0.3946, device='cuda:0')
+current epoch:  107
+current loss:  tensor(0.3850, device='cuda:0')
+current epoch:  108
+current loss:  tensor(0.4094, device='cuda:0')
+current epoch:  109
+current loss:  tensor(0.4086, device='cuda:0')
+current epoch:  110
+current loss:  tensor(0.4364, device='cuda:0')
+current auuc:  [0.03128760892128921, 0.08182617697350866]  current qini:  [-0.0060660709353325334, -0.011172279296793338] best res:  [0, 0]  best_params:  None
+current epoch:  111
+current loss:  tensor(0.3831, device='cuda:0')
+current epoch:  112
+current loss:  tensor(0.3903, device='cuda:0')
+current epoch:  113
+current loss:  tensor(0.4009, device='cuda:0')
+current epoch:  114
+current loss:  tensor(0.4015, device='cuda:0')
+current epoch:  115
+current loss:  tensor(0.3944, device='cuda:0')
+current epoch:  116
+current loss:  tensor(0.3843, device='cuda:0')
+current epoch:  117
+current loss:  tensor(0.3742, device='cuda:0')
+current epoch:  118
+current loss:  tensor(0.3774, device='cuda:0')
+current epoch:  119
+current loss:  tensor(0.3712, device='cuda:0')
+current epoch:  120
+current loss:  tensor(0.3761, device='cuda:0')
+current auuc:  [0.031194206827387737, 0.08158122011686403]  current qini:  [-0.005663613996209959, -0.010410151463735565] best res:  [0, 0]  best_params:  None
+current epoch:  121
+current loss:  tensor(0.3723, device='cuda:0')
+current epoch:  122
+current loss:  tensor(0.3892, device='cuda:0')
+current epoch:  123
+current loss:  tensor(0.3780, device='cuda:0')
+current epoch:  124
+current loss:  tensor(0.3508, device='cuda:0')
+current epoch:  125
+current loss:  tensor(0.3694, device='cuda:0')
+current epoch:  126
+current loss:  tensor(0.3508, device='cuda:0')
+current epoch:  127
+current loss:  tensor(0.3712, device='cuda:0')
+current epoch:  128
+current loss:  tensor(0.3538, device='cuda:0')
+current epoch:  129
+current loss:  tensor(0.3529, device='cuda:0')
+current epoch:  130
+current loss:  tensor(0.3718, device='cuda:0')
+current auuc:  [0.031215481743253965, 0.08164006452303213]  current qini:  [-0.0054869349908069544, -0.010085904551842977] best res:  [0, 0]  best_params:  None
+current epoch:  131
+current loss:  tensor(0.3574, device='cuda:0')
+current epoch:  132
+current loss:  tensor(0.3630, device='cuda:0')
+current epoch:  133
+current loss:  tensor(0.3565, device='cuda:0')
+current epoch:  134
+current loss:  tensor(0.3740, device='cuda:0')
+current epoch:  135
+current loss:  tensor(0.3606, device='cuda:0')
+current epoch:  136
+current loss:  tensor(0.3586, device='cuda:0')
+current epoch:  137
+current loss:  tensor(0.3358, device='cuda:0')
+current epoch:  138
+current loss:  tensor(0.3363, device='cuda:0')
+current epoch:  139
+current loss:  tensor(0.3338, device='cuda:0')
+current epoch:  140
+current loss:  tensor(0.3385, device='cuda:0')
+current auuc:  [0.03130157958551609, 0.08185403882491975]  current qini:  [-0.005449835670704401, -0.010031998650903892] best res:  [0, 0]  best_params:  None
+current epoch:  141
+current loss:  tensor(0.3421, device='cuda:0')
+current epoch:  142
+current loss:  tensor(0.3265, device='cuda:0')
+current epoch:  143
+current loss:  tensor(0.3295, device='cuda:0')
+current epoch:  144
+current loss:  tensor(0.3324, device='cuda:0')
+current epoch:  145
+current loss:  tensor(0.3509, device='cuda:0')
+current epoch:  146
+current loss:  tensor(0.3371, device='cuda:0')
+current epoch:  147
+current loss:  tensor(0.3276, device='cuda:0')
+current epoch:  148
+current loss:  tensor(0.3481, device='cuda:0')
+current epoch:  149
+current loss:  tensor(0.3452, device='cuda:0')
+current epoch:  150
+current loss:  tensor(0.3352, device='cuda:0')
+current auuc:  [0.031174874450594935, 0.0815390657823258]  current qini:  [-0.0051669033720813575, -0.009501900758408491] best res:  [0, 0]  best_params:  None
+current epoch:  151
+current loss:  tensor(0.3124, device='cuda:0')
+current epoch:  152
+current loss:  tensor(0.3207, device='cuda:0')
+current epoch:  153
+current loss:  tensor(0.3231, device='cuda:0')
+current epoch:  154
+current loss:  tensor(0.3163, device='cuda:0')
+current epoch:  155
+current loss:  tensor(0.3278, device='cuda:0')
+current epoch:  156
+current loss:  tensor(0.3163, device='cuda:0')
+current epoch:  157
+current loss:  tensor(0.2989, device='cuda:0')
+current epoch:  158
+current loss:  tensor(0.3057, device='cuda:0')
+current epoch:  159
+current loss:  tensor(0.3075, device='cuda:0')
+current epoch:  160
+current loss:  tensor(0.3090, device='cuda:0')
+current auuc:  [0.03115931574809104, 0.08149369335309464]  current qini:  [-0.005183876050928233, -0.009552594362734874] best res:  [0, 0]  best_params:  None
+current epoch:  161
+current loss:  tensor(0.3028, device='cuda:0')
+current epoch:  162
+current loss:  tensor(0.3024, device='cuda:0')
+current epoch:  163
+current loss:  tensor(0.3184, device='cuda:0')
+current epoch:  164
+current loss:  tensor(0.2833, device='cuda:0')
+current epoch:  165
+current loss:  tensor(0.2939, device='cuda:0')
+current epoch:  166
+current loss:  tensor(0.2759, device='cuda:0')
+current epoch:  167
+current loss:  tensor(0.2830, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main.py", line 232, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 52, in fetch
+    return self.collate_fn(data)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/collate.py", line 84, in default_collate
+    return [default_collate(samples) for samples in transposed]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/collate.py", line 84, in <listcomp>
+    return [default_collate(samples) for samples in transposed]
+KeyboardInterrupt
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(0.9304, device='cuda:0')
+current auuc:  [-0.04550414700083006, -0.11512256339190141]  current qini:  [0.018151070334372115, 0.033893335446956635] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(0.9294, device='cuda:0')
+current epoch:  3
+current loss:  tensor(0.9209, device='cuda:0')
+current epoch:  4
+current loss:  tensor(0.9050, device='cuda:0')
+current epoch:  5
+current loss:  tensor(0.9227, device='cuda:0')
+current epoch:  6
+current loss:  tensor(0.9359, device='cuda:0')
+current epoch:  7
+current loss:  tensor(0.9421, device='cuda:0')
+current epoch:  8
+current loss:  tensor(0.9267, device='cuda:0')
+current epoch:  9
+current loss:  tensor(0.9287, device='cuda:0')
+current epoch:  10
+current loss:  tensor(0.9385, device='cuda:0')
+current auuc:  [-0.04541312414104949, -0.11488589549442293]  current qini:  [0.018158082177505752, 0.03391357941402865] best res:  [0, 0]  best_params:  None
+current epoch:  11
+current loss:  tensor(0.9105, device='cuda:0')
+current epoch:  12
+current loss:  tensor(0.9218, device='cuda:0')
+current epoch:  13
+current loss:  tensor(0.9318, device='cuda:0')
+current epoch:  14
+current loss:  tensor(0.8958, device='cuda:0')
+current epoch:  15
+current loss:  tensor(0.8977, device='cuda:0')
+current epoch:  16
+current loss:  tensor(0.8991, device='cuda:0')
+current epoch:  17
+current loss:  tensor(0.9057, device='cuda:0')
+current epoch:  18
+current loss:  tensor(0.8976, device='cuda:0')
+current epoch:  19
+current loss:  tensor(0.9094, device='cuda:0')
+current epoch:  20
+current loss:  tensor(0.9209, device='cuda:0')
+current auuc:  [-0.04520793671337441, -0.11436327614344155]  current qini:  [0.018248233445155915, 0.034066134648309675] best res:  [0, 0]  best_params:  None
+current epoch:  21
+current loss:  tensor(0.9361, device='cuda:0')
+current epoch:  22
+current loss:  tensor(0.9160, device='cuda:0')
+current epoch:  23
+current loss:  tensor(0.9092, device='cuda:0')
+current epoch:  24
+current loss:  tensor(0.9177, device='cuda:0')
+current epoch:  25
+current loss:  tensor(0.9286, device='cuda:0')
+current epoch:  26
+current loss:  tensor(0.9127, device='cuda:0')
+current epoch:  27
+current loss:  tensor(0.8899, device='cuda:0')
+current epoch:  28
+current loss:  tensor(0.9207, device='cuda:0')
+current epoch:  29
+current loss:  tensor(0.9354, device='cuda:0')
+current epoch:  30
+current loss:  tensor(0.9095, device='cuda:0')
+current auuc:  [-0.04498368023178661, -0.11378930324464671]  current qini:  [0.018233272183261942, 0.034044764109709066] best res:  [0, 0]  best_params:  None
+current epoch:  31
+current loss:  tensor(0.9038, device='cuda:0')
+current epoch:  32
+current loss:  tensor(0.9151, device='cuda:0')
+current epoch:  33
+current loss:  tensor(0.9101, device='cuda:0')
+current epoch:  34
+current loss:  tensor(0.9088, device='cuda:0')
+current epoch:  35
+current loss:  tensor(0.9129, device='cuda:0')
+current epoch:  36
+current loss:  tensor(0.8635, device='cuda:0')
+current epoch:  37
+current loss:  tensor(0.8962, device='cuda:0')
+current epoch:  38
+current loss:  tensor(0.8903, device='cuda:0')
+current epoch:  39
+current loss:  tensor(0.8933, device='cuda:0')
+current epoch:  40
+current loss:  tensor(0.8931, device='cuda:0')
+current auuc:  [-0.044761325535860125, -0.11321992234509685]  current qini:  [0.01814748133525291, 0.03388344280742534] best res:  [0, 0]  best_params:  None
+current epoch:  41
+current loss:  tensor(0.9125, device='cuda:0')
+current epoch:  42
+current loss:  tensor(0.8917, device='cuda:0')
+current epoch:  43
+current loss:  tensor(0.8864, device='cuda:0')
+current epoch:  44
+current loss:  tensor(0.9066, device='cuda:0')
+current epoch:  45
+current loss:  tensor(0.9106, device='cuda:0')
+current epoch:  46
+current loss:  tensor(0.8671, device='cuda:0')
+current epoch:  47
+current loss:  tensor(0.9025, device='cuda:0')
+current epoch:  48
+current loss:  tensor(0.8904, device='cuda:0')
+current epoch:  49
+current loss:  tensor(0.8806, device='cuda:0')
+current epoch:  50
+current loss:  tensor(0.8937, device='cuda:0')
+current auuc:  [-0.04462573760844693, -0.11287053253334853]  current qini:  [0.018531976843617508, 0.0346129978518129] best res:  [0, 0]  best_params:  None
+current epoch:  51
+current loss:  tensor(0.9089, device='cuda:0')
+current epoch:  52
+current loss:  tensor(0.8810, device='cuda:0')
+current epoch:  53
+current loss:  tensor(0.8871, device='cuda:0')
+current epoch:  54
+current loss:  tensor(0.8978, device='cuda:0')
+current epoch:  55
+current loss:  tensor(0.8956, device='cuda:0')
+current epoch:  56
+current loss:  tensor(0.9086, device='cuda:0')
+current epoch:  57
+current loss:  tensor(0.8681, device='cuda:0')
+current epoch:  58
+current loss:  tensor(0.8817, device='cuda:0')
+current epoch:  59
+current loss:  tensor(0.8724, device='cuda:0')
+current epoch:  60
+current loss:  tensor(0.9005, device='cuda:0')
+current auuc:  [-0.04456902625633789, -0.11272396453562812]  current qini:  [0.018073408218361866, 0.03374371576791357] best res:  [0, 0]  best_params:  None
+current epoch:  61
+current loss:  tensor(0.8694, device='cuda:0')
+current epoch:  62
+current loss:  tensor(0.8815, device='cuda:0')
+current epoch:  63
+current loss:  tensor(0.9360, device='cuda:0')
+current epoch:  64
+current loss:  tensor(0.8704, device='cuda:0')
+current epoch:  65
+current loss:  tensor(0.8658, device='cuda:0')
+current epoch:  66
+current loss:  tensor(0.8801, device='cuda:0')
+current epoch:  67
+current loss:  tensor(0.8812, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main.py", line 232, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 21, in __getitem__
+    sample = self.data_matrix[idx, :]
+KeyboardInterrupt
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(0.9410, device='cuda:0')
+current auuc:  [-0.04787587878953363, -0.12121171255438548]  current qini:  [-0.007992354822280513, -0.015196048977992753] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(0.9632, device='cuda:0')
+current epoch:  3
+current loss:  tensor(0.9054, device='cuda:0')
+current epoch:  4
+current loss:  tensor(0.8947, device='cuda:0')
+current epoch:  5
+current loss:  tensor(0.8933, device='cuda:0')
+current epoch:  6
+current loss:  tensor(0.9156, device='cuda:0')
+current epoch:  7
+current loss:  tensor(0.9228, device='cuda:0')
+current epoch:  8
+current loss:  tensor(0.8934, device='cuda:0')
+current epoch:  9
+current loss:  tensor(0.8943, device='cuda:0')
+current epoch:  10
+current loss:  tensor(0.9040, device='cuda:0')
+current auuc:  [-0.04069235402163875, -0.10304457364236472]  current qini:  [-0.008973790449178018, -0.017045716382170825] best res:  [0, 0]  best_params:  None
+current epoch:  11
+current loss:  tensor(0.9009, device='cuda:0')
+current epoch:  12
+current loss:  tensor(0.8741, device='cuda:0')
+current epoch:  13
+current loss:  tensor(0.8905, device='cuda:0')
+current epoch:  14
+current loss:  tensor(0.8718, device='cuda:0')
+current epoch:  15
+current loss:  tensor(0.8823, device='cuda:0')
+current epoch:  16
+current loss:  tensor(0.9172, device='cuda:0')
+current epoch:  17
+current loss:  tensor(0.8506, device='cuda:0')
+current epoch:  18
+current loss:  tensor(0.8672, device='cuda:0')
+current epoch:  19
+current loss:  tensor(0.8392, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main.py", line 232, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 21, in __getitem__
+    sample = self.data_matrix[idx, :]
+KeyboardInterrupt

@@ -2,6 +2,7 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
 import json
+from sklift.metrics import uplift_auc_score, qini_auc_score
 
 class Dataset_from_matrix(Dataset):
     """Face Landmarks dataset."""
@@ -192,3 +193,37 @@ def curve_2(models,test_matrix, t_grid, targetreg1=None, targetreg2=None):
         mse1 = ((t_grid_hat[1, :].squeeze() - t_grid[1, :].squeeze()) ** 2).mean().data
         mse2 = ((t_grid_hat[2, :].squeeze() - t_grid[2, :].squeeze()) ** 2).mean().data
         return t_grid_hat, mse1, mse2
+
+def eval_binary(model,test_matrix,targetreg=None)
+
+def eval_binary_2(model,test_matrix, targetreg1=None,targetreg2=None):
+    def h(t,pi):
+        return t/(pi+1e-9) - (1-t)/(1-pi+1e-9)
+
+    test_loader = get_iter(test_matrix, batch_size=test_matrix.shape[0], shuffle=False)
+    for idx, (inputs,exposure) in enumerate(test_loader):
+        t = inputs[:, 12]
+        x = inputs[:, :12]
+        y1 = inputs[:, 14]
+        y2 = inputs[:, 13]
+        out = model(x)
+
+        if targetreg1 is None:
+            pred1 = (out[1][1] - out[1][0]).squeeze().detach().cpu().numpy()
+            pred2 = (out[2][1] - out[2][0]).squeeze().detach().cpu().numpy()
+        else:
+            trg1,trg2 = targetreg1(x),targetreg2(x)
+            pred1 = (out[1][1]+trg1*h(torch.ones_like(t),out[0]) - out[1][0] - trg1*h(torch.zeros_like(t),out[0])).squeeze().detach().cpu().numpy()
+            pred2 = (out[2][1]+trg2 *h(torch.ones_like(t),out[0]) - out[2][0] - trg2 *h(torch.zeros_like(t),out[0])).squeeze().detach().cpu().numpy()
+        break
+
+    auuc1 = uplift_auc_score(y1.detach().cpu().numpy(), pred1, t.detach().cpu().numpy())
+    qini1 = qini_auc_score(y1.detach().cpu().numpy(), pred1, t.detach().cpu().numpy())
+    mask = (y1.detach().cpu().numpy() == 1)
+    auuc2 = uplift_auc_score(y2.detach().cpu().numpy()[mask], pred2[mask], t.detach().cpu().numpy()[mask])
+    qini2 = qini_auc_score(y2.detach().cpu().numpy()[mask], pred2[mask], t.detach().cpu().numpy()[mask])
+    
+    return auuc1,auuc2,qini1,qini2
+
+
+

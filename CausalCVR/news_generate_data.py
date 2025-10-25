@@ -88,8 +88,10 @@ if __name__ == "__main__":
             for j in range(num_data):
                 x = data_matrix[j, 1: num_feature+1].numpy()
                 y1,y2 = t_x_y(t, x)
-                psi1 += 0.6*sigmoid(y1)
-                psi2 += 0.6*sigmoid(y2)
+                # psi1 += 0.6*sigmoid(y1)
+                # psi2 += 0.6*sigmoid(y2)
+                psi1 += 0.6*sigmoid(y1 + torch.randn(1)[0] * np.sqrt(0.5)) 
+                psi2 += 0.6*sigmoid(y2 +torch.randn(1)[0] * np.sqrt(0.5))
             psi1 /= num_data
             psi2 /= num_data
             t_grid[1, i] = psi1

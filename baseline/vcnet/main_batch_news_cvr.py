@@ -34,7 +34,9 @@ def save_checkpoint(state, model_name='', checkpoint_dir='.'):
 
 # criterion
 def criterion(out, y, alpha=0.5, epsilon=1e-6):
-    return ((out[1].squeeze() - y.squeeze())**2).mean() - alpha * torch.log(out[0] + epsilon).mean()
+    loss_pi = -alpha * torch.log(out[0] + epsilon).mean()
+    loss_y = (-y * torch.log(out[1] + epsilon).squeeze() - (1-y) * torch.log(1 - out[1] + epsilon).squeeze()).mean()
+    return loss_pi + loss_y
 
 def criterion_2(out, y1, y2,alpha=0.5, epsilon=1e-6):
     loss_pi = -alpha * torch.log(out[0] + epsilon).mean()
@@ -99,7 +101,7 @@ if __name__ == "__main__":
 
     Result = {}
 
-    for model_name in ['Vcnet_tr','Vcnet','Dragonnet_tr','Dragonnet','Drnet','Tarnet']:
+    for model_name in ['Vcnet_tr','Dragonnet_tr','Drnet','Tarnet']: #'Vcnet','Dragonnet',
         h = 8
         lr = 1e-6
         lr_tr = 1e-4
@@ -228,13 +230,13 @@ if __name__ == "__main__":
             model2._initialize_weights()
 
             # define optimizer
-            optimizer1 = torch.optim.SGD(model1.parameters(), lr=init_lr1, momentum=momentum, weight_decay=wd, nesterov=True)
+            optimizer1 = torch.optim.SGD(model1.parameters(), lr=5e-4, momentum=momentum, weight_decay=wd, nesterov=True)
             optimizer2 = torch.optim.SGD(model2.parameters(), lr=init_lr2, momentum=momentum, weight_decay=wd, nesterov=True)
 
             if isTargetReg:
                 TargetReg1._initialize_weights()
                 TargetReg2._initialize_weights()
-                tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
+                tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=5e-4, weight_decay=tr_wd)
                 tr_optimizer2 = torch.optim.SGD(TargetReg2.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
 
             print('model : ', model_name)
@@ -299,7 +301,7 @@ if __name__ == "__main__":
 
             Result[model_name].append([mse1,mse2])
 
-            with open(save_path + '/result_3.json', 'w') as fp:
+            with open(save_path + '/result_baseline.json', 'w') as fp:
                 json.dump(Result, fp)
 
 
