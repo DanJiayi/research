@@ -194,10 +194,6 @@ def curve_2(model,test_matrix, t_grid, targetreg1=None, targetreg2=None):
         return t_grid_hat, mse1, mse2
 
 def eval_binary_2(model, test_matrix, targetreg1=None, targetreg2=None, batch_size=1024):
-    import torch
-    import numpy as np
-    from sklift.metrics import uplift_auc_score, qini_auc_score
-
     def h(t, pi):
         t = t.view(-1, 1)       # 确保列向量
         pi = pi.view(-1, 1)     # 同形状
@@ -237,8 +233,6 @@ def eval_binary_2(model, test_matrix, targetreg1=None, targetreg2=None, batch_si
                     - out[2][0]
                     - trg2 * h(torch.zeros_like(t), out[0])
                 )
-            # print('***',out[1][1].shape,out[0].shape,trg1.shape,h(torch.ones_like(t), out[0]).shape)
-            # print('****',pred1.shape,pred2.shape)
 
             preds1.append(pred1.detach().cpu())
             preds2.append(pred2.detach().cpu())
@@ -246,7 +240,6 @@ def eval_binary_2(model, test_matrix, targetreg1=None, targetreg2=None, batch_si
             ys2.append(y2.detach().cpu().view(-1))
             ts.append(t.detach().cpu().view(-1))
 
-    # ✅ 拼接所有 batch
     preds1 = torch.cat(preds1).numpy()
     preds2 = torch.cat(preds2).numpy()
     y1 = torch.cat(ys1).numpy()

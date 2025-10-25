@@ -1,0 +1,72 @@
+Traceback (most recent call last):
+  File "criteo_main.py", line 179, in <module>
+    cur_save_path = save_path + '/' + str(_)
+NameError: name '_' is not defined
+Traceback (most recent call last):
+  File "criteo_main.py", line 193, in <module>
+    model1._initialize_weights()
+NameError: name 'model1' is not defined
+Traceback (most recent call last):
+  File "criteo_main.py", line 197, in <module>
+    optimizer1 = torch.optim.SGD(model1.parameters(), lr=init_lr1, momentum=momentum, weight_decay=wd, nesterov=True)
+NameError: name 'model1' is not defined
+No activation
+No activation
+No activation
+No activation
+model :  Dragonnet_tr
+Traceback (most recent call last):
+  File "criteo_main.py", line 208, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+NameError: name 'train_loader' is not defined
+model :  Dragonnet_tr
+Traceback (most recent call last):
+  File "criteo_main.py", line 216, in <module>
+    out1,out2 = model1.forward(x),model2.forward(x)
+  File "/root/test01/research/baseline/vcnet/models/dynamic_net.py", line 956, in forward
+    mu0,mu1 = self.sigmoid(Q0(hidden)),self.sigmoid(Q1(hidden))
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/nn/modules/container.py", line 141, in forward
+    input = module(input)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 103, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/nn/functional.py", line 1848, in linear
+    return torch._C._nn.linear(input, weight, bias)
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cpu and cuda:0! (when checking argument for argument mat1 in method wrapper_addmm)
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(1.1903, device='cuda:0'), tensor(0.2388, device='cuda:0')]
+Traceback (most recent call last):
+  File "criteo_main.py", line 252, in <module>
+    auuc1, qini1,auuc2,qini2 = eval_binary([model1,model2],test_matrix, TargetReg1,TargetReg2)
+  File "/root/test01/research/baseline/vcnet/utils/eval.py", line 215, in eval_binary
+    pred1 = (out1[1][1]+trg1*h(torch.ones_like(t),out1[0]) - out1[1][0] - trg1*h(torch.zeros_like(t),out1[0])).squeeze().detach().cpu().numpy()
+  File "/root/test01/research/baseline/vcnet/utils/eval.py", line 199, in h
+    return t/(pi+1e-9) - (1-t)/(1-pi+1e-9)
+RuntimeError: CUDA out of memory. Tried to allocate 656.40 GiB (GPU 0; 11.76 GiB total capacity; 540.52 MiB already allocated; 9.14 GiB free; 546.00 MiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(1.2250, device='cuda:0'), tensor(0.2400, device='cuda:0')]
+Traceback (most recent call last):
+  File "criteo_main.py", line 252, in <module>
+    auuc1, qini1,auuc2,qini2 = eval_binary([model1,model2],test_matrix, TargetReg1,TargetReg2)
+  File "/root/test01/research/baseline/vcnet/utils/eval.py", line 210, in eval_binary
+    preds1, preds2 = []
+ValueError: not enough values to unpack (expected 2, got 0)
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(1.1880, device='cuda:0'), tensor(0.2262, device='cuda:0')]
+current auuc:  [-0.002883845402879214, -0.007222793130416953]  current qini:  [0.006763123762853574, 0.013119894449890252] best res: 
+current epoch:  2
+current loss:  [tensor(1.1871, device='cuda:0'), tensor(0.0567, device='cuda:0')]
+current epoch:  3
+current loss:  [tensor(1.2218, device='cuda:0'), tensor(0.0429, device='cuda:0')]
+current epoch:  4
+current loss:  [tensor(1.1898, device='cuda:0'), tensor(0.2369, device='cuda:0')]
+current epoch:  5
+current loss:  [tensor(1.1791, device='cuda:0'), tensor(3.4965, device='cuda:0')]
+current epoch:  6
+current loss:  [tensor(1.1687, device='cuda:0'), tensor(nan, device='cuda:0')]
