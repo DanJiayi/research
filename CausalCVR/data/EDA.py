@@ -9,6 +9,8 @@ print(data.shape)
 y1,y2 = data[:,-3],data[:,-1]
 print('y1:',y1.mean(),y1.std())
 print('y2:',y2.mean(),y2.std())
+mask = (y1==1)
+print('y2|y1:',y2[mask].mean(),y2[mask].std())
 
 data_dir = '/root/test01/research/CausalCVR/dataset/news'
 data_split_dir = '/root/test01/research/CausalCVR/dataset/news/eval'
@@ -22,3 +24,5 @@ print(data.shape)
 y1,y2 = data[:,-3],data[:,-1]
 print('y1:',y1.mean(),y1.std())
 print('y2:',y2.mean(),y2.std())
+mask = (y1==1)
+print('y2|y1:',y2[mask].mean(),y2[mask].std())

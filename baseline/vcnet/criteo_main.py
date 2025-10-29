@@ -2,7 +2,7 @@ import torch
 import math
 import numpy as np
 import pandas as pd
-from models.dynamic_net import Dragonnet_Binary,TR_Binary,T_Leaner
+from models.dynamic_net import Dragonnet_Binary,TR_Binary,T_Learner
 from data.data import get_iter
 from utils.eval import eval_binary
 
@@ -40,13 +40,13 @@ def save_checkpoint(state, model_name, checkpoint_dir):
 
 # criterion
 def criterion(out, t,y, alpha=0.5, epsilon=1e-6):
-    loss_pi = -alpha * torch.log(out[0] + epsilon).mean()
+    loss_pi = -alpha * ((-t * torch.log(out[0] + epsilon).squeeze() - (1-t) * torch.log(1 - out[0] + epsilon).squeeze()).mean())
     mu = (1-t)*out[1][0] + t*out[1][1]
     loss_y = (-y * torch.log(mu + epsilon).squeeze() - (1-y) * torch.log(1 - mu + epsilon).squeeze()).mean()
     return loss_pi + loss_y
 
 def criterion_2(out, t,y1, y2,alpha=0.5, epsilon=1e-6):
-    loss_pi = -alpha * torch.log(out[0] + epsilon).mean()
+    loss_pi = -alpha * (((-t * torch.log(out[0] + epsilon).squeeze() - (1-t) * torch.log(1 - out[0] + epsilon).squeeze())* y1.squeeze()).mean())
     mu = (1-t)*out[1][0] + t*out[1][1]
     loss_y = ((-y2 * torch.log(mu + epsilon).squeeze() - (1-y2) * torch.log(1 - mu + epsilon).squeeze()) * y1.squeeze()).mean()
     return loss_pi + loss_y 
@@ -72,7 +72,7 @@ if __name__ == "__main__":
     # parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
 
     # training
-    parser.add_argument('--n_epochs', type=int, default=20, help='num of epochs to train')
+    parser.add_argument('--n_epochs', type=int, default=100, help='num of epochs to train')
 
     # print train info
     parser.add_argument('--verbose', type=int, default=1, help='print train info freq')
@@ -120,142 +120,162 @@ if __name__ == "__main__":
 
 
     Result = {}
-    for model_name in ['Dragonnet_tr','Tarnet','TLearner']: #'Vcnet_tr','Vcnet','Vcnet_tr','Dragonnet_tr',
+    for model_name in ['Dragonnet_tr','Tarnet','TLearner']: #'Vcnet_tr','Vcnet','Vcnet_tr','Dragonnet_tr','Dragonnet_tr','Tarnet','Dragonnet_tr',
+        Result[model_name] = {}
+        for h in [8,16,32]:
+            for init_lr in [1e-6,1e-7]: #1e-6,
+                for tr_init_lr in [1e-6,1e-7]:
+                    if model_name=='Dragonnet_tr' and (h==8 or (h==16 and init_lr==1e-6)): continue
+                    #if h==8 and (init_lr==1e-6 or (init_lr==1e-7 and tr_init_lr ==1e-6)): continue
+                    flag = 0
+                    print(f'{h}_{init_lr}_{tr_init_lr}')
+                    if model_name!='Dragonnet_tr' and tr_init_lr!=1e-6: continue
+                    if model_name == 'Dragonnet_tr' or  model_name == 'Tarnet':
+                        cfg_density = [(12, h, 1, 'relu'), (h, h, 1, 'relu')]
+                        cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
+                        model1 = Dragonnet_Binary(cfg_density, cfg).to(device)
+                        model1._initialize_weights()
+                        model2 = Dragonnet_Binary(cfg_density, cfg).to(device)
+                        model2._initialize_weights()
 
-        h = 32
-        lr1 = 1e-6
-        lr = 1e-6 #args.lr
-        lr_tr = 1e-6 #args.lr_tr
-
-        if model_name == 'Dragonnet_tr' or  model_name == 'Tarnet':
-            cfg_density = [(12, h, 1, 'relu'), (h, h, 1, 'relu')]
-            cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
-            model1 = Dragonnet_Binary(cfg_density, cfg).to(device)
-            model1._initialize_weights()
-            model2 = Dragonnet_Binary(cfg_density, cfg).to(device)
-            model2._initialize_weights()
-
-        elif model_name == 'TLearner':
-            model1 = T_Leaner(cfg).to(device)
-            model1._initialize_weights()
-            model2 = T_Leaner(cfg).to(device)
-            model2._initialize_weights()
-
-
-        # use Target Regularization
-        if model_name == 'Dragonnet_tr':
-            isTargetReg = 1
-        else:
-            isTargetReg = 0
-
-        if isTargetReg:
-            TargetReg1 = TR_Binary().to(device)
-            TargetReg2 = TR_Binary().to(device)
-            TargetReg1._initialize_weights()
-            TargetReg2._initialize_weights()
-
-        # best cfg for each model
-        if model_name == 'Dragonnet_tr':
-            init_lr1 = 1e-6
-            init_lr2 = 1e-6
-            alpha = 0.5
-            tr_init_lr = 1e-6
-            beta = 1.
-            Result['Dragonnet_tr'] = []
-
-        elif model_name == 'Tarnet':
-            init_lr1 = 1e-6
-            init_lr2 = 1e-6
-            alpha = 0.0
-            Result['Tarnet'] = []
-
-        elif model_name == 'TLearner':
-            init_lr1 = 1e-6
-            init_lr2 = 1e-6
-            alpha = 0.0
-            Result['TLearner'] = []
+                    elif model_name == 'TLearner':
+                        cfg = [(12, h, 1, 'relu'), (h, h, 1, 'relu'),(h, h, 1, 'relu'),(h, 1, 1, 'id')]
+                        model1 = T_Learner(cfg).to(device)
+                        model1._initialize_weights()
+                        model2 = T_Learner(cfg).to(device)
+                        model2._initialize_weights()
 
 
-        cur_save_path = save_path #+ '/' + str(_)
-        if not os.path.exists(cur_save_path):
-            os.makedirs(cur_save_path)
-
-        data = pd.read_csv(load_path + '/train.csv')
-        train_matrix = torch.from_numpy(data.to_numpy()).float().to(device)
-        data = pd.read_csv(load_path + '/test.csv')
-        test_matrix = torch.from_numpy(data.to_numpy()).float().to(device)
-            
-        # train_matrix, test_matrix, t_grid = simu_data1(500, 200)
-        train_loader = get_iter(train_matrix, batch_size=1024, shuffle=True)
-        test_loader = get_iter(test_matrix, batch_size=test_matrix.shape[0], shuffle=False)
-
-        # reinitialize model
-        model1._initialize_weights()
-        model2._initialize_weights()
-
-        # define optimizer
-        optimizer1 = torch.optim.SGD(model1.parameters(), lr=init_lr1, momentum=momentum, weight_decay=wd, nesterov=True)
-        optimizer2 = torch.optim.SGD(model2.parameters(), lr=init_lr2, momentum=momentum, weight_decay=wd, nesterov=True)
-
-        if isTargetReg:
-            TargetReg1._initialize_weights()
-            TargetReg2._initialize_weights()
-            tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=1e-3, weight_decay=tr_wd)
-            tr_optimizer2 = torch.optim.SGD(TargetReg2.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
-
-        print('model : ', model_name)
-        for epoch in range(num_epoch):
-            for idx, (inputs,exposure) in enumerate(train_loader):
-                t = inputs[:, 12]
-                x = inputs[:, :12]
-                y1 = inputs[:, 14]
-                y2 = inputs[:, 13]
-
-                if isTargetReg:
-                    optimizer1.zero_grad()
-                    out1,out2 = model1.forward(x),model2.forward(x)
-                    trg1,trg2 = TargetReg1(x),TargetReg2(x)
-                    loss1 = criterion(out1, t,y1,alpha=alpha) + criterion_TR(out1, t,trg1, y1, beta=beta)
-                    loss1.backward()
-                    optimizer1.step()
-                    loss2 = criterion_2(out2, t,y1,y2,alpha=alpha) + criterion_TR_2(out2, t,trg2, y1, y2, beta=beta)
-                    loss2.backward()
-                    optimizer2.step()
-
-                    tr_optimizer1.zero_grad()
-                    tr_optimizer2.zero_grad()
-                    out1,out2 = model1.forward(x),model2.forward(x)
-                    trg1, trg2 = TargetReg1(x), TargetReg2(x)
-                    tr_loss1 = criterion_TR(out1, t,trg1, y1, beta=beta)
-                    tr_loss2 = criterion_TR_2(out2, t,trg2, y1, y2, beta=beta)
-                    tr_loss1.backward(retain_graph=True) 
-                    tr_optimizer1.step()
-                    tr_loss2.backward() 
-                    tr_optimizer2.step()
-                else:
-                    optimizer1.zero_grad()
-                    out1,out2 = model1.forward(x),model2.forward(x)                     
-                    loss1 = criterion(out1, t,y1,alpha=alpha)
-                    loss1.backward()
-                    optimizer1.step()
-                    loss2 = criterion_2(out2, t,y1,y2,alpha=alpha)
-                    loss2.backward()
-                    optimizer2.step()
-
-
-            epoch += 1
-            if epoch==1 or epoch % verbose == 0 or epoch==num_epoch:
-                print('current epoch: ', epoch)
-                print('current loss: ', [loss1.data,loss2.data])
-                if epoch==1 or epoch % 10 == 0 or epoch==num_epoch:
-                    if isTargetReg:
-                        auuc1, qini1,auuc2,qini2 = eval_binary([model1,model2],test_matrix, TargetReg1,TargetReg2)
+                    # use Target Regularization
+                    if model_name == 'Dragonnet_tr':
+                        isTargetReg = 1
                     else:
-                        auuc1, qini1,auuc2,qini2 = eval_binary([model1,model2], test_matrix)
-                    print('current auuc: ', [auuc1,auuc2],' current qini: ',[qini1,qini2])
+                        isTargetReg = 0
+
+                    if isTargetReg:
+                        TargetReg1 = TR_Binary().to(device)
+                        TargetReg2 = TR_Binary().to(device)
+                        TargetReg1._initialize_weights()
+                        TargetReg2._initialize_weights()
+
+                    # best cfg for each model
+                    if model_name == 'Dragonnet_tr':
+                        init_lr1 = init_lr
+                        init_lr2 = init_lr
+                        alpha = 0.5
+                        tr_init_lr = tr_init_lr #1e-6
+                        beta = 1.
+                        # Result['Dragonnet_tr'] = []
+
+                    elif model_name == 'Tarnet':
+                        init_lr1 = init_lr
+                        init_lr2 = init_lr
+                        alpha = 0.0
+                        # Result['Tarnet'] = []
+
+                    elif model_name == 'TLearner':
+                        init_lr1 = init_lr
+                        init_lr2 = init_lr
+                        alpha = 0.0
+                        # Result['TLearner'] = []
 
 
-        Result[model_name].append([auuc1,auuc2,qini1,qini2])
+                    cur_save_path = save_path #+ '/' + str(_)
+                    if not os.path.exists(cur_save_path):
+                        os.makedirs(cur_save_path)
 
-        with open(save_path + f'/result_baseline.json', 'w') as fp:
-            json.dump(Result, fp)
+                    data = pd.read_csv(load_path + '/train.csv')
+                    train_matrix = torch.from_numpy(data.to_numpy()).float().to(device)
+                    data = pd.read_csv(load_path + '/test.csv')
+                    test_matrix = torch.from_numpy(data.to_numpy()).float().to(device)
+                        
+                    # train_matrix, test_matrix, t_grid = simu_data1(500, 200)
+                    train_loader = get_iter(train_matrix, batch_size=1024, shuffle=True)
+                    test_loader = get_iter(test_matrix, batch_size=test_matrix.shape[0], shuffle=False)
+
+                    # reinitialize model
+                    model1._initialize_weights()
+                    model2._initialize_weights()
+
+                    # define optimizer
+                    optimizer1 = torch.optim.SGD(model1.parameters(), lr=init_lr1, momentum=momentum, weight_decay=wd, nesterov=True)
+                    optimizer2 = torch.optim.SGD(model2.parameters(), lr=init_lr2, momentum=momentum, weight_decay=wd, nesterov=True)
+
+                    if isTargetReg:
+                        TargetReg1._initialize_weights()
+                        TargetReg2._initialize_weights()
+                        tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=1e-3, weight_decay=tr_wd)
+                        tr_optimizer2 = torch.optim.SGD(TargetReg2.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
+
+                    print('model : ', model_name)
+                    for epoch in range(num_epoch):
+                        if flag==1: continue
+                        for idx, (inputs,exposure) in enumerate(train_loader):
+                            t = inputs[:, 12]
+                            x = inputs[:, :12]
+                            y1 = inputs[:, 14]
+                            y2 = inputs[:, 13]
+
+                            if isTargetReg:
+                                optimizer1.zero_grad()
+                                out1,out2 = model1.forward(x),model2.forward(x)
+                                trg1,trg2 = TargetReg1(x),TargetReg2(x)
+                                loss1 = criterion(out1, t,y1,alpha=alpha) + criterion_TR(out1, t,trg1, y1, beta=beta)
+                                loss1.backward()
+                                optimizer1.step()
+                                loss2 = criterion_2(out2, t,y1,y2,alpha=alpha) + criterion_TR_2(out2, t,trg2, y1, y2, beta=beta)
+                                loss2.backward()
+                                optimizer2.step()
+
+                                tr_optimizer1.zero_grad()
+                                tr_optimizer2.zero_grad()
+                                out1,out2 = model1.forward(x),model2.forward(x)
+                                trg1, trg2 = TargetReg1(x), TargetReg2(x)
+                                tr_loss1 = criterion_TR(out1, t,trg1, y1, beta=beta)
+                                tr_loss2 = criterion_TR_2(out2, t,trg2, y1, y2, beta=beta)
+                                tr_loss1.backward(retain_graph=True) 
+                                tr_optimizer1.step()
+                                tr_loss2.backward() 
+                                tr_optimizer2.step()
+                            else:
+                                optimizer1.zero_grad()
+                                out1,out2 = model1.forward(x),model2.forward(x)                     
+                                loss1 = criterion(out1, t,y1,alpha=alpha)
+                                loss1.backward()
+                                optimizer1.step()
+                                loss2 = criterion_2(out2, t,y1,y2,alpha=alpha)
+                                loss2.backward()
+                                optimizer2.step()
+
+
+                        epoch += 1
+                        if epoch==1 or epoch % verbose == 0 or epoch==num_epoch:
+                            print('current epoch: ', epoch)
+                            print('current loss: ', [loss1.data,loss2.data])
+                            if torch.isnan(loss1) or torch.isnan(loss2): flag = 1
+                            if epoch==1 or epoch % 10 == 0 or epoch==num_epoch:
+                                if isTargetReg:
+                                    auuc1, qini1,auuc2,qini2 = eval_binary([model1,model2],test_matrix, TargetReg1,TargetReg2)
+                                else:
+                                    auuc1, qini1,auuc2,qini2 = eval_binary([model1,model2], test_matrix)
+                                print('current auuc: ', [auuc1,auuc2],' current qini: ',[qini1,qini2])
+
+                                params = f'{epoch}_{h}_{init_lr}_{tr_init_lr}'
+                                Result[model_name][params]=[auuc1,auuc2,qini1,qini2]
+
+                                with open(save_path + f'/result_baseline_correted_2.json', 'w') as fp:
+                                    json.dump(Result, fp)
+
+                                if auuc1>0 and auuc2>0:
+                                    ckpt_dir = os.path.join(cur_save_path, "checkpoints")
+                                    os.makedirs(ckpt_dir, exist_ok=True)
+                                    ckpt_name = f"{model_name}_ckpt_{params}_{'_'.join([f'{r:.4f}' for r in [auuc1,auuc2,qini1,qini2]])}.pth.tar"
+                                    ckpt_path = os.path.join(ckpt_dir, ckpt_name)
+                                    print('-----------------------------------------------------------------')
+                                    save_checkpoint({
+                                        'model': model_name,
+                                        'res': [auuc1,auuc2,qini1,qini2],
+                                        'model_state_dict': [model1.state_dict(),model2.state_dict()],
+                                        'TR_state_dict': [TargetReg1.state_dict(), TargetReg2.state_dict()] if isTargetReg else None
+                                    }, model_name=model_name, checkpoint_dir=ckpt_path)
+                                    print('-----------------------------------------------------------------')

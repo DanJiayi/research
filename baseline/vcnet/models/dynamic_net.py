@@ -988,9 +988,9 @@ class Dragonnet_Binary(nn.Module):
                 if m.isbias:
                     m.bias.data.zero_()
 
-class T_Leaner(nn.Module):
+class T_Learner(nn.Module):
     def __init__(self, cfg):
-        super(T_Leaner, self).__init__()
+        super(T_Learner, self).__init__()
         self.out = nn.ModuleList()
         for _ in range(2):
             blocks = self.get_blocks(cfg)
@@ -1000,7 +1000,7 @@ class T_Leaner(nn.Module):
     def forward(self, x):
         Q0, Q1 = self.out[0], self.out[1]
         mu0, mu1 = self.sigmoid(Q0(x)), self.sigmoid(Q1(x))
-        return [0] + [mu0, mu1]
+        return [torch.zeros_like(mu0)] + [mu0, mu1]
 
     def get_blocks(self,cfg):
         blocks = []
@@ -1015,8 +1015,8 @@ class T_Leaner(nn.Module):
                 blocks.append(nn.Tanh())
             elif layer_cfg[3] == 'sigmoid':
                 blocks.append(nn.Sigmoid())
-            else:
-                print('No activation')
+            # else:
+            #     print('No activation')
         return blocks
     
     def _initialize_weights(self):

@@ -196,14 +196,25 @@ def curve_2(models,test_matrix, t_grid, targetreg1=None, targetreg2=None):
 
 
 
+
 def eval_binary(models, test_matrix, targetreg1=None, targetreg2=None, batch_size=1024):
+    """
+    Evaluate two models (model1, model2) for binary outcomes in batches.
+    Args:
+        models: [model1, model2]
+        test_matrix: full dataset tensor
+        targetreg1, targetreg2: optional Target Regularization modules
+        batch_size: batch size for inference
+    Returns:
+        auuc1, auuc2, qini1, qini2
+    """
     def h(t, pi):
         t = t.view(-1, 1)
         pi = pi.view(-1, 1)
         return t / (pi + 1e-9) - (1 - t) / (1 - pi + 1e-9)
 
     model1, model2 = models[0], models[1]
-    was_training1, was_training2 = model1.training, model2.training
+    was_training= model1.training
     model1.eval()
     model2.eval()
 
@@ -222,22 +233,22 @@ def eval_binary(models, test_matrix, targetreg1=None, targetreg2=None, batch_siz
             out1, out2 = model1(x), model2(x)
 
             if targetreg1 is None:
-                pred1 = torch.flatten(out1[1][1] - out1[1][0])
-                pred2 = torch.flatten(out2[1][1] - out2[1][0])
+                trg1, trg2 = 0,0
             else:
                 trg1, trg2 = targetreg1(x), targetreg2(x)
-                pred1 = torch.flatten(
-                    out1[1][1]
-                    + trg1 * h(torch.ones_like(t), out1[0])
-                    - out1[1][0]
-                    - trg1 * h(torch.zeros_like(t), out1[0])
-                )
-                pred2 = torch.flatten(
-                    out2[1][1]
-                    + trg2 * h(torch.ones_like(t), out2[0])
-                    - out2[1][0]
-                    - trg2 * h(torch.zeros_like(t), out2[0])
-                )
+
+            pred1 = torch.flatten(
+                out1[1][1]
+                + trg1 * h(torch.ones_like(t), out1[0])
+                - out1[1][0]
+                - trg1 * h(torch.zeros_like(t), out1[0])
+            )
+            pred2 = torch.flatten(
+                out2[1][1]
+                + trg2 * h(torch.ones_like(t), out2[0])
+                - out2[1][0]
+                - trg2 * h(torch.zeros_like(t), out2[0])
+            )
 
             preds1.append(pred1.detach().cpu())
             preds2.append(pred2.detach().cpu())
@@ -254,6 +265,7 @@ def eval_binary(models, test_matrix, targetreg1=None, targetreg2=None, batch_siz
     assert len(preds1) == len(y1) == len(t), \
         f"Inconsistent lengths: preds1={len(preds1)}, y1={len(y1)}, t={len(t)}"
 
+
     auuc1 = uplift_auc_score(y1, preds1, t)
     qini1 = qini_auc_score(y1, preds1, t)
 
@@ -261,8 +273,10 @@ def eval_binary(models, test_matrix, targetreg1=None, targetreg2=None, batch_siz
     auuc2 = uplift_auc_score(y2[mask], preds2[mask], t[mask])
     qini2 = qini_auc_score(y2[mask], preds2[mask], t[mask])
 
-    if was_training1:
+    if was_training:
         model1.train()
         model2.train()
 
     return auuc1, auuc2, qini1, qini2
+
+

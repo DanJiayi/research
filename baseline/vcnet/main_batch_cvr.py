@@ -42,7 +42,7 @@ def criterion(out, y, alpha=0.5, epsilon=1e-6):
     return loss_pi + loss_y
 
 def criterion_2(out, y1, y2,alpha=0.5, epsilon=1e-6):
-    loss_pi = -alpha * torch.log(out[0] + epsilon).mean()
+    loss_pi = -alpha * (torch.log(out[0] + epsilon)* y1.squeeze()).mean()
     # loss_y1 = (-y1 * torch.log(out[1] + epsilon).squeeze() - (1-y1) * torch.log(1 - out[1] + epsilon).squeeze()).mean()
     loss_y = ((-y2 * torch.log(out[1] + epsilon).squeeze() - (1-y2) * torch.log(1 - out[1] + epsilon).squeeze()) * y1.squeeze()).mean()
     return loss_pi + loss_y 
@@ -98,7 +98,7 @@ if __name__ == "__main__":
 
 
     Result = {}
-    for model_name in ['Drnet','Tarnet']: #'Vcnet_tr','Vcnet','Vcnet_tr','Dragonnet_tr',
+    for model_name in ['Drnet']: #'Vcnet_tr','Vcnet',,'Tarnet','Vcnet_tr','Dragonnet_tr',
     #for model_name in ['Vcnet_tr']:
         h = 32
         lr1 = 1e-5
@@ -154,14 +154,14 @@ if __name__ == "__main__":
         # best cfg for each model
         if model_name == 'Dragonnet':
             init_lr1 = lr1
-            init_lr2 = 1e-7
+            init_lr2 = 1e-6
             alpha = 0.5
 
             Result['Dragonnet'] = []
 
         elif model_name == 'Dragonnet_tr':
             init_lr1 = lr1
-            init_lr2 = 1e-7
+            init_lr2 = 1e-6
             alpha = 0.5
             tr_init_lr = 1e-6
             beta = 1.
@@ -170,7 +170,7 @@ if __name__ == "__main__":
 
         elif model_name == 'Tarnet':
             init_lr1 = lr1
-            init_lr2 = 1e-7
+            init_lr2 = 1e-6
             alpha = 0.0
 
             Result['Tarnet'] = []
@@ -178,7 +178,7 @@ if __name__ == "__main__":
         elif model_name == 'Drnet':
             init_lr1 = lr1
             init_lr2 = 1e-6
-            alpha = 0.5
+            alpha = 0.0 #0.5
 
             Result['Drnet'] = []
 
@@ -193,14 +193,14 @@ if __name__ == "__main__":
 
         elif model_name == 'Vcnet':
             init_lr1 = lr1
-            init_lr2 = 1e-7
+            init_lr2 = 1e-6
             alpha = 0.5
 
             Result['Vcnet'] = []
 
         elif model_name == 'Vcnet_tr':
             init_lr1 = lr1
-            init_lr2 = 1e-7
+            init_lr2 = 1e-6
             alpha = 0.5
             tr_init_lr = 1e-6
             beta = 1.
@@ -299,5 +299,5 @@ if __name__ == "__main__":
 
             Result[model_name].append([mse1,mse2])
 
-            with open(save_path + f'/result_baseline_2.json', 'w') as fp:
+            with open(save_path + f'/result_baseline_corrected_2.json', 'w') as fp:
                 json.dump(Result, fp)

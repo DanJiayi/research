@@ -1,8 +1,10 @@
 import torch
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
+import pandas as pd
 import json
 from sklift.metrics import uplift_auc_score, qini_auc_score
+from causalml.metrics import auuc_score, qini_score
 
 class Dataset_from_matrix(Dataset):
     """Face Landmarks dataset."""
@@ -253,6 +255,18 @@ def eval_binary_2(model, test_matrix, targetreg1=None, targetreg2=None, batch_si
     qini1 = qini_auc_score(y1, preds1, t)
 
     mask = (y1 == 1)
+
+
+    # # CTR
+    # df_ctr = pd.DataFrame({'y': y1, 'treatment': t, 'score': preds1})
+    # auuc1 = auuc_score(df_ctr, outcome_col='y', treatment_col='treatment', y_pred_col='score')
+    # qini1 = qini_score(df_ctr, outcome_col='y', treatment_col='treatment', y_pred_col='score')
+
+    # # CVR
+    # df_cvr = pd.DataFrame({'y': y2[mask], 'treatment': t[mask], 'score': preds2[mask]})
+    # auuc2 = auuc_score(df_cvr, outcome_col='y', treatment_col='treatment', y_pred_col='score')
+    # qini2 = qini_score(df_cvr, outcome_col='y', treatment_col='treatment', y_pred_col='score')
+
     auuc2 = uplift_auc_score(y2[mask], preds2[mask], t[mask])
     qini2 = qini_auc_score(y2[mask], preds2[mask], t[mask])
 

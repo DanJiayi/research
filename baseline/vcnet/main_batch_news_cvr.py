@@ -34,7 +34,7 @@ def save_checkpoint(state, model_name='', checkpoint_dir='.'):
 
 # criterion
 def criterion(out, y, alpha=0.5, epsilon=1e-6):
-    loss_pi = -alpha * torch.log(out[0] + epsilon).mean()
+    loss_pi = -alpha * (torch.log(out[0] + epsilon)* y1.squeeze()).mean()
     loss_y = (-y * torch.log(out[1] + epsilon).squeeze() - (1-y) * torch.log(1 - out[1] + epsilon).squeeze()).mean()
     return loss_pi + loss_y
 
@@ -101,7 +101,7 @@ if __name__ == "__main__":
 
     Result = {}
 
-    for model_name in ['Vcnet_tr','Dragonnet_tr','Drnet','Tarnet']: #'Vcnet','Dragonnet',
+    for model_name in ['Vcnet_tr','Dragonnet_tr','Drnet']: #'Vcnet','Dragonnet', 'Vcnet_tr','Dragonnet_tr',,'Tarnet'
         h = 8
         lr = 1e-6
         lr_tr = 1e-4
@@ -181,7 +181,7 @@ if __name__ == "__main__":
         elif model_name == 'Drnet':
             init_lr1 = lr
             init_lr2 = lr
-            alpha = 0.5
+            alpha = 0.0 #0.5
 
             Result['Drnet'] = []
 

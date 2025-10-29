@@ -13,6 +13,21 @@ from sklift.metrics import uplift_auc_score, qini_auc_score
 
 import argparse
 import sys
+import random
+
+def set_seed(seed=42):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    # torch.use_deterministic_algorithms(True)
+
+set_seed(42)
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print('Using device:', device)
@@ -60,7 +75,7 @@ def criterion_2(out, t,y1, y2,alpha=0.5, epsilon=1e-9):
     loss_pi = -alpha * ((-t * torch.log(out[0] + epsilon).squeeze() - (1-t) * torch.log(1 - out[0] + epsilon).squeeze()).mean())
     loss_y1 = (-y1 * torch.log(mu1  + epsilon).squeeze() - (1-y1) * torch.log(1 - mu1  + epsilon).squeeze()).mean()
     loss_y2 = ((-y2 * torch.log(mu2 + epsilon).squeeze() - (1-y2) * torch.log(1 - mu2 + epsilon).squeeze()) * y1.squeeze()).mean()
-    return loss_pi + loss_y1 + loss_y2 
+    return loss_pi + 0*loss_y1 + loss_y2 
 
 def criterion_cvr(out, t,y1, y2,alpha=0.5, epsilon=1e-9):
     mu1 = (1-t)*out[1][0] + t*out[1][1]
@@ -68,7 +83,7 @@ def criterion_cvr(out, t,y1, y2,alpha=0.5, epsilon=1e-9):
     loss_pi = -alpha * ((-t * torch.log(out[0] + epsilon).squeeze() - (1-t) * torch.log(1 - out[0] + epsilon).squeeze()).mean())
     loss_y1 = (-y1 * torch.log(mu1 + epsilon).squeeze() - (1-y1) * torch.log(1 - mu1 + epsilon).squeeze()).mean()
     loss_y2 = (-y2 * torch.log(mu2 + epsilon).squeeze() - (1-y2) * torch.log(1 - mu2 + epsilon).squeeze()).mean()
-    return loss_pi + loss_y1 + loss_y2
+    return loss_pi + 0*loss_y1 + loss_y2
 
 # def criterion_id(out, y1, y2,alpha=0.5, epsilon=1e-9):
 #     loss_pi = -alpha * torch.log(out[0] + epsilon).mean()
@@ -79,7 +94,7 @@ def criterion_cvr(out, t,y1, y2,alpha=0.5, epsilon=1e-9):
 def criterion_TR(out, t,trg, y, beta=1., epsilon=1e-9,detach=False):
     pi = out[0].detach() if detach else out[0]
     mu = (1-t)*out[1][0] + t*out[1][1] + trg * (t/(pi+epsilon) - (1-t)/(1-pi+epsilon))
-    return beta *((mu.squeeze() - y.squeeze())**2).mean()
+    return 0*beta *((mu.squeeze() - y.squeeze())**2).mean()
 
 def criterion_TR_cvr(out, t,trg, y1, y2, beta=1., epsilon=1e-9):
     pi = out[0].detach().squeeze()
@@ -164,15 +179,15 @@ if __name__ == "__main__":
 
     #for model_name in ['Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr', 'Vcnet', 'Vcnet_tr']:
     
-    for num_epoch in [200]:
-        for h in [64]:
+    for num_epoch in [120]:
+        for h in [16,32]:
             # for init_lr in [1e-4,1e-3,1e-2]:
             # for alpha in [0.1,0.5,1]:
-            for init_lr in [1e-6]: #1e-6,
+            for init_lr in [1e-5,1e-6,1e-7]: #1e-6,
                 # for tr_init_lr in [1e-4,1e-3,1e-2]:
-                for tr_init_lr in [1e-6,1e-8]:
-                    if h==32 and init_lr==1e-5 and tr_init_lr==1e-5: continue
-                    if init_lr==1e-5: num_epoch = 100 
+                for tr_init_lr in [1e-5,1e-7]:
+                    #if h==32 and init_lr==1e-5 and tr_init_lr==1e-5: continue
+                    if init_lr==1e-5: num_epoch = 80 
                     params = f'{h}_{init_lr }_{tr_init_lr}'
                     # Result[params]={}
                     #Result[model_name]=[]
@@ -240,7 +255,7 @@ if __name__ == "__main__":
                                     optimizer.zero_grad()
                                     out = model.forward(x)
                                     trg1,trg2 = TargetReg1(x),TargetReg2(x)
-                                    loss = criterion_cvr(out, t,y1,y2,alpha=alpha) + criterion_TR(out, t,trg1, y1, beta=beta,detach=True) + criterion_TR_cvr(out, t,trg2, y1, y2, beta=beta)
+                                    loss = criterion_cvr(out, t,y1,y2,alpha=alpha) + 0*criterion_TR(out, t,trg1, y1, beta=beta,detach=True) + criterion_TR_cvr(out, t,trg2, y1, y2, beta=beta)
                                     loss.backward()
                                     optimizer.step()
 
@@ -249,10 +264,10 @@ if __name__ == "__main__":
                                     out = model(x)
                                     trg1, trg2 = TargetReg1(x), TargetReg2(x)
                                     
-                                    tr_loss1 = criterion_TR(out, t,trg1, y1, beta=beta,detach=True)
+                                    # tr_loss1 = criterion_TR(out, t,trg1, y1, beta=beta,detach=True)
                                     tr_loss2 = criterion_TR_cvr(out, t,trg2, y1, y2, beta=beta)
-                                    tr_loss1.backward(retain_graph=True) 
-                                    tr_optimizer1.step()
+                                    # tr_loss1.backward(retain_graph=True) 
+                                    # tr_optimizer1.step()
                                     tr_loss2.backward() 
                                     tr_optimizer2.step()
                                 else:
@@ -263,14 +278,14 @@ if __name__ == "__main__":
                                     optimizer.step()
 
                             epoch += 1
-                            if epoch==1 or epoch % verbose == 0 or epoch==num_epoch:
+                            if epoch==1 or epoch % verbose == 0 or epoch==num_epoch: #
                                 print('current epoch: ', epoch)
                                 print('current loss: ', loss.data)
-                                if epoch==1 or epoch % 10 == 0 or epoch==num_epoch:
+                                if epoch==1 or epoch % 5 == 0 or epoch==num_epoch:
                                     if isTargetReg:
-                                        auuc1, qini1,auuc2,qini2 = eval_binary_2(model,test_matrix, TargetReg1,TargetReg2)
+                                        auuc1, auuc2,qini1,qini2 = eval_binary_2(model,test_matrix, TargetReg1,TargetReg2)
                                     else:
-                                        auuc1, qini1,auuc2,qini2 = eval_binary_2(model, test_matrix)
+                                        auuc1, auuc2,qini1,qini2 = eval_binary_2(model, test_matrix)
                                     
                                     params1 = f'{epoch}_' + params 
                                     Result[model_name][params1] = [auuc1,auuc2,qini1,qini2]
@@ -278,10 +293,11 @@ if __name__ == "__main__":
                                         res = Result[model_name][params1]
                                         res_tr = Result[model_name+'_tr'][params1]
                                         #if res[0]>0 and res[1]>0 and res[2]>0 and res[3]>0 and res_tr[0]>res[0] and res_tr[1]>res[1] and res_tr[2]>res[2] and res_tr[3]>res[3] and (2*res_tr[1]+res_tr[3])>(2*best_auuc+best_qini):
-                                        if res[0]>0 and res[1]>0 and res_tr[0]>res[0] and res_tr[1]>res[1]:
+                                        #if res[0]>0 and res[1]>0 and res_tr[0]>res[0] and res_tr[1]>res[1]:
+                                        if res[1]>0 and res[3]>0 and res_tr[1]>res[1] and res_tr[3]>res[3]:
                                             ckpt_dir = os.path.join(cur_save_path, "checkpoints")
                                             os.makedirs(ckpt_dir, exist_ok=True)
-                                            ckpt_name = f"{model_name}_ckpt_{params1}_{'_'.join([f'{r:.4f}' for r in res])}.pth.tar"
+                                            ckpt_name = f"test_{model_name}_ckpt_{params1}_{'_'.join([f'{r:.4f}' for r in res])}.pth.tar"
                                             ckpt_path = os.path.join(ckpt_dir, ckpt_name)
                                             print('-----------------------------------------------------------------')
                                             save_checkpoint({
@@ -297,10 +313,10 @@ if __name__ == "__main__":
                                     
                                     else:
                                         res = Result[model_name][params1]
-                                        if res[0]>0 and res[1]>0:
+                                        if res[1]>0 and res[3]>0:
                                             ckpt_dir = os.path.join(cur_save_path, "checkpoints")
                                             os.makedirs(ckpt_dir, exist_ok=True)
-                                            ckpt_name = f"{model_name}_ckpt_{params1}_{'_'.join([f'{r:.4f}' for r in res])}.pth.tar"
+                                            ckpt_name = f"test_{model_name}_ckpt_{params1}_{'_'.join([f'{r:.4f}' for r in res])}.pth.tar"
                                             ckpt_path = os.path.join(ckpt_dir, ckpt_name)
                                             print('-----------------------------------------------------------------')
                                             save_checkpoint({
@@ -313,7 +329,7 @@ if __name__ == "__main__":
 
 
                                     print('current auuc: ', [auuc1,auuc2],' current qini: ',[qini1,qini2],'best res: ', [best_auuc,best_qini],' best_params: ',best_params)
-                                    with open(save_path + '/result_5.json', 'w') as fp:
+                                    with open(save_path + '/result_test_2.json', 'w') as fp:
                                         json.dump(Result, fp)
 
             
