@@ -9582,3 +9582,290 @@ current loss:  tensor(-0.0594, device='cuda:0')
 current epoch:  80
 current loss:  tensor(-0.0634, device='cuda:0')
 current auuc:  [0.025042696196344257, 0.006489234832455416]  current qini:  [0.06336299172928646, 0.01280617835226369] best res:  [0.013771127612947577, 0.02581790718727496]  best_params:  40_16_1e-07_1e-07
+model :  MyNet
+current epoch:  1
+current loss:  tensor(-0.0554, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main_copy.py", line 247, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 21, in __getitem__
+    sample = self.data_matrix[idx, :]
+KeyboardInterrupt
+model :  MyNet
+current epoch:  1
+current loss:  tensor(-0.0554, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_1_8_1e-06_1e-07_-0.0443_0.0029_-0.1125_0.0042.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04433120130468856, 0.0028946280568016352]  current qini:  [-0.11247456864782175, 0.004237785325907299] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(-0.0520, device='cuda:0')
+current epoch:  3
+current loss:  tensor(-0.0565, device='cuda:0')
+current epoch:  4
+current loss:  tensor(-0.0610, device='cuda:0')
+current epoch:  5
+current loss:  tensor(-0.0578, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_5_8_1e-06_1e-07_-0.0454_0.0081_-0.1151_0.0139.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04537426846782329, 0.008063054357198361]  current qini:  [-0.11508029020954375, 0.01388483402943263] best res:  [0, 0]  best_params:  None
+current epoch:  6
+current loss:  tensor(-0.0543, device='cuda:0')
+current epoch:  7
+current loss:  tensor(-0.0631, device='cuda:0')
+current epoch:  8
+current loss:  tensor(-0.0635, device='cuda:0')
+current epoch:  9
+current loss:  tensor(-0.0598, device='cuda:0')
+current epoch:  10
+current loss:  tensor(-0.0644, device='cuda:0')
+current auuc:  [-0.044878435197588676, -0.018416831196156974]  current qini:  [-0.11384446563135343, -0.03556860174596472] best res:  [0, 0]  best_params:  None
+current epoch:  11
+current loss:  tensor(-0.0611, device='cuda:0')
+current epoch:  12
+current loss:  tensor(-0.0660, device='cuda:0')
+current epoch:  13
+current loss:  tensor(-0.0671, device='cuda:0')
+current epoch:  14
+current loss:  tensor(-0.0625, device='cuda:0')
+current epoch:  15
+current loss:  tensor(-0.0671, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_15_8_1e-06_1e-07_-0.0437_0.0069_-0.1107_0.0117.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04365704139646579, 0.006924507924188116]  current qini:  [-0.11074387951905365, 0.011740894545183978] best res:  [0, 0]  best_params:  None
+current epoch:  16
+current loss:  tensor(-0.0641, device='cuda:0')
+current epoch:  17
+current loss:  tensor(-0.0607, device='cuda:0')
+current epoch:  18
+current loss:  tensor(-0.0694, device='cuda:0')
+current epoch:  19
+current loss:  tensor(-0.0655, device='cuda:0')
+current epoch:  20
+current loss:  tensor(-0.0704, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_20_8_1e-06_1e-07_-0.0444_0.0031_-0.1127_0.0047.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04440451348826104, 0.003126919544482905]  current qini:  [-0.11265762401584457, 0.004706149852437294] best res:  [0, 0]  best_params:  None
+current epoch:  21
+current loss:  tensor(-0.0579, device='cuda:0')
+current epoch:  22
+current loss:  tensor(-0.0634, device='cuda:0')
+current epoch:  23
+current loss:  tensor(-0.0709, device='cuda:0')
+current epoch:  24
+current loss:  tensor(-0.0680, device='cuda:0')
+current epoch:  25
+current loss:  tensor(-0.0602, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_25_8_1e-06_1e-07_-0.0432_0.0046_-0.1097_0.0089.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04322794342865611, 0.0046315026285463036]  current qini:  [-0.10966451663773263, 0.008855081470789216] best res:  [0, 0]  best_params:  None
+current epoch:  26
+current loss:  tensor(-0.0694, device='cuda:0')
+current epoch:  27
+current loss:  tensor(-0.0746, device='cuda:0')
+current epoch:  28
+current loss:  tensor(-0.0742, device='cuda:0')
+current epoch:  29
+current loss:  tensor(-0.0674, device='cuda:0')
+current epoch:  30
+current loss:  tensor(-0.0678, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_30_8_1e-06_1e-07_-0.0450_0.0004_-0.1141_0.0007.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04500590597582522, 0.00039009050851191265]  current qini:  [-0.11414796760218797, 0.0006526319170948462] best res:  [0, 0]  best_params:  None
+current epoch:  31
+current loss:  tensor(-0.0725, device='cuda:0')
+current epoch:  32
+current loss:  tensor(-0.0727, device='cuda:0')
+current epoch:  33
+current loss:  tensor(-0.0786, device='cuda:0')
+current epoch:  34
+current loss:  tensor(-0.0647, device='cuda:0')
+current epoch:  35
+current loss:  tensor(-0.0748, device='cuda:0')
+current auuc:  [-0.043279993219660216, -0.007454997583057321]  current qini:  [-0.10977514823878742, -0.014078557031157343] best res:  [0, 0]  best_params:  None
+current epoch:  36
+current loss:  tensor(-0.0766, device='cuda:0')
+current epoch:  37
+current loss:  tensor(-0.0761, device='cuda:0')
+current epoch:  38
+current loss:  tensor(-0.0758, device='cuda:0')
+current epoch:  39
+current loss:  tensor(-0.0737, device='cuda:0')
+current epoch:  40
+current loss:  tensor(-0.0769, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_40_8_1e-06_1e-07_-0.0454_0.0100_-0.1151_0.0192.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04540513370474713, 0.009961725241436254]  current qini:  [-0.11512716684888372, 0.019172560832512432] best res:  [0, 0]  best_params:  None
+current epoch:  41
+current loss:  tensor(-0.0821, device='cuda:0')
+current epoch:  42
+current loss:  tensor(-0.0641, device='cuda:0')
+current epoch:  43
+current loss:  tensor(-0.0800, device='cuda:0')
+current epoch:  44
+current loss:  tensor(-0.0822, device='cuda:0')
+current epoch:  45
+current loss:  tensor(-0.0781, device='cuda:0')
+current auuc:  [-0.047162698407991636, -0.002032529485332023]  current qini:  [-0.11950653339861267, -0.004018521363811422] best res:  [0, 0]  best_params:  None
+current epoch:  46
+current loss:  tensor(-0.0849, device='cuda:0')
+current epoch:  47
+current loss:  tensor(-0.0862, device='cuda:0')
+current epoch:  48
+current loss:  tensor(-0.0857, device='cuda:0')
+current epoch:  49
+current loss:  tensor(-0.0845, device='cuda:0')
+current epoch:  50
+current loss:  tensor(-0.0744, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_50_8_1e-06_1e-07_-0.0460_0.0042_-0.1166_0.0080.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.045981910878451944, 0.0042225964468655015]  current qini:  [-0.11656192055735931, 0.007958889976864466] best res:  [0, 0]  best_params:  None
+current epoch:  51
+current loss:  tensor(-0.0827, device='cuda:0')
+current epoch:  52
+current loss:  tensor(-0.0866, device='cuda:0')
+current epoch:  53
+current loss:  tensor(-0.0813, device='cuda:0')
+current epoch:  54
+current loss:  tensor(-0.0775, device='cuda:0')
+current epoch:  55
+current loss:  tensor(-0.0867, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_55_8_1e-06_1e-07_-0.0444_0.0070_-0.1125_0.0135.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04436751082764391, 0.0070400876809325035]  current qini:  [-0.11252693177187444, 0.013508944686144705] best res:  [0, 0]  best_params:  None
+current epoch:  56
+current loss:  tensor(-0.0927, device='cuda:0')
+current epoch:  57
+current loss:  tensor(-0.0903, device='cuda:0')
+current epoch:  58
+current loss:  tensor(-0.0926, device='cuda:0')
+current epoch:  59
+current loss:  tensor(-0.0908, device='cuda:0')
+current epoch:  60
+current loss:  tensor(-0.0808, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_60_8_1e-06_1e-07_-0.0437_0.0070_-0.1108_0.0134.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04369836606216817, 0.006974568731067383]  current qini:  [-0.11082196861464759, 0.013389302613627418] best res:  [0, 0]  best_params:  None
+current epoch:  61
+current loss:  tensor(-0.0855, device='cuda:0')
+current epoch:  62
+current loss:  tensor(-0.0883, device='cuda:0')
+current epoch:  63
+current loss:  tensor(-0.0882, device='cuda:0')
+current epoch:  64
+current loss:  tensor(-0.0932, device='cuda:0')
+current epoch:  65
+current loss:  tensor(-0.0959, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_65_8_1e-06_1e-07_-0.0463_0.0037_-0.1172_0.0068.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04625267082493798, 0.003672755792044035]  current qini:  [-0.11724963453333183, 0.006780306852884203] best res:  [0, 0]  best_params:  None
+current epoch:  66
+current loss:  tensor(-0.0885, device='cuda:0')
+current epoch:  67
+current loss:  tensor(-0.0988, device='cuda:0')
+current epoch:  68
+current loss:  tensor(-0.0918, device='cuda:0')
+current epoch:  69
+current loss:  tensor(-0.0951, device='cuda:0')
+current epoch:  70
+current loss:  tensor(-0.0856, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_70_8_1e-06_1e-07_-0.0468_0.0035_-0.1187_0.0070.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.046820353922890835, 0.003482007602874311]  current qini:  [-0.11865736102412973, 0.007004965186627818] best res:  [0, 0]  best_params:  None
+current epoch:  71
+current loss:  tensor(-0.0942, device='cuda:0')
+current epoch:  72
+current loss:  tensor(-0.1020, device='cuda:0')
+current epoch:  73
+current loss:  tensor(-0.0972, device='cuda:0')
+current epoch:  74
+current loss:  tensor(-0.0915, device='cuda:0')
+current epoch:  75
+current loss:  tensor(-0.0903, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_75_8_1e-06_1e-07_-0.0443_0.0057_-0.1124_0.0113.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.044332257307782286, 0.0056580175908727175]  current qini:  [-0.11240425476231423, 0.01132196013457141] best res:  [0, 0]  best_params:  None
+current epoch:  76
+current loss:  tensor(-0.0986, device='cuda:0')
+current epoch:  77
+current loss:  tensor(-0.0959, device='cuda:0')
+current epoch:  78
+current loss:  tensor(-0.1016, device='cuda:0')
+current epoch:  79
+current loss:  tensor(-0.1036, device='cuda:0')
+current epoch:  80
+current loss:  tensor(-0.1065, device='cuda:0')
+current auuc:  [-0.04727088746673317, -0.005566204271479544]  current qini:  [-0.11979884609725257, -0.012273319288400246] best res:  [0, 0]  best_params:  None
+current epoch:  81
+current loss:  tensor(-0.1053, device='cuda:0')
+current epoch:  82
+current loss:  tensor(-0.1077, device='cuda:0')
+current epoch:  83
+current loss:  tensor(-0.1042, device='cuda:0')
+current epoch:  84
+current loss:  tensor(-0.0992, device='cuda:0')
+current epoch:  85
+current loss:  tensor(-0.1073, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_85_8_1e-06_1e-07_-0.0473_0.0004_-0.1198_0.0009.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.047270455823640936, 0.0003675035908701684]  current qini:  [-0.11981592229017374, 0.0008570317558619011] best res:  [0, 0]  best_params:  None
+current epoch:  86
+current loss:  tensor(-0.1082, device='cuda:0')
+current epoch:  87
+current loss:  tensor(-0.1088, device='cuda:0')
+current epoch:  88
+current loss:  tensor(-0.1071, device='cuda:0')
+current epoch:  89
+current loss:  tensor(-0.1083, device='cuda:0')
+current epoch:  90
+current loss:  tensor(-0.1057, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_90_8_1e-06_1e-07_-0.0482_0.0039_-0.1220_0.0076.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04815965760822372, 0.0039417832216853]  current qini:  [-0.12203698090113818, 0.007589068996284411] best res:  [0, 0]  best_params:  None
+current epoch:  91
+current loss:  tensor(-0.1110, device='cuda:0')
+current epoch:  92
+current loss:  tensor(-0.0965, device='cuda:0')
+current epoch:  93
+current loss:  tensor(-0.1029, device='cuda:0')
+current epoch:  94
+current loss:  tensor(-0.1027, device='cuda:0')
+current epoch:  95
+current loss:  tensor(-0.1037, device='cuda:0')
+current auuc:  [-0.04671774430960937, -3.426564346321912e-05]  current qini:  [-0.11841534756320489, -0.00030667665190788794] best res:  [0, 0]  best_params:  None
+current epoch:  96
+current loss:  tensor(-0.1029, device='cuda:0')
+current epoch:  97
+current loss:  tensor(-0.1024, device='cuda:0')
+current epoch:  98
+current loss:  tensor(-0.1091, device='cuda:0')
+current epoch:  99
+current loss:  tensor(-0.1145, device='cuda:0')
+current epoch:  100
+current loss:  tensor(-0.1128, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_100_8_1e-06_1e-07_-0.0476_0.0030_-0.1207_0.0056.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04762978273993771, 0.0030480726395965964]  current qini:  [-0.120708771010343, 0.005551552819195436] best res:  [0, 0]  best_params:  None
