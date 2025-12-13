@@ -128,13 +128,13 @@ if __name__ == "__main__":
             for init_lr in [1e-5]:
                 # for tr_init_lr in [1e-4,1e-3,1e-2]:
                 for tr_init_lr in [1e-3]:
-                    params = f'{alpha}_{beta}'
+                    params = f'{h}_{init_lr}'
                     Result[params]={}
                     #Result[model_name]=[]
                     k+=1
                     alpha = 0.5
                     beta = 1.
-                    for model_name in ['Vcnet_tr']: #'Vcnet_tr','Vcnet'
+                    for model_name in ['Vcnet_tr','Vcnet']: #'Vcnet_tr','Vcnet'
 
                         cfg_density = [(8, h, 1, 'relu'), (h, h, 1, 'relu')]
                         num_grid = 10
@@ -275,7 +275,7 @@ if __name__ == "__main__":
 
                             Result[params][model_name].append([mse1,mse2])
 
-                            with open(save_path + '/result_id.json', 'w') as fp:
+                            with open(save_path + '/result_test.json', 'w') as fp:
                                 json.dump(Result, fp)
 
                     # avg_mse1 = sum([i[1] for i in Result[params]['Vcnet']])/len(Result[params]['Vcnet'])

@@ -6,9 +6,9 @@ import pandas as pd
 import os
 import json
 
-from models.dynamic_net import MyNet_Binary,TR_Binary
+from models.dynamic_net import CVRNet_Binary,TR_Binary
 from data.data import get_iter
-from utils.eval import curve,curve_2,eval_binary_2
+from utils.eval import eval_binary_2
 from sklift.metrics import uplift_auc_score, qini_auc_score
 
 import argparse
@@ -61,14 +61,6 @@ def save_checkpoint(state, model_name, checkpoint_dir):
     torch.save(state, filename)
     print(f"=> Saving checkpoint to {filename}")
 
-# criterion
-# def criterion(out, y, t,alpha=0.5, epsilon=1e-9):
-#     p = out[0]
-#     mu0,mu1 = out[1][0],out[1][1]
-#     # mu20,mu21 = out[1][0]*out[2][0],out[1][1]*out[2][1]
-#     loss_pi = 0
-#     return ((out[1].squeeze() - y.squeeze())**2).mean() - alpha * torch.log(out[0] + epsilon).mean()
-
 def criterion_2(out, t,y1, y2,alpha=0.5, epsilon=1e-9):
     mu1 = (1-t)*out[1][0] + t*out[1][0]
     mu2 = (1-t)*out[1][0]*out[2][0] + t*out[1][1]*out[2][1]
@@ -85,11 +77,6 @@ def criterion_cvr(out, t,y1, y2,alpha=0.5, epsilon=1e-9):
     loss_y2 = (-y2 * torch.log(mu2 + epsilon).squeeze() - (1-y2) * torch.log(1 - mu2 + epsilon).squeeze()).mean()
     return loss_pi + 0*loss_y1 + loss_y2
 
-# def criterion_id(out, y1, y2,alpha=0.5, epsilon=1e-9):
-#     loss_pi = -alpha * torch.log(out[0] + epsilon).mean()
-#     loss_y1 = (-y1 * torch.log(out[1] + epsilon).squeeze() - (1-y1) * torch.log(1 - out[1] + epsilon).squeeze()).mean()
-#     loss_y2 = ((-y2 * torch.log(out[2] + epsilon).squeeze() - (1-y2) * torch.log(1 - out[2] + epsilon).squeeze()) * y1.squeeze() / (out[1].detach().squeeze()+1e-9)).mean()
-#     return loss_pi + loss_y1 + loss_y2 
 
 def criterion_TR(out, t,trg, y, beta=1., epsilon=1e-9,detach=False):
     pi = out[0].detach() if detach else out[0]
@@ -104,11 +91,6 @@ def criterion_TR_cvr(out, t,trg, y1, y2, beta=1., epsilon=1e-9):
     trg_term = trg*(t/(pi+epsilon) - (1-t)/(1-pi+epsilon))
     return beta * (( (y2 - mu2)/(mu1 + epsilon) - (y1-mu1)*mu2/(mu1**2+epsilon) - trg_term)**2).mean()
 
-# def criterion_TR_id(out, trg, y1, y2,beta=1., epsilon=1e-9):
-#     return beta *  (y1.squeeze()*(y2.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[2].squeeze())**2 / (out[1].detach().squeeze()+1e-9) ).mean()
-
-# def eval(model,test_matrix, t_grid, TargetReg1,TargetReg2):
-#     pass
 
 
 if __name__ == "__main__":
@@ -122,7 +104,7 @@ if __name__ == "__main__":
     # parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
 
     # training
-    parser.add_argument('--n_epochs', type=int, default=600, help='num of epochs to train')
+    parser.add_argument('--n_epochs', type=int, default=10, help='num of epochs to train')
 
     # print train info
     parser.add_argument('--verbose', type=int, default=1, help='print train info freq')
@@ -169,202 +151,98 @@ if __name__ == "__main__":
     sys.stderr = sys.stdout
 
 
-
-    Result = {'MyNet_tr': {}, 'MyNet': {}}
-    # model_name = 'Vcnet_tr'
-    best_auuc = 0
-    best_qini = 0
-    best_params = None
-    k = 0
-
-    #for model_name in ['Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr', 'Vcnet', 'Vcnet_tr']:
+    Result = {'CVRNet_tr': {}, 'CVRNet': {}}
+    init_lr = 1e-5 
+    tr_init_lr = 1e-5
+    alpha = 0.5
+    n = 5
+    beta = 1.
     
-    for num_epoch in [120]:
-        for h in [16,32]:
-            # for init_lr in [1e-4,1e-3,1e-2]:
-            # for alpha in [0.1,0.5,1]:
-            for init_lr in [1e-5,1e-6,1e-7]: #1e-6,
-                # for tr_init_lr in [1e-4,1e-3,1e-2]:
-                for tr_init_lr in [1e-5,1e-7]:
-                    #if h==32 and init_lr==1e-5 and tr_init_lr==1e-5: continue
-                    if init_lr==1e-5: num_epoch = 80 
-                    params = f'{h}_{init_lr }_{tr_init_lr}'
-                    # Result[params]={}
-                    #Result[model_name]=[]
-                    k+=1
-                    alpha = 0.5
-                    beta = 1.
-                    for model_name in ['MyNet_tr','MyNet']: #'Dragonnet_tr','Tarnet'
-                        cfg_density = [(12, h, 1, 'relu'), (h, h, 1, 'relu')]
-                        cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
-                        model = MyNet_Binary(cfg_density, cfg).to(device)
-                        # model = MyNet(cfg_density, num_grid, cfg, degree, knots,cfg_backbone=[(h, h, 1, 'relu')]).to(device)
-                        model._initialize_weights()
-                        # use Target Regularization
-                        if model_name == 'MyNet_tr':
-                            isTargetReg = 1
-                        else:
-                            isTargetReg = 0
+    for model_name in ['CVRNet_tr','CVRNet']:
+        cfg_density = [(12, 8, 1, 'relu'), (8, 8, 1, 'relu')]
+        cfg = [(8, 8, 1, 'relu'), (8, 1, 1, 'id')]
+        model = CVRNet_Binary(cfg_density, cfg).to(device)
+        model._initialize_weights()
+        # use Target Regularization
+        if model_name == 'CVRNet_tr':
+            isTargetReg = 1
+        else:
+            isTargetReg = 0
 
-                        if isTargetReg:
-                            TargetReg1 = TR_Binary().to(device)
-                            TargetReg2 = TR_Binary().to(device)
-                            TargetReg1._initialize_weights()
-                            TargetReg2._initialize_weights()
-
-                        init_lr = init_lr  #0.0001
-                        alpha = 0.5 #alpha #0.5
-                        tr_init_lr = tr_init_lr #0.001
-                        beta = 1. #beta #1.
-
-                        cur_save_path = save_path
-                        if not os.path.exists(cur_save_path):
-                            os.makedirs(cur_save_path)
+        if isTargetReg:
+            TargetReg1 = TR_Binary().to(device)
+            TargetReg2 = TR_Binary().to(device)
+            TargetReg1._initialize_weights()
+            TargetReg2._initialize_weights()
 
 
-                        data = pd.read_csv(load_path + '/train.csv')
-                        train_matrix = torch.from_numpy(data.to_numpy()).float().to(device)
-                        data = pd.read_csv(load_path + '/test.csv')
-                        test_matrix = torch.from_numpy(data.to_numpy()).float().to(device)
-                            
-                        # train_matrix, test_matrix, t_grid = simu_data1(500, 200)
-                        train_loader = get_iter(train_matrix, batch_size=1024, shuffle=True)
-                        test_loader = get_iter(test_matrix, batch_size=test_matrix.shape[0], shuffle=False)
-
-                        # reinitialize model
-                        model._initialize_weights()
-
-                        # define optimizer
-                        optimizer = torch.optim.SGD(model.parameters(), lr=init_lr, momentum=momentum, weight_decay=wd, nesterov=True)
-                        # optimizer = torch.optim.Adam(model.parameters(), lr=init_lr, weight_decay=wd)
-
-                        if isTargetReg:
-                            tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
-                            tr_optimizer2 = torch.optim.SGD(TargetReg2.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
-
-                        print('model : ', model_name)
-                        for epoch in range(num_epoch):
-                            for idx, (inputs,exposure) in enumerate(train_loader):
-                                t = inputs[:, 12]
-                                x = inputs[:, :12]
-                                y1 = inputs[:, 14]
-                                y2 = inputs[:, 13]
+        cur_save_path = save_path
+        if not os.path.exists(cur_save_path):
+            os.makedirs(cur_save_path)
 
 
-                                if isTargetReg:
-                                    optimizer.zero_grad()
-                                    out = model.forward(x)
-                                    trg1,trg2 = TargetReg1(x),TargetReg2(x)
-                                    loss = criterion_cvr(out, t,y1,y2,alpha=alpha) + 0*criterion_TR(out, t,trg1, y1, beta=beta,detach=True) + criterion_TR_cvr(out, t,trg2, y1, y2, beta=beta)
-                                    loss.backward()
-                                    optimizer.step()
-
-                                    tr_optimizer1.zero_grad()
-                                    tr_optimizer2.zero_grad()
-                                    out = model(x)
-                                    trg1, trg2 = TargetReg1(x), TargetReg2(x)
-                                    
-                                    # tr_loss1 = criterion_TR(out, t,trg1, y1, beta=beta,detach=True)
-                                    tr_loss2 = criterion_TR_cvr(out, t,trg2, y1, y2, beta=beta)
-                                    # tr_loss1.backward(retain_graph=True) 
-                                    # tr_optimizer1.step()
-                                    tr_loss2.backward() 
-                                    tr_optimizer2.step()
-                                else:
-                                    optimizer.zero_grad()
-                                    out = model.forward(x)
-                                    loss = criterion_cvr(out, t,y1,y2,alpha=alpha)
-                                    loss.backward()
-                                    optimizer.step()
-
-                            epoch += 1
-                            if epoch==1 or epoch % verbose == 0 or epoch==num_epoch: #
-                                print('current epoch: ', epoch)
-                                print('current loss: ', loss.data)
-                                if epoch==1 or epoch % 5 == 0 or epoch==num_epoch:
-                                    if isTargetReg:
-                                        auuc1, auuc2,qini1,qini2 = eval_binary_2(model,test_matrix, TargetReg1,TargetReg2)
-                                    else:
-                                        auuc1, auuc2,qini1,qini2 = eval_binary_2(model, test_matrix)
-                                    
-                                    params1 = f'{epoch}_' + params 
-                                    Result[model_name][params1] = [auuc1,auuc2,qini1,qini2]
-                                    if 'tr' not in model_name:
-                                        res = Result[model_name][params1]
-                                        res_tr = Result[model_name+'_tr'][params1]
-                                        #if res[0]>0 and res[1]>0 and res[2]>0 and res[3]>0 and res_tr[0]>res[0] and res_tr[1]>res[1] and res_tr[2]>res[2] and res_tr[3]>res[3] and (2*res_tr[1]+res_tr[3])>(2*best_auuc+best_qini):
-                                        #if res[0]>0 and res[1]>0 and res_tr[0]>res[0] and res_tr[1]>res[1]:
-                                        if res[1]>0 and res[3]>0 and res_tr[1]>res[1] and res_tr[3]>res[3]:
-                                            ckpt_dir = os.path.join(cur_save_path, "checkpoints")
-                                            os.makedirs(ckpt_dir, exist_ok=True)
-                                            ckpt_name = f"test_{model_name}_ckpt_{params1}_{'_'.join([f'{r:.4f}' for r in res])}.pth.tar"
-                                            ckpt_path = os.path.join(ckpt_dir, ckpt_name)
-                                            print('-----------------------------------------------------------------')
-                                            save_checkpoint({
-                                                'model': model_name,
-                                                'res': res,
-                                                'model_state_dict': model.state_dict(),
-                                                'TR_state_dict': [TargetReg1.state_dict(), TargetReg2.state_dict()] if isTargetReg else None
-                                            }, model_name=model_name, checkpoint_dir=ckpt_path)
-                                            print('-----------------------------------------------------------------')
-                                            if res_tr[1]>best_auuc:
-                                                best_params = params1 
-                                                best_auuc,best_qini = res_tr[1],res_tr[3]
-                                    
-                                    else:
-                                        res = Result[model_name][params1]
-                                        if res[1]>0 and res[3]>0:
-                                            ckpt_dir = os.path.join(cur_save_path, "checkpoints")
-                                            os.makedirs(ckpt_dir, exist_ok=True)
-                                            ckpt_name = f"test_{model_name}_ckpt_{params1}_{'_'.join([f'{r:.4f}' for r in res])}.pth.tar"
-                                            ckpt_path = os.path.join(ckpt_dir, ckpt_name)
-                                            print('-----------------------------------------------------------------')
-                                            save_checkpoint({
-                                                'model': model_name,
-                                                'res': res,
-                                                'model_state_dict': model.state_dict(),
-                                                'TR_state_dict': [TargetReg1.state_dict(), TargetReg2.state_dict()] if isTargetReg else None
-                                            }, model_name=model_name, checkpoint_dir=ckpt_path)
-                                            print('-----------------------------------------------------------------')
-
-
-                                    print('current auuc: ', [auuc1,auuc2],' current qini: ',[qini1,qini2],'best res: ', [best_auuc,best_qini],' best_params: ',best_params)
-                                    with open(save_path + '/result_test_2.json', 'w') as fp:
-                                        json.dump(Result, fp)
-
+        data = pd.read_csv(load_path + '/train.csv')
+        train_matrix = torch.from_numpy(data.to_numpy()).float().to(device)
+        data = pd.read_csv(load_path + '/test.csv')
+        test_matrix = torch.from_numpy(data.to_numpy()).float().to(device)
             
+        # train_matrix, test_matrix, t_grid = simu_data1(500, 200)
+        train_loader = get_iter(train_matrix, batch_size=1024, shuffle=True)
+        test_loader = get_iter(test_matrix, batch_size=test_matrix.shape[0], shuffle=False)
 
-                        # if isTargetReg:
-                        #     auuc1, auuc2,qini1,qini2 = eval_binary_2(model,test_matrix, TargetReg1,TargetReg2)
-                        # else:
-                        #     auuc1,auuc2,qini1,qini2 = eval_binary_2(model, test_matrix)
+        # reinitialize model
+        model._initialize_weights()
 
-                        # print('loss: ', float(loss.data))
-                        # print('auuc: ', [auuc1,auuc2],' qini: ',[qini1,qini2])
-                        # print('-----------------------------------------------------------------')
-                        # save_checkpoint({
-                        #     'model': model_name,
-                        #     'best_test_loss': [mse1,mse2],
-                        #     'model_state_dict': model.state_dict(),
-                        #     'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()] if isTargetReg else None
-                        # }, model_name=model_name, checkpoint_dir=cur_save_path)
-                        # print('-----------------------------------------------------------------')
+        # define optimizer
+        optimizer = torch.optim.SGD(model.parameters(), lr=init_lr, momentum=momentum, weight_decay=wd, nesterov=True)
+        # optimizer = torch.optim.Adam(model.parameters(), lr=init_lr, weight_decay=wd)
 
-                        # Result[params][model_name]=[auuc1,auuc2,qini1,qini2]
+        if isTargetReg:
+            tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
+            tr_optimizer2 = torch.optim.SGD(TargetReg2.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
+
+        print('model : ', model_name)
+        for epoch in range(n):
+            for idx, (inputs,exposure) in enumerate(train_loader):
+                t = inputs[:, 12]
+                x = inputs[:, :12]
+                y1 = inputs[:, 14]
+                y2 = inputs[:, 13]
 
 
-                    # res1 = Result[params]['MyNet_tr']
-                    # res2 = Result[params]['MyNet_tr']
+                if isTargetReg:
+                    optimizer.zero_grad()
+                    out = model.forward(x)
+                    trg1,trg2 = TargetReg1(x),TargetReg2(x)
+                    loss = criterion_cvr(out, t,y1,y2,alpha=alpha) + 0*criterion_TR(out, t,trg1, y1, beta=beta,detach=True) + criterion_TR_cvr(out, t,trg2, y1, y2, beta=beta)
+                    loss.backward()
+                    optimizer.step()
 
+                    tr_optimizer1.zero_grad()
+                    tr_optimizer2.zero_grad()
+                    out = model(x)
+                    trg1, trg2 = TargetReg1(x), TargetReg2(x)
                     
+                    # tr_loss1 = criterion_TR(out, t,trg1, y1, beta=beta,detach=True)
+                    tr_loss2 = criterion_TR_cvr(out, t,trg2, y1, y2, beta=beta)
+                    # tr_loss1.backward(retain_graph=True) 
+                    # tr_optimizer1.step()
+                    tr_loss2.backward() 
+                    tr_optimizer2.step()
+                else:
+                    optimizer.zero_grad()
+                    out = model.forward(x)
+                    loss = criterion_cvr(out, t,y1,y2,alpha=alpha)
+                    loss.backward()
+                    optimizer.step()
 
-                    
-
-                # avg_mse1 = sum([i[1] for i in Result[params]['Vcnet']])/len(Result[params]['Vcnet'])
-                # avg_mse2 = sum([i[1] for i in Result[params]['Vcnet_tr']])/len(Result[params]['Vcnet_tr'])
-                # if avg_mse2<avg_mse1 and avg_mse2<best_mse:
-                #     best_mse,best_mse1, best_params = avg_mse2, avg_mse1,params
-                # print('*** current mse: ',[avg_mse1,avg_mse2],' current params: ',params, ' num_tunes: ',k)
-                # print('best mse: ',[best_mse1,best_mse],' best_params: ',best_params)
+            epoch += 1
+            if epoch==1 or epoch==n:
+                if isTargetReg:
+                    _, auuc2,_,qini2 = eval_binary_2(model,test_matrix, TargetReg1,TargetReg2)
+                else:
+                    _, auuc2,_,qini2 = eval_binary_2(model, test_matrix)
+            
+                print('current step auuc: ', auuc2,' current step qini: ',qini2)
 
                     

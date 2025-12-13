@@ -237,6 +237,91 @@ class Vcnet(nn.Module):
                 if m.isbias:
                     m.bias.data.zero_()
 
+class CVRNet(nn.Module):
+    def __init__(self, cfg_density, num_grid, cfg, degree, knots):
+        super(CVRNet, self).__init__()
+        """
+        cfg_density: cfg for the density estimator; [(ind1, outd1, isbias1), 'act', ....]; the cfg for density estimator head is not included
+        num_grid: how many grid used for the density estimator head
+        """
+
+        # cfg/cfg_density = [(ind1, outd1, isbias1, activation),....]
+        self.cfg_density = cfg_density
+        self.num_grid = num_grid
+
+        self.cfg = cfg
+        self.degree = degree
+        self.knots = knots
+
+        # construct the density estimator
+        density_blocks = []
+        density_hidden_dim = -1
+        for layer_idx, layer_cfg in enumerate(cfg_density):
+            # fc layer
+            if layer_idx == 0:
+                # weight connected to feature
+                self.feature_weight = nn.Linear(in_features=layer_cfg[0], out_features=layer_cfg[1], bias=layer_cfg[2])
+                density_blocks.append(self.feature_weight)
+            else:
+                density_blocks.append(nn.Linear(in_features=layer_cfg[0], out_features=layer_cfg[1], bias=layer_cfg[2]))
+            density_hidden_dim = layer_cfg[1]
+            if layer_cfg[3] == 'relu':
+                density_blocks.append(nn.ReLU(inplace=True))
+            elif layer_cfg[3] == 'elu':
+                density_blocks.append(nn.ELU(inplace=True))
+            elif layer_cfg[3] == 'tanh':
+                density_blocks.append(nn.Tanh())
+            elif layer_cfg[3] == 'sigmoid':
+                density_blocks.append(nn.Sigmoid())
+            else:
+                print('No activation')
+
+        self.hidden_features = nn.Sequential(*density_blocks)
+
+        self.density_hidden_dim = density_hidden_dim
+        self.density_estimator_head = Density_Block(self.num_grid, density_hidden_dim, isbias=1)
+
+        # construct the dynamics network
+        tmp = []
+        for _ in range(2):
+            blocks = []
+            for layer_idx, layer_cfg in enumerate(cfg):
+                if layer_idx == len(cfg)-1: # last layer
+                    last_layer = Dynamic_FC(layer_cfg[0], layer_cfg[1], self.degree, self.knots, act=layer_cfg[3], isbias=layer_cfg[2], islastlayer=1)
+                else:
+                    blocks.append(
+                        Dynamic_FC(layer_cfg[0], layer_cfg[1], self.degree, self.knots, act=layer_cfg[3], isbias=layer_cfg[2], islastlayer=0))
+            blocks.append(last_layer)
+            tmp.append(blocks)
+        self.Q1 = nn.Sequential(*tmp[0])
+        self.Q2 = nn.Sequential(*tmp[1])
+        self.sigmoid = nn.Sigmoid()
+
+    def forward(self, t, x):
+        hidden = self.hidden_features(x)
+        t_hidden = torch.cat((torch.unsqueeze(t, 1), hidden), 1) #.detach()
+        #t_hidden = torch.cat((torch.unsqueeze(t, 1), x), 1)
+        g = self.density_estimator_head(t, hidden)
+        Q1 = self.sigmoid(self.Q1(t_hidden))
+        Q2 = self.sigmoid(self.Q2(t_hidden))
+        return g, Q1, Q2
+
+    def _initialize_weights(self):
+        # TODO: maybe add more distribution for initialization
+        for m in self.modules():
+            if isinstance(m, Dynamic_FC):
+                m.weight.data.normal_(0, 1.)
+                if m.isbias:
+                    m.bias.data.zero_()
+            elif isinstance(m, nn.Linear):
+                m.weight.data.normal_(0, 0.01)
+                if m.bias is not None:
+                    m.bias.data.zero_()
+            elif isinstance(m, Density_Block):
+                m.weight.data.normal_(0, 0.01)
+                if m.isbias:
+                    m.bias.data.zero_()
+
 class Vcnet_2(nn.Module):
     def __init__(self, cfg_density, num_grid, cfg, degree, knots):
         super(Vcnet_2, self).__init__()
@@ -335,9 +420,9 @@ class TR_Binary(nn.Module):
         #self.weight.data_utils.normal_(0, 0.01)
         nn.init.zeros_(self.epsilon)
 
-class MyNet_Binary(nn.Module):
+class CVRNet_Binary(nn.Module):
     def __init__(self,cfg_density,cfg):
-        super(MyNet_Binary, self).__init__()
+        super(CVRNet_Binary, self).__init__()
         # construct the density estimator
         density_blocks = self.get_blocks(cfg_density)
         density_hidden_dim = cfg_density[-1][1]
@@ -1102,12 +1187,3 @@ y = torch.rand(10)
 out = D.forward(t, x)
 """
 
-# cfg_density = [(3,4,1,'relu'), (4,6,1,'relu')]
-# cfg = [(6,4,1,'relu'), (4,1,1,'id')]
-# model = MyNet_Binary(cfg_density, cfg)
-# model._initialize_weights()
-# x = torch.rand(10, 3)
-# p,mu = model.forward(x)
-# m10,m11,m20,m21 = mu[0][0],mu[0][1],mu[1][0],mu[1][1]
-# # print(p,m10,m11,m20,m21)
-# print(p.shape,m10.shape,m11.shape,m20.shape,m21.shape)

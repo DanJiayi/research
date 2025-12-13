@@ -136,7 +136,8 @@ if __name__ == "__main__":
                     Result[params]={}
                     #Result[model_name]=[]
                     k+=1
-                    for model_name in ['Vcnet_id_tr','Vcnet_id']: #'Vcnet_tr'
+                    #for model_name in ['Vcnet_id_tr','Vcnet_id']: #'Vcnet_tr'
+                    for model_name in ['Vcnet_tr','Vcnet']: #'Vcnet_tr'
                         Result[params][model_name]=[]
                         # import model
                         cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
@@ -288,7 +289,7 @@ if __name__ == "__main__":
 
                             Result[params][model_name].append([mse1,mse2])
 
-                            with open(save_path + '/result_id_2.json', 'w') as fp:
+                            with open(save_path + '/result_test.json', 'w') as fp:
                                 json.dump(Result, fp)
 
                     # avg_mse1 = sum([i[1] for i in Result[params]['Vcnet']])/len(Result[params]['Vcnet'])

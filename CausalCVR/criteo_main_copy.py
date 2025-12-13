@@ -6,7 +6,7 @@ import pandas as pd
 import os
 import json
 
-from models.dynamic_net import MyNet_Binary,TR_Binary
+from models.dynamic_net import CVRNet_Binary,TR_Binary
 from data.data import get_iter
 from utils.eval import curve,curve_2,eval_binary_2
 from sklift.metrics import uplift_auc_score, qini_auc_score
@@ -170,7 +170,7 @@ if __name__ == "__main__":
 
 
 
-    Result = {'MyNet': {}}
+    Result = {'MyNet_tr': {}, 'MyNet': {}}
     # model_name = 'Vcnet_tr'
     best_auuc = 0
     best_qini = 0
@@ -179,25 +179,24 @@ if __name__ == "__main__":
 
     #for model_name in ['Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr', 'Vcnet', 'Vcnet_tr']:
     
-    for num_epoch in [100]:
+    for num_epoch in [10]:
         for h in [8]:
             # for init_lr in [1e-4,1e-3,1e-2]:
             # for alpha in [0.1,0.5,1]:
-            for init_lr in [1e-6]: #1e-6,
+            for init_lr in [1e-5]: #1e-6,
                 # for tr_init_lr in [1e-4,1e-3,1e-2]:
-                for tr_init_lr in [1e-7]:
+                for tr_init_lr in [1e-5]:
                     #if h==32 and init_lr==1e-5 and tr_init_lr==1e-5: continue
-                    if init_lr==1e-5: num_epoch = 80 
                     params = f'{h}_{init_lr }_{tr_init_lr}'
                     # Result[params]={}
                     #Result[model_name]=[]
                     k+=1
                     alpha = 0.5
                     beta = 1.
-                    for model_name in ['MyNet']: #'Dragonnet_tr','Tarnet'
+                    for model_name in ['MyNet_tr','MyNet']: #'Dragonnet_tr','Tarnet'
                         cfg_density = [(12, h, 1, 'relu'), (h, h, 1, 'relu')]
                         cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
-                        model = MyNet_Binary(cfg_density, cfg).to(device)
+                        model = CVRNet_Binary(cfg_density, cfg).to(device)
                         # model = MyNet(cfg_density, num_grid, cfg, degree, knots,cfg_backbone=[(h, h, 1, 'relu')]).to(device)
                         model._initialize_weights()
                         # use Target Regularization
@@ -291,10 +290,10 @@ if __name__ == "__main__":
                                     Result[model_name][params1] = [auuc1,auuc2,qini1,qini2]
                                     if 'tr' not in model_name:
                                         res = Result[model_name][params1]
-                                        # res_tr = Result[model_name+'_tr'][params1]
+                                        res_tr = Result[model_name+'_tr'][params1]
                                         #if res[0]>0 and res[1]>0 and res[2]>0 and res[3]>0 and res_tr[0]>res[0] and res_tr[1]>res[1] and res_tr[2]>res[2] and res_tr[3]>res[3] and (2*res_tr[1]+res_tr[3])>(2*best_auuc+best_qini):
                                         #if res[0]>0 and res[1]>0 and res_tr[0]>res[0] and res_tr[1]>res[1]:
-                                        if res[1]>0 and res[3]>0:
+                                        if res[1]>0 and res[3]>0 and res_tr[1]>res[1] and res_tr[3]>res[3]:
                                             ckpt_dir = os.path.join(cur_save_path, "checkpoints")
                                             os.makedirs(ckpt_dir, exist_ok=True)
                                             ckpt_name = f"test_{model_name}_ckpt_{params1}_{'_'.join([f'{r:.4f}' for r in res])}.pth.tar"
@@ -307,9 +306,9 @@ if __name__ == "__main__":
                                                 'TR_state_dict': [TargetReg1.state_dict(), TargetReg2.state_dict()] if isTargetReg else None
                                             }, model_name=model_name, checkpoint_dir=ckpt_path)
                                             print('-----------------------------------------------------------------')
-                                            # if res_tr[1]>best_auuc:
-                                            #     best_params = params1 
-                                            #     best_auuc,best_qini = res_tr[1],res_tr[3]
+                                            if res_tr[1]>best_auuc:
+                                                best_params = params1 
+                                                best_auuc,best_qini = res_tr[1],res_tr[3]
                                     
                                     else:
                                         res = Result[model_name][params1]
@@ -329,42 +328,7 @@ if __name__ == "__main__":
 
 
                                     print('current auuc: ', [auuc1,auuc2],' current qini: ',[qini1,qini2],'best res: ', [best_auuc,best_qini],' best_params: ',best_params)
-                                    # with open(save_path + '/result_test_2.json', 'w') as fp:
-                                    #     json.dump(Result, fp)
-
-            
-
-                        # if isTargetReg:
-                        #     auuc1, auuc2,qini1,qini2 = eval_binary_2(model,test_matrix, TargetReg1,TargetReg2)
-                        # else:
-                        #     auuc1,auuc2,qini1,qini2 = eval_binary_2(model, test_matrix)
-
-                        # print('loss: ', float(loss.data))
-                        # print('auuc: ', [auuc1,auuc2],' qini: ',[qini1,qini2])
-                        # print('-----------------------------------------------------------------')
-                        # save_checkpoint({
-                        #     'model': model_name,
-                        #     'best_test_loss': [mse1,mse2],
-                        #     'model_state_dict': model.state_dict(),
-                        #     'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()] if isTargetReg else None
-                        # }, model_name=model_name, checkpoint_dir=cur_save_path)
-                        # print('-----------------------------------------------------------------')
-
-                        # Result[params][model_name]=[auuc1,auuc2,qini1,qini2]
-
-
-                    # res1 = Result[params]['MyNet_tr']
-                    # res2 = Result[params]['MyNet_tr']
-
-                    
-
-                    
-
-                # avg_mse1 = sum([i[1] for i in Result[params]['Vcnet']])/len(Result[params]['Vcnet'])
-                # avg_mse2 = sum([i[1] for i in Result[params]['Vcnet_tr']])/len(Result[params]['Vcnet_tr'])
-                # if avg_mse2<avg_mse1 and avg_mse2<best_mse:
-                #     best_mse,best_mse1, best_params = avg_mse2, avg_mse1,params
-                # print('*** current mse: ',[avg_mse1,avg_mse2],' current params: ',params, ' num_tunes: ',k)
-                # print('best mse: ',[best_mse1,best_mse],' best_params: ',best_params)
+                                    with open(save_path + '/result_test_2.json', 'w') as fp:
+                                        json.dump(Result, fp)
 
                     

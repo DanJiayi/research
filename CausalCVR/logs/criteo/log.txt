@@ -9869,3 +9869,588 @@ current loss:  tensor(-0.1128, device='cuda:0')
 => Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_100_8_1e-06_1e-07_-0.0476_0.0030_-0.1207_0.0056.pth.tar
 -----------------------------------------------------------------
 current auuc:  [-0.04762978273993771, 0.0030480726395965964]  current qini:  [-0.120708771010343, 0.005551552819195436] best res:  [0, 0]  best_params:  None
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(-0.0178, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_tr_ckpt_1_8_1e-05_1e-05_-0.0457_0.0097_-0.1159_0.0177.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.045714348026359576, 0.009713018126930142]  current qini:  [-0.11594104556759981, 0.01770322449388022] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(-0.0149, device='cuda:0')
+current epoch:  3
+current loss:  tensor(-0.0184, device='cuda:0')
+current epoch:  4
+current loss:  tensor(-0.0173, device='cuda:0')
+current epoch:  5
+current loss:  tensor(-0.0413, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_tr_ckpt_5_8_1e-05_1e-05_-0.0436_0.0319_-0.1106_0.0599.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04360894803972258, 0.031884963480193734]  current qini:  [-0.11060449242572046, 0.05994655653362213] best res:  [0, 0]  best_params:  None
+current epoch:  6
+current loss:  tensor(-0.0331, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main.py", line 247, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 21, in __getitem__
+    sample = self.data_matrix[idx, :]
+KeyboardInterrupt
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(-0.0178, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_tr_ckpt_1_8_1e-05_1e-05_-0.0457_0.0097_-0.1159_0.0177.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.045714348026359576, 0.009713018126930142]  current qini:  [-0.11594104556759981, 0.01770322449388022] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(-0.0149, device='cuda:0')
+current epoch:  3
+current loss:  tensor(-0.0184, device='cuda:0')
+current epoch:  4
+current loss:  tensor(-0.0173, device='cuda:0')
+current epoch:  5
+current loss:  tensor(-0.0413, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_tr_ckpt_5_8_1e-05_1e-05_-0.0436_0.0319_-0.1106_0.0599.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04360894803972258, 0.031884963480193734]  current qini:  [-0.11060449242572046, 0.05994655653362213] best res:  [0, 0]  best_params:  None
+current epoch:  6
+current loss:  tensor(-0.0331, device='cuda:0')
+current epoch:  7
+current loss:  tensor(-0.0409, device='cuda:0')
+current epoch:  8
+current loss:  tensor(-0.0498, device='cuda:0')
+current epoch:  9
+current loss:  tensor(-0.0708, device='cuda:0')
+current epoch:  10
+current loss:  tensor(-0.0360, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_tr_ckpt_10_8_1e-05_1e-05_-0.0491_0.0056_-0.1243_0.0093.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04909282564913418, 0.005629619280274039]  current qini:  [-0.12434975687046201, 0.009332328895311952] best res:  [0, 0]  best_params:  None
+current epoch:  11
+current loss:  tensor(-0.0996, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main.py", line 247, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 22, in __getitem__
+    return (sample[0:-1], sample[-1])
+KeyboardInterrupt
+model :  MyNet
+current epoch:  1
+current loss:  tensor(-0.0603, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main.py", line 293, in <module>
+    res_tr = Result[model_name+'_tr'][params1]
+KeyError: '1_8_1e-05_1e-05'
+model :  MyNet
+current epoch:  1
+current loss:  tensor(-0.0603, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main.py", line 299, in <module>
+    ckpt_name = f"test_{model_name}_ckpt_{params1}_{'_'.join([f'{r:.4f}' for r in res])}.pth.tar"
+NameError: name 'res' is not defined
+model :  MyNet
+current epoch:  1
+current loss:  tensor(-0.0603, device='cuda:0')
+-----------------------------------------------------------------
+Traceback (most recent call last):
+  File "criteo_main.py", line 305, in <module>
+    'res': res,
+NameError: name 'res' is not defined
+Traceback (most recent call last):
+  File "criteo_main.py", line 199, in <module>
+    model = MyNet_Binary(cfg_density, cfg).to(device)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/nn/modules/module.py", line 899, in to
+    return self._apply(convert)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/nn/modules/module.py", line 570, in _apply
+    module._apply(fn)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/nn/modules/module.py", line 570, in _apply
+    module._apply(fn)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/nn/modules/module.py", line 593, in _apply
+    param_applied = fn(param)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/nn/modules/module.py", line 897, in convert
+    return t.to(device, dtype if t.is_floating_point() or t.is_complex() else None, non_blocking)
+KeyboardInterrupt
+model :  MyNet
+Traceback (most recent call last):
+  File "criteo_main.py", line 246, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 21, in __getitem__
+    sample = self.data_matrix[idx, :]
+KeyboardInterrupt
+model :  MyNet
+current epoch:  1
+current loss:  tensor(-0.0603, device='cuda:0')
+current auuc:  [-0.04554636303440097, 0.007428471819768059]  current qini:  [-0.11551238105496887, 0.013604721140706724] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(-0.0619, device='cuda:0')
+current epoch:  3
+current loss:  tensor(-0.0709, device='cuda:0')
+current epoch:  4
+current loss:  tensor(-0.0802, device='cuda:0')
+current epoch:  5
+current loss:  tensor(-0.0836, device='cuda:0')
+current auuc:  [-0.047170194806207356, 0.0043826054421799545]  current qini:  [-0.1195325474929201, 0.007952036539070692] best res:  [0, 0]  best_params:  None
+current epoch:  6
+current loss:  tensor(-0.0846, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main.py", line 246, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 22, in __getitem__
+    return (sample[0:-1], sample[-1])
+KeyboardInterrupt
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(-0.0148, device='cuda:0')
+current auuc:  [-0.04199622855079673, -0.004371786935523604]  current qini:  [-0.10659236430379739, -0.009490611366862921] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(-0.0094, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main.py", line 246, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 22, in __getitem__
+    return (sample[0:-1], sample[-1])
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "criteo_main.py", line 199, in <module>
+    model = MyNet_Binary(cfg_density, cfg).to(device)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/nn/modules/module.py", line 899, in to
+    return self._apply(convert)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/nn/modules/module.py", line 570, in _apply
+    module._apply(fn)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/nn/modules/module.py", line 570, in _apply
+    module._apply(fn)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/nn/modules/module.py", line 593, in _apply
+    param_applied = fn(param)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/nn/modules/module.py", line 897, in convert
+    return t.to(device, dtype if t.is_floating_point() or t.is_complex() else None, non_blocking)
+KeyboardInterrupt
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(-0.0148, device='cuda:0')
+current auuc:  [-0.04199622855079673, -0.004371786935523604]  current qini:  [-0.10659236430379739, -0.009490611366862921] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(-0.0094, device='cuda:0')
+current auuc:  [-0.04454120707613487, -0.0011897152693239018]  current qini:  [-0.11298241633787937, -0.0032464126498328388] best res:  [0, 0]  best_params:  None
+current epoch:  3
+current loss:  tensor(-0.0207, device='cuda:0')
+current auuc:  [-0.045533811574018014, -0.028179662742972025]  current qini:  [-0.115485208558009, -0.05399720013461435] best res:  [0, 0]  best_params:  None
+current epoch:  4
+current loss:  tensor(-0.0235, device='cuda:0')
+current auuc:  [-0.04255062888704399, 0.0016950121936137395]  current qini:  [-0.1079665841790866, 0.002547714892184091] best res:  [0, 0]  best_params:  None
+current epoch:  5
+current loss:  tensor(-0.0105, device='cuda:0')
+current auuc:  [-0.045786995007989446, -0.005742755971564942]  current qini:  [-0.11610290538960351, -0.011419478262905902] best res:  [0, 0]  best_params:  None
+Traceback (most recent call last):
+  File "criteo_main.py", line 246, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 21, in __getitem__
+    sample = self.data_matrix[idx, :]
+KeyboardInterrupt
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(-0.0147, device='cuda:0')
+current auuc:  [-0.04503745507791347, 0.010923551498610101]  current qini:  [-0.114249823988357, 0.01950233909873378] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(-0.0094, device='cuda:0')
+current auuc:  [-0.04426049708184697, 0.004153102992957525]  current qini:  [-0.11229556564653888, 0.006888583954283537] best res:  [0, 0]  best_params:  None
+current epoch:  3
+current loss:  tensor(-0.0205, device='cuda:0')
+current auuc:  [-0.04549490159401483, 0.014448243781792946]  current qini:  [-0.1153767767448475, 0.02749046917729375] best res:  [0, 0]  best_params:  None
+current epoch:  4
+current loss:  tensor(-0.0233, device='cuda:0')
+current auuc:  [-0.044962139866557393, -0.017674674458989757]  current qini:  [-0.1140326032753935, -0.033564715592524025] best res:  [0, 0]  best_params:  None
+current epoch:  5
+current loss:  tensor(-0.0100, device='cuda:0')
+current auuc:  [-0.04582196518863203, 0.009308587114021001]  current qini:  [-0.11620814571772241, 0.017607758682051246] best res:  [0, 0]  best_params:  None
+current epoch:  6
+current loss:  tensor(-0.0101, device='cuda:0')
+current auuc:  [-0.04618197852399018, 0.01981518074371269]  current qini:  [-0.11709475326183394, 0.038632151049649295] best res:  [0, 0]  best_params:  None
+current epoch:  7
+current loss:  tensor(-0.0392, device='cuda:0')
+current auuc:  [-0.046150895936620424, -0.001832049932815738]  current qini:  [-0.11701142012952281, -0.0027466513414513686] best res:  [0, 0]  best_params:  None
+current epoch:  8
+current loss:  tensor(-0.0349, device='cuda:0')
+current auuc:  [-0.04409265349661181, 0.002024574159802419]  current qini:  [-0.11182409555072448, 0.0033438099502082984] best res:  [0, 0]  best_params:  None
+current epoch:  9
+current loss:  tensor(-0.0291, device='cuda:0')
+current auuc:  [-0.04717852840945241, -9.136196996357599e-05]  current qini:  [-0.11954905428967157, -0.0001144989427353481] best res:  [0, 0]  best_params:  None
+current epoch:  10
+current loss:  tensor(-0.0222, device='cuda:0')
+current auuc:  [-0.04453705833738675, 0.010053896299809698]  current qini:  [-0.11295328176158165, 0.01937088315630707] best res:  [0, 0]  best_params:  None
+model :  MyNet
+Traceback (most recent call last):
+  File "criteo_main.py", line 246, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 22, in __getitem__
+    return (sample[0:-1], sample[-1])
+KeyboardInterrupt
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(-0.0178, device='cuda:0')
+current auuc:  [-0.045714348026359576, 0.009713018126930142]  current qini:  [-0.11594104556759981, 0.01770322449388022] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(-0.0149, device='cuda:0')
+current auuc:  [-0.04472588179790333, -0.002932153420477257]  current qini:  [-0.11346029903912566, -0.005422655921653737] best res:  [0, 0]  best_params:  None
+current epoch:  3
+current loss:  tensor(-0.0294, device='cuda:0')
+current auuc:  [-0.046344462047887655, -0.009289847877094335]  current qini:  [-0.11749795543553583, -0.017320496535379305] best res:  [0, 0]  best_params:  None
+current epoch:  4
+current loss:  tensor(-0.0353, device='cuda:0')
+current auuc:  [-0.04577835181571602, -0.009912468688219754]  current qini:  [-0.11607488278010604, -0.018608105306512943] best res:  [0, 0]  best_params:  None
+current epoch:  5
+current loss:  tensor(-0.0265, device='cuda:0')
+current auuc:  [-0.045720445824174796, -5.061993723704837e-06]  current qini:  [-0.11588981176639335, -0.0004524400011409772] best res:  [0, 0]  best_params:  None
+model :  MyNet
+current epoch:  1
+current loss:  tensor(-0.0605, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main.py", line 287, in <module>
+    auuc1, auuc2,qini1,qini2 = eval_binary_2(model, test_matrix)
+  File "/root/test01/research/CausalCVR/utils/eval.py", line 213, in eval_binary_2
+    for idx, (inputs, exposure) in enumerate(test_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/utils/eval.py", line 26, in __getitem__
+    sample = self.data_matrix[idx, :]
+KeyboardInterrupt
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(-0.0178, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_tr_ckpt_1_8_1e-05_1e-05_-0.0457_0.0097_-0.1159_0.0177.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.045714348026359576, 0.009713018126930142]  current qini:  [-0.11594104556759981, 0.01770322449388022] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(-0.0149, device='cuda:0')
+current auuc:  [-0.04472588179790333, -0.002932153420477257]  current qini:  [-0.11346029903912566, -0.005422655921653737] best res:  [0, 0]  best_params:  None
+current epoch:  3
+current loss:  tensor(-0.0294, device='cuda:0')
+current auuc:  [-0.046344462047887655, -0.009289847877094335]  current qini:  [-0.11749795543553583, -0.017320496535379305] best res:  [0, 0]  best_params:  None
+current epoch:  4
+current loss:  tensor(-0.0353, device='cuda:0')
+current auuc:  [-0.04577835181571602, -0.009912468688219754]  current qini:  [-0.11607488278010604, -0.018608105306512943] best res:  [0, 0]  best_params:  None
+current epoch:  5
+current loss:  tensor(-0.0265, device='cuda:0')
+current auuc:  [-0.045720445824174796, -5.061993723704837e-06]  current qini:  [-0.11588981176639335, -0.0004524400011409772] best res:  [0, 0]  best_params:  None
+model :  MyNet
+Traceback (most recent call last):
+  File "criteo_main.py", line 246, in <module>
+    for epoch in range(num_epoch):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 21, in __getitem__
+    sample = self.data_matrix[idx, :]
+KeyboardInterrupt
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(-0.0178, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main.py", line 286, in <module>
+  File "/root/test01/research/CausalCVR/utils/eval.py", line 219, in eval_binary_2
+    out = model(x)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/root/test01/research/CausalCVR/models/dynamic_net.py", line 361, in forward
+    Q0,Q1 = self.tasks[i][0],self.tasks[i][1]
+KeyboardInterrupt
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(-0.0178, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_tr_ckpt_1_8_1e-05_1e-05_-0.0457_0.0097_-0.1159_0.0177.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.045714348026359576, 0.009713018126930142]  current qini:  [-0.11594104556759981, 0.01770322449388022] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(-0.0149, device='cuda:0')
+current epoch:  3
+current loss:  tensor(-0.0184, device='cuda:0')
+current epoch:  4
+current loss:  tensor(-0.0173, device='cuda:0')
+current epoch:  5
+current loss:  tensor(-0.0413, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_tr_ckpt_5_8_1e-05_1e-05_-0.0436_0.0319_-0.1106_0.0599.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04360894803972258, 0.031884963480193734]  current qini:  [-0.11060449242572046, 0.05994655653362213] best res:  [0, 0]  best_params:  None
+model :  MyNet
+Traceback (most recent call last):
+  File "criteo_main.py", line 247, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 52, in fetch
+    return self.collate_fn(data)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/collate.py", line 84, in default_collate
+    return [default_collate(samples) for samples in transposed]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/collate.py", line 84, in <listcomp>
+    return [default_collate(samples) for samples in transposed]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/collate.py", line 56, in default_collate
+    return torch.stack(batch, 0, out=out)
+KeyboardInterrupt
+model :  MyNet
+current epoch:  1
+current loss:  tensor(-0.0603, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main.py", line 294, in <module>
+    res_tr = Result[model_name+'_tr'][params1]
+KeyError: '1_8_1e-05_1e-05'
+model :  MyNet
+current epoch:  1
+current loss:  tensor(-0.0603, device='cuda:0')
+current auuc:  [-0.04554636303440097, 0.007428471819768059]  current qini:  [-0.11551238105496887, 0.013604721140706724] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(-0.0619, device='cuda:0')
+current epoch:  3
+current loss:  tensor(-0.0709, device='cuda:0')
+current epoch:  4
+current loss:  tensor(-0.0802, device='cuda:0')
+current epoch:  5
+current loss:  tensor(-0.0836, device='cuda:0')
+current auuc:  [-0.047170194806207356, 0.0043826054421799545]  current qini:  [-0.1195325474929201, 0.007952036539070692] best res:  [0, 0]  best_params:  None
+model :  MyNet_tr
+Traceback (most recent call last):
+  File "criteo_main.py", line 247, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 22, in __getitem__
+    return (sample[0:-1], sample[-1])
+KeyboardInterrupt
+model :  CVRNet_tr
+auuc:  0.026641285677382585 qini:  0.05068387227779464
+model :  CVRNet
+auuc:  -0.0010628817425889548 qini:  -0.0022766079689844182
+model :  MyNet
+current epoch:  1
+current loss:  tensor(-0.0603, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main.py", line 291, in <module>
+    Result[model_name][params1] = [auuc1,auuc2,qini1,qini2]
+KeyError: 'MyNet'
+model :  MyNet_tr
+current epoch:  1
+current loss:  tensor(-0.0178, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_tr_ckpt_1_8_1e-05_1e-05_-0.0457_0.0097_-0.1159_0.0177.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.045714348026359576, 0.009713018126930142]  current qini:  [-0.11594104556759981, 0.01770322449388022] best res:  [0, 0]  best_params:  None
+current epoch:  2
+current loss:  tensor(-0.0149, device='cuda:0')
+current epoch:  3
+current loss:  tensor(-0.0184, device='cuda:0')
+current epoch:  4
+current loss:  tensor(-0.0173, device='cuda:0')
+current epoch:  5
+current loss:  tensor(-0.0413, device='cuda:0')
+-----------------------------------------------------------------
+=> Saving checkpoint to /root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_tr_ckpt_5_8_1e-05_1e-05_-0.0436_0.0319_-0.1106_0.0599.pth.tar
+-----------------------------------------------------------------
+current auuc:  [-0.04360894803972258, 0.031884963480193734]  current qini:  [-0.11060449242572046, 0.05994655653362213] best res:  [0, 0]  best_params:  None
+Traceback (most recent call last):
+  File "criteo_main.py", line 257, in <module>
+    loss = criterion_cvr(out, t,y1,y2,alpha=alpha) + 0*criterion_TR(out, t,trg1, y1, beta=beta,detach=True) + criterion_TR_cvr(out, t,trg2, y1, y2, beta=beta)
+  File "criteo_main.py", line 81, in criterion_cvr
+    mu1 = (1-t)*out[1][0] + t*out[1][1]
+KeyboardInterrupt
+model :  CVRNet_tr
+Traceback (most recent call last):
+  File "criteo_main.py", line 207, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+KeyboardInterrupt
+model :  CVRNet_tr
+current epoch:  1
+current loss:  tensor(-0.0178, device='cuda:0')
+Traceback (most recent call last):
+  File "criteo_main.py", line 290, in <module>
+    print('current auuc: ', [auuc1,auuc2],' current qini: ',[qini1,qini2],'best res: ', [best_auuc,best_qini],' best_params: ',best_params)
+NameError: name 'best_auuc' is not defined
+model :  CVRNet_tr
+current epoch:  1
+current loss:  tensor(-0.0178, device='cuda:0')
+current auuc:  [-0.045714348026359576, 0.009713018126930142]  current qini:  [-0.11594104556759981, 0.01770322449388022]
+current epoch:  2
+current loss:  tensor(-0.0149, device='cuda:0')
+current epoch:  3
+current loss:  tensor(-0.0184, device='cuda:0')
+current epoch:  4
+current loss:  tensor(-0.0173, device='cuda:0')
+current epoch:  5
+current loss:  tensor(-0.0413, device='cuda:0')
+current auuc:  [-0.04360894803972258, 0.031884963480193734]  current qini:  [-0.11060449242572046, 0.05994655653362213]
+Traceback (most recent call last):
+  File "criteo_main.py", line 207, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 22, in __getitem__
+    return (sample[0:-1], sample[-1])
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "criteo_main.py", line 185, in <module>
+    data = pd.read_csv(load_path + '/train.csv')
+  File "/root/miniconda3/lib/python3.8/site-packages/pandas/io/parsers/readers.py", line 912, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "/root/miniconda3/lib/python3.8/site-packages/pandas/io/parsers/readers.py", line 583, in _read
+    return parser.read(nrows)
+  File "/root/miniconda3/lib/python3.8/site-packages/pandas/io/parsers/readers.py", line 1704, in read
+    ) = self._engine.read(  # type: ignore[attr-defined]
+  File "/root/miniconda3/lib/python3.8/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 234, in read
+    chunks = self._reader.read_low_memory(nrows)
+  File "pandas/_libs/parsers.pyx", line 814, in pandas._libs.parsers.TextReader.read_low_memory
+  File "pandas/_libs/parsers.pyx", line 875, in pandas._libs.parsers.TextReader._read_rows
+  File "pandas/_libs/parsers.pyx", line 850, in pandas._libs.parsers.TextReader._tokenize_rows
+  File "pandas/_libs/parsers.pyx", line 861, in pandas._libs.parsers.TextReader._check_tokenize_status
+  File "pandas/_libs/parsers.pyx", line 2029, in pandas._libs.parsers.raise_parser_error
+pandas.errors.ParserError: Error tokenizing data. C error: Calling read(nbytes) on source failed. Try engine='python'.
+model :  CVRNet_tr
+current auuc:  [-0.045645112681114125, 0.026641285677382585]  current qini:  [-0.11570840752364657, 0.05068387227779464]
+model :  CVRNet
+Traceback (most recent call last):
+  File "criteo_main.py", line 237, in <module>
+    loss.backward()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/_tensor.py", line 307, in backward
+    torch.autograd.backward(self, gradient, retain_graph, create_graph, inputs=inputs)
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/autograd/__init__.py", line 154, in backward
+    Variable._execution_engine.run_backward(
+KeyboardInterrupt
+model :  CVRNet_tr
+current epoch:  1
+current loss:  tensor(-0.0178, device='cuda:0')
+current auuc:  [-0.045714348026359576, 0.009713018126930142]  current qini:  [-0.11594104556759981, 0.01770322449388022]
+current epoch:  2
+current loss:  tensor(-0.0149, device='cuda:0')
+current epoch:  3
+current loss:  tensor(-0.0184, device='cuda:0')
+current epoch:  4
+current loss:  tensor(-0.0173, device='cuda:0')
+current epoch:  5
+current loss:  tensor(-0.0413, device='cuda:0')
+current auuc:  [-0.04360894803972258, 0.031884963480193734]  current qini:  [-0.11060449242572046, 0.05994655653362213]
+model :  CVRNet
+Traceback (most recent call last):
+  File "criteo_main.py", line 206, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 21, in __getitem__
+    sample = self.data_matrix[idx, :]
+KeyboardInterrupt
+model :  CVRNet_tr
+current auuc:  [-0.045714348026359576, 0.009713018126930142]  current qini:  [-0.11594104556759981, 0.01770322449388022]
+current auuc:  [-0.04360894803972258, 0.031884963480193734]  current qini:  [-0.11060449242572046, 0.05994655653362213]
+model :  CVRNet
+Traceback (most recent call last):
+  File "criteo_main.py", line 206, in <module>
+    for idx, (inputs,exposure) in enumerate(train_loader):
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 561, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/miniconda3/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/test01/research/CausalCVR/data/data.py", line 22, in __getitem__
+    return (sample[0:-1], sample[-1])
+KeyboardInterrupt
+model :  CVRNet_tr
+current auuc:  0.009713018126930142  current qini:  0.01770322449388022
+current auuc:  0.031884963480193734  current qini:  0.05994655653362213
+model :  CVRNet
+current auuc:  -0.0004666452196856659  current qini:  -0.0008203323976463318
+current auuc:  0.00817238366916924  current qini:  0.015475119169457208
