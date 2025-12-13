@@ -10454,3 +10454,9 @@ current auuc:  0.031884963480193734  current qini:  0.05994655653362213
 model :  CVRNet
 current auuc:  -0.0004666452196856659  current qini:  -0.0008203323976463318
 current auuc:  0.00817238366916924  current qini:  0.015475119169457208
+model :  CVRNet_tr
+current step auuc:  0.009713018126930142  current step qini:  0.01770322449388022
+current step auuc:  0.031884963480193734  current step qini:  0.05994655653362213
+model :  CVRNet
+current step auuc:  -0.0004666452196856659  current step qini:  -0.0008203323976463318
+current step auuc:  0.00817238366916924  current step qini:  0.015475119169457208
