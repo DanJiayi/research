@@ -237,7 +237,7 @@ if __name__ == "__main__":
                     print('current mse1: ', mse1,' mse2: ',mse2)
 
                     Result[params].append([mse1,mse2])
-                    with open(save_path + '/result_dr_tune.json', 'w') as fp:
+                    with open(save_path + '/result_dr_tune2.json', 'w') as fp:
                         json.dump(Result, fp)
 
                     
