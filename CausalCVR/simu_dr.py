@@ -163,81 +163,77 @@ if __name__ == "__main__":
 
 
     Result = {}
+    h = 8 
+    init_lr = 5e-4
+    lr_final = 5e-3
+    Result['DR'] = []
 
-    for h in [8,16,32]:
-        for init_lr in [5e-5,1e-4,5e-4]:
-            for lr_final in [5e-3]:
+    for _ in range(num_dataset):
 
-                params = f"h{h}_init{init_lr}_final{lr_final}"
-                Result[params] = []
+        cur_save_path = save_path + '/' + str(_)
+        if not os.path.exists(cur_save_path):
+            os.makedirs(cur_save_path)
 
-                for _ in range(num_dataset):
+        data = pd.read_csv(load_path + '/' + str(_) + '/train.txt', header=None, sep=' ')
+        train_matrix = torch.from_numpy(data.to_numpy()).float().to(device)
+        data = pd.read_csv(load_path + '/' + str(_) + '/test.txt', header=None, sep=' ')
+        test_matrix = torch.from_numpy(data.to_numpy()).float().to(device)
+        data = pd.read_csv(load_path + '/' + str(_) + '/t_grid.txt', header=None, sep=' ')
+        t_grid = torch.from_numpy(data.to_numpy()).float().to(device)
 
-                    cur_save_path = save_path + '/' + str(_)
-                    if not os.path.exists(cur_save_path):
-                        os.makedirs(cur_save_path)
+        idx = torch.randperm(train_matrix.shape[0])
+        n = train_matrix.shape[0]//2
+        data_A = train_matrix[idx[:n]]
+        data_B = train_matrix[idx[n:]]
 
-                    data = pd.read_csv(load_path + '/' + str(_) + '/train.txt', header=None, sep=' ')
-                    train_matrix = torch.from_numpy(data.to_numpy()).float().to(device)
-                    data = pd.read_csv(load_path + '/' + str(_) + '/test.txt', header=None, sep=' ')
-                    test_matrix = torch.from_numpy(data.to_numpy()).float().to(device)
-                    data = pd.read_csv(load_path + '/' + str(_) + '/t_grid.txt', header=None, sep=' ')
-                    t_grid = torch.from_numpy(data.to_numpy()).float().to(device)
+        loader_A = get_iter(data_A,batch_size=500,shuffle=True)
+        loader_B = get_iter(data_B,batch_size=500,shuffle=True)
 
-                    idx = torch.randperm(train_matrix.shape[0])
-                    n = train_matrix.shape[0]//2
-                    data_A = train_matrix[idx[:n]]
-                    data_B = train_matrix[idx[n:]]
+        cfg_density = [(8, h, 1, 'relu'), (h, h, 1, 'relu')]
+        num_grid = 10
+        cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
+        degree = 2
+        knots = [0.33, 0.66]
 
-                    loader_A = get_iter(data_A,batch_size=500,shuffle=True)
-                    loader_B = get_iter(data_B,batch_size=500,shuffle=True)
+        model1 = CVRNet(cfg_density,num_grid,cfg,degree,knots).to(device)
+        model2 = CVRNet(cfg_density,num_grid,cfg,degree,knots).to(device)
+        model1._initialize_weights()
+        model2._initialize_weights()
 
-                    cfg_density = [(8, h, 1, 'relu'), (h, h, 1, 'relu')]
-                    num_grid = 10
-                    cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
-                    degree = 2
-                    knots = [0.33, 0.66]
+        print(f"\n===== Training Nuisance Model1 on A=====")
+        model1 = train_nuisance(model1,loader_A,num_epoch,init_lr,verbose)
+        print(f"===== Training Nuisance Model2 on B=====")
+        model2 = train_nuisance(model2,loader_B,num_epoch,init_lr,verbose)
 
-                    model1 = CVRNet(cfg_density,num_grid,cfg,degree,knots).to(device)
-                    model2 = CVRNet(cfg_density,num_grid,cfg,degree,knots).to(device)
-                    model1._initialize_weights()
-                    model2._initialize_weights()
+        with torch.no_grad():
+            tA, xA, y1A, y2A = data_A[:,0], data_A[:,1:-3], data_A[:,-3], data_A[:,-1]
+            tB, xB, y1B, y2B = data_B[:,0], data_B[:,1:-3], data_B[:,-3], data_B[:,-1]
+            out1_on_B = model1(tB,xB)     # model1 → B
+            out2_on_A = model2(tA,xA)     # model2 → A
+            psi1_A,psi2_A = get_pseudo_out(y1A,y2A,out2_on_A)
+            psi1_B,psi2_B = get_pseudo_out(y1B,y2B,out1_on_B)
+            t_all = torch.cat([tA,tB],dim=0)
+            X_all  = torch.cat([xA,xB],dim=0)
+            PSI1   = torch.cat([psi1_A,psi1_B],dim=0).unsqueeze(1)
+            PSI2   = torch.cat([psi2_A,psi2_B],dim=0).unsqueeze(1)
 
-                    print(f"\n===== Training Nuisance Model1 on A ({params}) =====")
-                    model1 = train_nuisance(model1,loader_A,num_epoch,init_lr,verbose)
-                    print(f"===== Training Nuisance Model2 on B ({params}) =====")
-                    model2 = train_nuisance(model2,loader_B,num_epoch,init_lr,verbose)
+        final_cfg = [(8, h, 1, 'relu'),(h, h, 1, 'relu'),(h, 1, 1, 'id')]
+        final_model1 = FinalDynamicNet(final_cfg, degree, knots).to(device)
+        final_model2 = FinalDynamicNet(final_cfg, degree, knots).to(device)
+        final_model1._initialize_weights()
+        final_model2._initialize_weights()
 
-                    with torch.no_grad():
-                        tA, xA, y1A, y2A = data_A[:,0], data_A[:,1:-3], data_A[:,-3], data_A[:,-1]
-                        tB, xB, y1B, y2B = data_B[:,0], data_B[:,1:-3], data_B[:,-3], data_B[:,-1]
-                        out1_on_B = model1(tB,xB)     # model1 → B
-                        out2_on_A = model2(tA,xA)     # model2 → A
-                        psi1_A,psi2_A = get_pseudo_out(y1A,y2A,out2_on_A)
-                        psi1_B,psi2_B = get_pseudo_out(y1B,y2B,out1_on_B)
-                        t_all = torch.cat([tA,tB],dim=0)
-                        X_all  = torch.cat([xA,xB],dim=0)
-                        PSI1   = torch.cat([psi1_A,psi1_B],dim=0).unsqueeze(1)
-                        PSI2   = torch.cat([psi2_A,psi2_B],dim=0).unsqueeze(1)
-                        print('***',PSI1.mean(), PSI2.mean())
+        print(f"\n===== Training Final Model1=====")
+        final_model1 = train_final(final_model1,t_all,X_all,PSI1,epochs=num_epoch,lr=lr_final)
+        print(f"\n===== Training Final Model2=====")
+        final_model2 = train_final(final_model2,t_all,X_all,PSI2,epochs=num_epoch,lr=lr_final)
 
-                    final_cfg = [(8, h, 1, 'relu'),(h, h, 1, 'relu'),(h, 1, 1, 'id')]
-                    final_model1 = FinalDynamicNet(final_cfg, degree, knots).to(device)
-                    final_model2 = FinalDynamicNet(final_cfg, degree, knots).to(device)
-                    final_model1._initialize_weights()
-                    final_model2._initialize_weights()
+        t_grid_hat, mse1, mse2 = curve_dr([final_model1,final_model2],test_matrix, t_grid)
+        mse1,mse2 = float(mse1),float(mse2)
+        print('current mse1: ', mse1,' mse2: ',mse2)
 
-                    print(f"\n===== Training Final Model1 ({params}) =====")
-                    final_model1 = train_final(final_model1,t_all,X_all,PSI1,epochs=num_epoch,lr=lr_final)
-                    print(f"\n===== Training Final Model2 ({params}) =====")
-                    final_model2 = train_final(final_model2,t_all,X_all,PSI2,epochs=num_epoch,lr=lr_final)
-
-                    t_grid_hat, mse1, mse2 = curve_dr([final_model1,final_model2],test_matrix, t_grid)
-                    mse1,mse2 = float(mse1),float(mse2)
-                    print('current mse1: ', mse1,' mse2: ',mse2)
-
-                    Result[params].append([mse1,mse2])
-                    with open(save_path + '/result_dr_tune2.json', 'w') as fp:
-                        json.dump(Result, fp)
+        Result['DR'].append([mse1,mse2])
+        with open(save_path + '/result_dr.json', 'w') as fp:
+            json.dump(Result, fp)
 
                     

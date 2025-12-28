@@ -256,8 +256,6 @@ if __name__ == "__main__":
                 X_all = torch.cat([xA, xB], dim=0)
                 PSI1 = torch.cat([psi1_A, psi1_B], dim=0).unsqueeze(1)  # [N,1]
                 PSI2 = torch.cat([psi2_A, psi2_B], dim=0).unsqueeze(1)  # [N,1]
-                print('*** psi1 mean/std:', PSI1.mean(), PSI1.std(),
-                      'psi2 mean/std:', PSI2.mean(), PSI2.std())
 
             final_cfg = [(498, h, 1, 'relu'),(h, h, 1, 'relu'),(h, 1, 1, 'id')]
             final_model1 = FinalDynamicNet(final_cfg, degree, knots).to(device)
@@ -281,5 +279,5 @@ if __name__ == "__main__":
             print('current mse1: ', mse1, ' mse2: ', mse2)
 
             Result[model_name].append([mse1, mse2])
-            with open(os.path.join(save_path, '/result_dr.json'), 'w') as fp:
+            with open(os.path.join(save_path, 'result_dr.json'), 'w') as fp:
                 json.dump(Result, fp)
