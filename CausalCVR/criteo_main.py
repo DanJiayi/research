@@ -152,15 +152,16 @@ if __name__ == "__main__":
 
 
     Result = {'CVRNet_tr': {}, 'CVRNet': {}}
-    init_lr = 1e-5 
+    init_lr = 1e-5
     tr_init_lr = 1e-5
     alpha = 0.5
     n = 5
+    h = 8
     beta = 1.
     
     for model_name in ['CVRNet_tr','CVRNet']:
-        cfg_density = [(12, 8, 1, 'relu'), (8, 8, 1, 'relu')]
-        cfg = [(8, 8, 1, 'relu'), (8, 1, 1, 'id')]
+        cfg_density = [(12, h, 1, 'relu'), (h, h, 1, 'relu')]
+        cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
         model = CVRNet_Binary(cfg_density, cfg).to(device)
         model._initialize_weights()
         # use Target Regularization
@@ -242,7 +243,7 @@ if __name__ == "__main__":
                     _, auuc2,_,qini2 = eval_binary_2(model,test_matrix, TargetReg1,TargetReg2)
                 else:
                     _, auuc2,_,qini2 = eval_binary_2(model, test_matrix)
-            
-                print('current step auuc: ', auuc2,' current step qini: ',qini2)
+                if epoch==1: print('current auuc: ', auuc2,' current qini: ',qini2)
+                else: print('final auuc: ', auuc2,' final qini: ',qini2)
 
                     

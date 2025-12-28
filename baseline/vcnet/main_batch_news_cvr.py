@@ -75,7 +75,6 @@ if __name__ == "__main__":
     np.random.seed(seed)
 
     # Parameters
-
     # optimizer
     lr_type = 'fixed'
     wd = 5e-3
@@ -101,7 +100,7 @@ if __name__ == "__main__":
 
     Result = {}
 
-    for model_name in ['Vcnet_tr','Dragonnet_tr','Drnet']: #'Vcnet','Dragonnet', 'Vcnet_tr','Dragonnet_tr',,'Tarnet'
+    for model_name in ['Vcnet_tr','Dragonnet_tr','Drnet','Tarnet']: #'Vcnet','Dragonnet', 'Vcnet_tr','Dragonnet_tr',,'Tarnet'
         h = 8
         lr = 1e-6
         lr_tr = 1e-4
@@ -289,19 +288,9 @@ if __name__ == "__main__":
             mse1,mse2 = float(mse1),float(mse2)
             print('current loss: ', float(loss1.data),', ',float(loss2.data))
             print('current mse1: ', mse1,' mse2: ',mse2)
-
-            # print('-----------------------------------------------------------------')
-            # save_checkpoint({
-            #     'model': model_name,
-            #     'best_test_loss': [mse1,mse2],
-            #     'model_state_dict': [model1.state_dict(),model2.state_dict()],
-            #     'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()],
-            # }, model_name=model_name, checkpoint_dir=cur_save_path)
-            # print('-----------------------------------------------------------------')
-
             Result[model_name].append([mse1,mse2])
 
-            with open(save_path + '/result_baseline.json', 'w') as fp:
+            with open(save_path + '/result_baseline_test.json', 'w') as fp:
                 json.dump(Result, fp)
 
 

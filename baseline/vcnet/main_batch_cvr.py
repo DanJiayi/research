@@ -6,7 +6,7 @@ import pandas as pd
 import os
 import json
 
-from models.dynamic_net import Vcnet, Drnet, TR, Vcnet_2
+from models.dynamic_net import Vcnet, Drnet, TR
 from data.data import get_iter
 from utils.eval import curve,curve_2
 
@@ -66,8 +66,8 @@ if __name__ == "__main__":
 
     # training
     parser.add_argument('--n_epochs', type=int, default=600, help='num of epochs to train')
-    parser.add_argument('--lr', type=float, default=1e-7, help='lr')
-    parser.add_argument('--lr_tr', type=float, default=1e-6, help='lr_tr')
+    parser.add_argument('--lr', type=float, default=1e-4, help='lr')
+    parser.add_argument('--lr_tr', type=float, default=1e-4, help='lr_tr')
 
     # print train info
     parser.add_argument('--verbose', type=int, default=100, help='print train info freq')
@@ -98,7 +98,7 @@ if __name__ == "__main__":
 
 
     Result = {}
-    for model_name in ['Drnet']: #'Vcnet_tr','Vcnet',,'Tarnet','Vcnet_tr','Dragonnet_tr',
+    for model_name in ['Vcnet_tr','Dragonnet_tr','Drnet','Tarnet']: #'Vcnet_tr','Vcnet',,'Tarnet','Vcnet_tr','Dragonnet_tr',
     #for model_name in ['Vcnet_tr']:
         h = 32
         lr1 = 1e-5
@@ -288,16 +288,8 @@ if __name__ == "__main__":
             mse1,mse2 = float(mse1),float(mse2)
             print('current loss: ', float(loss1.data),', ',float(loss2.data))
             print('current mse1: ', mse1,' mse2: ',mse2)
-            # print('-----------------------------------------------------------------')
-            # save_checkpoint({
-            #     'model': model_name,
-            #     'best_test_loss': [mse1,mse2],
-            #     'model_state_dict': [model1.state_dict(),model2.state_dict()],
-            #     'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()] if isTargetReg else None
-            # }, model_name=model_name, checkpoint_dir=cur_save_path)
-            # print('-----------------------------------------------------------------')
 
             Result[model_name].append([mse1,mse2])
 
-            with open(save_path + f'/result_baseline_corrected_2.json', 'w') as fp:
+            with open(save_path + f'/result_baseline_test.json', 'w') as fp:
                 json.dump(Result, fp)

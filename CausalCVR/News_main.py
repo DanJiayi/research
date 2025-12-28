@@ -56,14 +56,9 @@ def criterion_TR_cvr(out, trg, y1, y2, beta=1., epsilon=1e-9):
     y1,y2,out1,out2,trg = y1.squeeze(),y2.squeeze(),out1.squeeze(),out2.squeeze(),trg.squeeze()
     return beta * (( (y2 - out2)/(out1 + epsilon) - (y1-out1)*out2/(out1**2+epsilon) - trg/(out[0].detach().squeeze()+epsilon) )**2).mean()
 
-# def criterion_TR_id(out, trg, y1, y2,beta=1., epsilon=1e-9):
-#     return beta *  (y1.squeeze()*(y2.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[2].squeeze())**2 / (out[1].detach().squeeze()+1e-9) ).mean()
+def criterion_TR_id(out, trg, y1, y2,beta=1., epsilon=1e-9):
+    return beta *  (y1.squeeze()*(y2.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[2].squeeze())**2 / (out[1].detach().squeeze()+1e-9) ).mean()
 
-def criterion_TR_id(out, trg, y1, y2,beta=1., epsilon=1e-9,balance=True):
-    loss = beta *  (y1.squeeze()*(y2.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[2].squeeze())**2 / (out[1].detach().squeeze()+1e-9) ).mean()
-    if balance:
-        loss *= ((y1.squeeze()*out[1].detach().squeeze()).sum()) / (y1.squeeze().sum()+1e-9)
-    return loss
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='train with news data_utils')
@@ -118,7 +113,7 @@ if __name__ == "__main__":
     lr = 5e-4 
     lr_tr = 5e-4
 
-    for model_name in ['CVRNet_tr','CVRNet','Alter']:
+    for model_name in ['CVRNet_tr','CVRNet','Alter']: 
         Result[model_name]=[]
         # import model
         cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
@@ -144,15 +139,14 @@ if __name__ == "__main__":
 
         # best cfg for each model
         if model_name == 'CVRNet':
-            init_lr = 0.0005
+            init_lr = lr
             alpha = 0.5
             beta = 1.
-
             Result[model_name] = []
 
         elif model_name == 'CVRNet_tr':
             tr_init_lr = lr_tr
-            init_lr = 0.0005
+            init_lr = lr
             alpha = 0.5
             beta = 1. 
 
@@ -160,7 +154,7 @@ if __name__ == "__main__":
 
         elif model_name == 'Alter':
             tr_init_lr = lr_tr
-            init_lr = 0.005
+            init_lr = 0.001
             alpha = 0.5
             beta = 1.
             Result[model_name] = []
@@ -253,6 +247,6 @@ if __name__ == "__main__":
 
 
             Result[model_name].append([mse1,mse2])
-            with open(save_path + '/result_test.json', 'w') as fp:
+            with open(save_path + '/result_test1.json', 'w') as fp:
                 json.dump(Result, fp)
 

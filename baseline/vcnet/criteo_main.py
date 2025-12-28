@@ -72,7 +72,7 @@ if __name__ == "__main__":
     # parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
 
     # training
-    parser.add_argument('--n_epochs', type=int, default=100, help='num of epochs to train')
+    parser.add_argument('--n_epochs', type=int, default=40, help='num of epochs to train')
 
     # print train info
     parser.add_argument('--verbose', type=int, default=1, help='print train info freq')
@@ -120,16 +120,16 @@ if __name__ == "__main__":
 
 
     Result = {}
-    for model_name in ['Dragonnet_tr','Tarnet','TLearner']: #'Vcnet_tr','Vcnet','Vcnet_tr','Dragonnet_tr','Dragonnet_tr','Tarnet','Dragonnet_tr',
+    for model_name in ['Dragonnet_tr','Tarnet','TLearner']: #,'Tarnet','TLearner'
         Result[model_name] = {}
-        for h in [8,16,32]:
-            for init_lr in [1e-6,1e-7]: #1e-6,
-                for tr_init_lr in [1e-6,1e-7]:
-                    if model_name=='Dragonnet_tr' and (h==8 or (h==16 and init_lr==1e-6)): continue
-                    #if h==8 and (init_lr==1e-6 or (init_lr==1e-7 and tr_init_lr ==1e-6)): continue
+        best_auuc,best_qini = 0,0
+        best_params = None
+        for h in [8,16,32,64,128,256]:
+            for init_lr in [1e-6,1e-5,5e-5,1e-4,5e-4,1e-3]: #1e-6,
+                for tr_init_lr in [1e-6,1e-5,5e-5,1e-4,5e-4,1e-3]:
+                    if init_lr not in [1e-6,5e-5,5e-4] and tr_init_lr not in [1e-6,5e-5,5e-4] and h not in [128,256]: continue
                     flag = 0
                     print(f'{h}_{init_lr}_{tr_init_lr}')
-                    if model_name!='Dragonnet_tr' and tr_init_lr!=1e-6: continue
                     if model_name == 'Dragonnet_tr' or  model_name == 'Tarnet':
                         cfg_density = [(12, h, 1, 'relu'), (h, h, 1, 'relu')]
                         cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
@@ -247,35 +247,25 @@ if __name__ == "__main__":
                                 loss2.backward()
                                 optimizer2.step()
 
-
                         epoch += 1
-                        if epoch==1 or epoch % verbose == 0 or epoch==num_epoch:
-                            print('current epoch: ', epoch)
-                            print('current loss: ', [loss1.data,loss2.data])
-                            if torch.isnan(loss1) or torch.isnan(loss2): flag = 1
-                            if epoch==1 or epoch % 10 == 0 or epoch==num_epoch:
-                                if isTargetReg:
-                                    auuc1, qini1,auuc2,qini2 = eval_binary([model1,model2],test_matrix, TargetReg1,TargetReg2)
-                                else:
-                                    auuc1, qini1,auuc2,qini2 = eval_binary([model1,model2], test_matrix)
-                                print('current auuc: ', [auuc1,auuc2],' current qini: ',[qini1,qini2])
+                        print('current epoch: ', epoch)
+                        print('current loss: ', [loss1.data,loss2.data])
+                        if torch.isnan(loss1) or torch.isnan(loss2): flag = 1
+                        if epoch % 5 == 0:
+                            if isTargetReg:
+                                auuc1, auuc2, qini1, qini2 = eval_binary([model1,model2],test_matrix, TargetReg1,TargetReg2)
+                            else:
+                                auuc1, auuc2, qini1, qini2 = eval_binary([model1,model2], test_matrix)
 
-                                params = f'{epoch}_{h}_{init_lr}_{tr_init_lr}'
-                                Result[model_name][params]=[auuc1,auuc2,qini1,qini2]
+                            params = f'{epoch}_{h}_{init_lr}_{tr_init_lr}'
+                            Result[model_name][params]=[auuc1,auuc2,qini1,qini2]
+                            
+                            if auuc2>0 and qini2>0 and (auuc2+qini2) > (best_auuc+best_qini):
+                                best_auuc,best_qini = auuc2,qini2
+                                best_params = params
 
-                                with open(save_path + f'/result_baseline_correted_2.json', 'w') as fp:
-                                    json.dump(Result, fp)
+                            print('current auuc: ', [auuc1,auuc2],' current qini: ',[qini1,qini2],' best auuc: ',best_auuc,'best_qini: ',best_qini,' best_params: ',best_params)
 
-                                if auuc1>0 and auuc2>0:
-                                    ckpt_dir = os.path.join(cur_save_path, "checkpoints")
-                                    os.makedirs(ckpt_dir, exist_ok=True)
-                                    ckpt_name = f"{model_name}_ckpt_{params}_{'_'.join([f'{r:.4f}' for r in [auuc1,auuc2,qini1,qini2]])}.pth.tar"
-                                    ckpt_path = os.path.join(ckpt_dir, ckpt_name)
-                                    print('-----------------------------------------------------------------')
-                                    save_checkpoint({
-                                        'model': model_name,
-                                        'res': [auuc1,auuc2,qini1,qini2],
-                                        'model_state_dict': [model1.state_dict(),model2.state_dict()],
-                                        'TR_state_dict': [TargetReg1.state_dict(), TargetReg2.state_dict()] if isTargetReg else None
-                                    }, model_name=model_name, checkpoint_dir=ckpt_path)
-                                    print('-----------------------------------------------------------------')
+
+                            with open(save_path + f'/result_baseline_test1.json', 'w') as fp:
+                                json.dump(Result, fp)
