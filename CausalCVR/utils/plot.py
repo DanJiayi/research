@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from models.dynamic_net import MyNet_Binary,TR_Binary
+from models.dynamic_net import CVRNet_Binary,TR_Binary
 from causalml.metrics import plot_gain,plot_qini
 from sklift.metrics import uplift_auc_score, qini_auc_score
 import matplotlib
@@ -43,8 +43,10 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # ===============================
 #   2. Load checkpoints
 # ===============================
-ckpt_path1 = '/root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_tr_ckpt_5_8_1e-05_1e-05_-0.0436_0.0319_-0.1106_0.0599.pth.tar'
-ckpt_path2 = '/root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_40_8_1e-06_1e-07_-0.0454_0.0100_-0.1151_0.0192.pth.tar'
+# ckpt_path1 = '/root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_tr_ckpt_5_8_1e-05_1e-05_-0.0436_0.0319_-0.1106_0.0599.pth.tar'
+# ckpt_path2 = '/root/test01/research/CausalCVR/logs/criteo/checkpoints/test_MyNet_ckpt_40_8_1e-06_1e-07_-0.0454_0.0100_-0.1151_0.0192.pth.tar'
+ckpt_path1 = '/root/test01/research/CausalCVR/logs/criteo/checkpoints/CVRNet_tr_ckpt.pth.tar'
+ckpt_path2 = '/root/test01/research/CausalCVR/logs/criteo/checkpoints/CVRNet_ckpt.pth.tar'
 
 checkpoint1 = torch.load(ckpt_path1, map_location=device)
 checkpoint2 = torch.load(ckpt_path2, map_location=device)
@@ -53,11 +55,11 @@ h = 8
 cfg_density = [(12, h, 1, 'relu'), (h, h, 1, 'relu')]
 cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
 
-model1 = MyNet_Binary(cfg_density, cfg).to(device)
+model1 = CVRNet_Binary(cfg_density, cfg).to(device)
 model1.load_state_dict(checkpoint1['model_state_dict'])
 model1.to(device).eval()
 
-model2 = MyNet_Binary(cfg_density, cfg).to(device)
+model2 = CVRNet_Binary(cfg_density, cfg).to(device)
 model2.load_state_dict(checkpoint2['model_state_dict'])
 model2.to(device).eval()
 
@@ -133,18 +135,124 @@ def get_preds_eval(model, test_matrix, targetreg1=None, targetreg2=None, batch_s
     t = torch.cat(ts).numpy()
     return y1, y2, preds1, preds2, t
 
+# def compute_qini(df, outcome_col='y', treatment_col='treatment', score_col='score'):
+#     y = df[outcome_col].values
+#     t = df[treatment_col].values
+#     s = df[score_col].values
+#     order = np.argsort(-s)
+#     y, t = y[order], t[order]
+#     n_treat = (t == 1).sum()
+#     n_ctrl = (t == 0).sum()
+#     cum_treat = np.cumsum(y * (t == 1)) / (n_treat + 1e-9)
+#     cum_ctrl = np.cumsum(y * (t == 0)) / (n_ctrl + 1e-9)
+#     qini = cum_treat - cum_ctrl
+#     return np.linspace(0, 1, len(qini)), qini
+
 def compute_qini(df, outcome_col='y', treatment_col='treatment', score_col='score'):
+    """
+    Compute QINI curve strictly following formula:
+
+    QINI(p) = NT(p)/NT  -  NC(p)/NC * NT(p)/(NT(p)+NC(p))
+    """
+
     y = df[outcome_col].values
     t = df[treatment_col].values
     s = df[score_col].values
+
+    # sort by predicted uplift score descending
     order = np.argsort(-s)
     y, t = y[order], t[order]
-    n_treat = (t == 1).sum()
-    n_ctrl = (t == 0).sum()
-    cum_treat = np.cumsum(y * (t == 1)) / (n_treat + 1e-9)
-    cum_ctrl = np.cumsum(y * (t == 0)) / (n_ctrl + 1e-9)
-    qini = cum_treat - cum_ctrl
-    return np.linspace(0, 1, len(qini)), qini
+
+    # global totals
+    NT = (t == 1).sum()
+    NC = (t == 0).sum()
+
+    # cumulative conversions in sorted list
+    NTp = np.cumsum(y * (t == 1))      # conversions among treated up to p
+    NCp = np.cumsum(y * (t == 0))      # conversions among control up to p
+
+    # ======== QINI formula =========
+    # QINI(p) = NT(p)/NT  -  NC(p)/NC * NT(p)/(NT(p)+NC(p))
+    eps = 1e-9
+    qini_curve = NTp / (NT + eps) - (NCp / (NC + eps)) * (NTp / (NTp + NCp + eps))
+
+    # x-axis coverage proportion
+    x = np.linspace(0, 1, len(qini_curve))
+    return x, qini_curve
+
+# def compute_uplift_curve(df, outcome_col='y', treatment_col='treatment', score_col='score'):
+#     """
+#     Fully reproduce sklift uplift_auc_score
+#     while returning (x, curve, auuc) for plotting.
+#     """
+
+#     y = df[outcome_col].values
+#     t = df[treatment_col].values
+#     s = df[score_col].values
+
+#     # sort by predicted uplift score desc
+#     order = np.argsort(-s)
+#     y, t = y[order], t[order]
+
+#     Nt = (t == 1).sum()
+#     Nc = (t == 0).sum()
+#     r = Nt / Nc                                         # control reweight factor
+
+#     cum_t = np.cumsum(y * (t == 1))
+#     cum_c = np.cumsum(y * (t == 0))
+
+#     # ----- uplift incremental gain curve (same as sklift implementation) -----
+#     gain_curve = cum_t - r * cum_c
+
+#     N = len(gain_curve)
+#     x = np.arange(1, N+1) / N                           # population_frac
+
+#     # ------ key: normalize by Nt instead of N  ------
+#     auuc = np.trapz(gain_curve, x) / Nt                 # <--- FINAL CORRECT FIX
+#     return x, gain_curve, auuc
+
+def compute_gain_curve(df, outcome_col='y', treatment_col='treatment', score_col='score'):
+    """
+    Reproduce sklift.metrics.uplift_auc_score fully,
+    while returning x-axis and gain curve for plotting.
+
+    - curve matches incremental uplift gain curve
+    - area under curve == uplift_auc_score (up to tiny float diff)
+
+    returns:
+        x: normalized population share
+        gain_curve: uplift gain at each point (same shape as sklift)
+        auuc: uplift_auc_score equivalent area
+    """
+
+    y = df[outcome_col].values
+    t = df[treatment_col].values
+    s = df[score_col].values
+
+    # descending sort by uplift score
+    order = np.argsort(-s)
+    y, t = y[order], t[order]
+
+    # total counts
+    N_treat = (t == 1).sum()
+    N_ctrl  = (t == 0).sum()
+    r = N_treat / N_ctrl  # reweight factor
+
+    # cumulative conversions
+    cum_treat = np.cumsum(y * (t == 1))
+    cum_ctrl  = np.cumsum(y * (t == 0))
+
+    # === sklift gain curve definition ===
+    #    gain[k] = cum_treat[k] - r*cum_ctrl[k]
+    gain_curve = cum_treat - r * cum_ctrl
+
+    # x-axis in percent of population
+    x = np.arange(1, len(gain_curve)+1) / len(gain_curve)
+
+    # area = uplift_auc_score equivalent
+    # gain = np.trapz(gain_curve, x)
+
+    return x, gain_curve
 
 # ===============================
 #   6. Predict both models
@@ -158,37 +266,38 @@ mask = (y1 == 1)
 # ===============================
 #   7. Compute AUUC & QINI metrics
 # ===============================
-auuc1 = uplift_auc_score(y1, preds1, t)
-qini1 = qini_auc_score(y1, preds1, t)
-auuc2 = uplift_auc_score(y2[mask], preds2[mask], t[mask])
-qini2 = qini_auc_score(y2[mask], preds2[mask], t[mask])
+auuc = uplift_auc_score(y2[mask], preds2[mask], t[mask])
+qini = qini_auc_score(y2[mask], preds2[mask], t[mask])
 
-auuc2_b = uplift_auc_score(y2[mask], preds2_b[mask], t[mask])
-qini2_b = qini_auc_score(y2[mask], preds2_b[mask], t[mask])
+auuc_b = uplift_auc_score(y2[mask], preds2_b[mask], t[mask])
+qini_b = qini_auc_score(y2[mask], preds2_b[mask], t[mask])
 
-print(f"AUUC_CTR: {auuc1:.5f}, AUUC_CVR (Proposed): {auuc2:.5f}, AUUC_CVR (Ablation): {auuc2_b:.5f}")
-print(f"QINI_CTR: {qini1:.5f}, QINI_CVR (Proposed): {qini2:.5f}, QINI_CVR (Ablation): {qini2_b:.5f}")
+print(f"AUUC_CVR (Proposed): {auuc:.5f}, AUUC_CVR (Ablation): {auuc_b:.5f}")
+print(f"QINI_CVR (Proposed): {qini:.5f}, QINI_CVR (Ablation): {qini_b:.5f}")
 
 # ===============================
 #   8. Plot Qini comparison
 # ===============================
+plt.style.use('default')  
 df_cvr_qini_a = pd.DataFrame({'y': y2[mask], 'treatment': t[mask], 'score': preds2[mask]})
 df_cvr_qini_b = pd.DataFrame({'y': y2[mask], 'treatment': t[mask], 'score': preds2_b[mask]})
 
-x1, qini_curve1 = compute_qini(df_cvr_qini_a)
-x2, qini_curve2 = compute_qini(df_cvr_qini_b)
+# x1, qini_curve1 = compute_qini(df_cvr_qini_a)
+# x2, qini_curve2 = compute_qini(df_cvr_qini_b)
+
+x1, qini_curve1 = compute_gain_curve(df_cvr_qini_a)
+x2, qini_curve2 = compute_gain_curve(df_cvr_qini_b)
 
 plt.figure(figsize=(8, 6))
+plt.grid(False)
 plt.plot(x1, qini_curve1, label='Proposed Method', color='#1f77b4', linewidth=2.2)
 plt.plot(x2, qini_curve2, label='Plug-in Estimator', color='#ff7f0e', linewidth=2.2)
 plt.plot(x1, np.linspace(0, qini_curve1[-1], len(x1)), '--', color='gray', label='Random')
 
-plt.title('Qini Curve Comparison (CVR)', fontsize=14)
-# plt.xlabel('Proportion of population targeted', fontsize=12)
-# plt.ylabel('Qini value', fontsize=12)
+# plt.title('Qini Curve Comparison (CVR)', fontsize=14)
 plt.legend(fontsize=11)
 plt.tight_layout()
-plt.savefig('/root/test01/research/CausalCVR/logs/qini_cvr_compare.png', dpi=300, bbox_inches='tight')
+plt.savefig('/root/test01/research/CausalCVR/logs/qini_cvr_compare_test2.png', dpi=300, bbox_inches='tight')
 plt.close()
-print("Saved Qini comparison curve → logs/qini_cvr_compare.png")
+print("Saved Qini comparison curve → logs/qini_cvr_compare_test2.png")
 

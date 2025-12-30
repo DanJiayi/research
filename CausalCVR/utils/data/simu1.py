@@ -1,4 +1,5 @@
 import torch
+from tqdm import trange
 
 def x_t(x):
     x1 = x[0]
@@ -92,7 +93,7 @@ def simu_data1(n_train, n_test):
 def simu_data2(n_train, n_test):
     train_matrix = torch.zeros(n_train, 12)
     test_matrix = torch.zeros(n_test, 12)
-    for _ in range(n_train):
+    for _ in trange(n_train):
         x = torch.rand(8)
         train_matrix[_, 1:9] = x
         t = x_t_2(x)
@@ -101,15 +102,17 @@ def simu_data2(n_train, n_test):
         train_matrix[_, 0] = t
 
         y1,y2 = t_x_y_2(t, x)
-        y1 = torch.bernoulli(0.7*x_t_link(y1 + torch.randn(1)[0] * 0.5))
-        y2 = torch.bernoulli(0.9*x_t_link(y2 + torch.randn(1)[0] * 0.5))
+        y1 = torch.bernoulli(0.7*x_t_link(y1))
+        y2 = torch.bernoulli(0.9*x_t_link(y2))
+        # y1 = torch.bernoulli(0.7*x_t_link(y1 + torch.randn(1)[0] * 0.5))
+        # y2 = torch.bernoulli(0.9*x_t_link(y2 + torch.randn(1)[0] * 0.5))
 
         train_matrix[_, -3] = y1
         train_matrix[_, -2] = y2
         train_matrix[_, -1] = y1 * y2
 
 
-    for _ in range(n_test):
+    for _ in trange(n_test):
         x = torch.rand(8)
         test_matrix[_, 1:9] = x
         t = x_t_2(x)
@@ -118,8 +121,10 @@ def simu_data2(n_train, n_test):
         test_matrix[_, 0] = t
 
         y1,y2 = t_x_y_2(t, x)
-        y1 = torch.bernoulli(0.7*x_t_link(y1 + torch.randn(1)[0] * 0.5))
-        y2 = torch.bernoulli(0.9*x_t_link(y2 + torch.randn(1)[0] * 0.5))
+        y1 = torch.bernoulli(0.7*x_t_link(y1))
+        y2 = torch.bernoulli(0.9*x_t_link(y2))
+        # y1 = torch.bernoulli(0.7*x_t_link(y1 + torch.randn(1)[0] * 0.5))
+        # y2 = torch.bernoulli(0.9*x_t_link(y2 + torch.randn(1)[0] * 0.5))
 
         test_matrix[_, -3] = y1
         test_matrix[_, -2] = y2
@@ -128,16 +133,16 @@ def simu_data2(n_train, n_test):
     t_grid = torch.zeros(3, n_test)
     t_grid[0, :] = test_matrix[:, 0].squeeze()
 
-    for i in range(n_test):
+    for i in trange(n_test):
         psi1,psi2 = 0,0
         t = t_grid[0, i]
         for j in range(n_test):
             x = test_matrix[j, 1:9]
             y1,y2 = t_x_y_2(t, x)
-            # y1 = 0.7 * x_t_link(y1)
-            # y2 = 0.9 * x_t_link(y2)
-            y1 = 0.7*x_t_link(y1 + torch.randn(1)[0] * 0.5)
-            y2 = 0.9*x_t_link(y2 + torch.randn(1)[0] * 0.5)
+            y1 = 0.7 * x_t_link(y1)
+            y2 = 0.9 * x_t_link(y2)
+            # y1 = 0.7*x_t_link(y1 + torch.randn(1)[0] * 0.5)
+            # y2 = 0.9*x_t_link(y2 + torch.randn(1)[0] * 0.5)
             psi1 += y1
             psi2 += y2
         psi1 /= n_test

@@ -62,7 +62,7 @@ if __name__ == "__main__":
     parser.add_argument('--save_dir', type=str, default='logs/simu4/eval', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=40, help='num of datasets to train')
 
     # training
     parser.add_argument('--n_epochs', type=int, default=600, help='num of epochs to train')
@@ -103,9 +103,9 @@ if __name__ == "__main__":
         best_mse,best_params = 999,None
         lr1 = 1e-5
 
-        for h in [8,16,32,64,128,256]:
-            for lr in [1e-5,5e-5,1e-4,1e-3]:
-                for lr_tr in [1e-5,5e-5,1e-4,1e-3]:
+        for h in [8,16,32]:  #,64,128
+            for lr in [1e-5,5e-5,1e-4]: #,1e-3
+                for lr_tr in [1e-5,5e-5,1e-4]: #,1e-3
                     if model_name=='Vcnet_tr' and h==8 and lr==1e-5: continue
                     params = f'{h}_{lr}_{lr_tr}'
                     Result[model_name][params] = []
@@ -157,41 +157,41 @@ if __name__ == "__main__":
 
                     # best cfg for each model
                     if model_name == 'Dragonnet':
-                        init_lr1 = lr1
+                        init_lr1 = lr
                         init_lr2 = lr #1e-6
                         alpha = 0.5
 
                     elif model_name == 'Dragonnet_tr':
-                        init_lr1 = lr1
+                        init_lr1 = lr
                         init_lr2 = lr #1e-6
                         alpha = 0.5
                         tr_init_lr = lr_tr #1e-6
                         beta = 1.
 
                     elif model_name == 'Tarnet':
-                        init_lr1 = lr1
+                        init_lr1 = lr
                         init_lr2 = lr #1e-6
                         alpha = 0.0
 
                     elif model_name == 'Drnet':
-                        init_lr1 = lr1
+                        init_lr1 = lr
                         init_lr2 = lr #1e-6
                         alpha = 0.0 #0.5
 
                     elif model_name == 'Drnet_tr':
-                        init_lr1 = lr1
+                        init_lr1 = lr
                         init_lr2 = lr #1e-6
                         alpha = 0.5
                         tr_init_lr = lr #1e-6
                         beta = 1.
 
                     elif model_name == 'Vcnet':
-                        init_lr1 = lr1
+                        init_lr1 = lr
                         init_lr2 = lr #1e-6
                         alpha = 0.5
 
                     elif model_name == 'Vcnet_tr':
-                        init_lr1 = lr1
+                        init_lr1 = lr
                         init_lr2 = lr #1e-6
                         alpha = 0.5
                         tr_init_lr = lr_tr #1e-6

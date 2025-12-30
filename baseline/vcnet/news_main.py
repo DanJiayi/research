@@ -63,7 +63,7 @@ if __name__ == "__main__":
                         default='/root/test01/research/CausalCVR/dataset/news/eval')
     parser.add_argument('--save_dir', type=str,
                         default='logs/news/eval')
-    parser.add_argument('--num_dataset', type=int, default=20)
+    parser.add_argument('--num_dataset', type=int, default=10)
     parser.add_argument('--n_epochs', type=int, default=600)
     parser.add_argument('--verbose', type=int, default=100)
 
@@ -88,8 +88,8 @@ if __name__ == "__main__":
     t_grid_all = torch.load(args.data_dir + '/t_grid.pt')
 
     # ===== TUNING ADD =====
-    h_list = [8, 16, 32, 64, 128, 256]
-    lr_list = [1e-5,5e-5,1e-4,1e-3]
+    h_list = [8, 16, 32, 64] #, 64, 128
+    lr_list = [1e-4,5e-4,1e-3] #,5e-4,1e-3
     lr_tr_list = lr_list
     lr1 = 5e-5  # for ctr model,fixed
     # =====================
@@ -149,7 +149,7 @@ if __name__ == "__main__":
                         model1._initialize_weights()
                         model2._initialize_weights()
 
-                        optimizer1 = torch.optim.SGD(model1.parameters(), lr=lr1,
+                        optimizer1 = torch.optim.SGD(model1.parameters(), lr=lr, #lr1,
                                                      momentum=momentum, weight_decay=wd, nesterov=True)
                         optimizer2 = torch.optim.SGD(model2.parameters(), lr=lr,
                                                      momentum=momentum, weight_decay=wd, nesterov=True)
