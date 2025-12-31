@@ -74,7 +74,7 @@ if __name__ == "__main__":
     parser.add_argument('--save_dir', type=str, default='/root/test01/research/CausalCVR/logs/simulation/eval', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=20, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=10, help='num of datasets to train')
 
     # training
     parser.add_argument('--n_epochs', type=int, default=600, help='num of epochs to train')
@@ -112,30 +112,32 @@ if __name__ == "__main__":
     # init_lr = 1e-5 
     # tr_init_lr = 1e-3
     alpha = 0.5
-    beta = 1.    
+    beta = 1.  
+    h = 32  
+    init_lr = 5e-4
+    tr_init_lr = 5e-4
     
-    h_list = [8, 32, 128] #
-    lr_list = [1e-4,5e-4,1e-3] #
-    lr_tr_list = [1e-4,5e-4,1e-3] #lr_list
+    # h_list = [8, 32, 128] #
+    # lr_list = [1e-4,5e-4,1e-3] #
+    # lr_tr_list = [1e-4,5e-4,1e-3] #lr_list
 
-    for model_name in ['CVRNet_tr','CVRNet','Alter']: #'Vcnet_tr','Vcnet'
-        Result[model_name] = {}
+    h_list = [32] #
+    lr_list = [1e-5,1e-4,5e-4,1e-3] #
+    lr_tr_list = [1e-5,1e-4,5e-4,1e-3] #lr_list
+
+    for model_name in ['Alter']: #,'CVRNet_tr','CVRNet','Alter'
+        # Result[model_name] = []#{}
         for h in h_list:
             for init_lr in lr_list:
                 for tr_init_lr in lr_tr_list:
+                    if init_lr==1e-5 or (init_lr and tr_init_lr==1e-5): continue
+                    # if flag==1: continue
+                    # flag=0
                     params = 'h' + str(h) + '_init' + str(init_lr) + '_final' + str(tr_init_lr)
-                    # if params not in ['h8_init0.0001_final0.001']: continue
-                    if params not in ['h32_init0.001_final0.001','h8_init0.001_final0.000','h32_init0.0005_final0.0005','h32_init0.0001_final0.001','h32_init0.001_final0.0005']: continue
-                    Result[model_name][params] = []
-
-                    cfg_density = [(8, h, 1, 'relu'), (h, h, 1, 'relu')]
-                    num_grid = 10
-                    cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
-                    degree = 2
-                    knots = [0.33, 0.66]
-                    model = CVRNet(cfg_density, num_grid, cfg, degree, knots).to(device)
-                    model._initialize_weights()
-                    # Result[model_name] = []
+        #             # if params not in ['h8_init0.0001_final0.001']: continue
+        #             if params not in ['h32_init0.001_final0.001','h8_init0.001_final0.000','h32_init0.0005_final0.0005','h32_init0.0001_final0.001','h32_init0.001_final0.0005']: continue
+        #             Result[model_name][params] = []
+                    Result[params] = []
                     # use Target Regularization
                     if model_name == 'CVRNet_tr' or model_name == 'Alter':
                         isTargetReg = 1
@@ -150,18 +152,26 @@ if __name__ == "__main__":
                         TargetReg1._initialize_weights()
                         TargetReg2._initialize_weights()
 
-                    elif model_name == 'CVRNet':
-                        init_lr = init_lr
+                    if model_name == 'CVRNet_tr' or model_name == 'CVRNet':
+                        init_lr = init_lr 
                         alpha = 0.5
-
-                    elif model_name == 'CVRNet_tr' or model_name == 'Alter':
+                        tr_init_lr = tr_init_lr
+                        beta = 1. 
+                    else:
                         init_lr = init_lr 
                         alpha = 0.5
                         tr_init_lr = tr_init_lr
                         beta = 1. 
 
-                    for _ in range(num_dataset):
+                    cfg_density = [(8, h, 1, 'relu'), (h, h, 1, 'relu')]
+                    num_grid = 10
+                    cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
+                    degree = 2
+                    knots = [0.33, 0.66]
+                    model = CVRNet(cfg_density, num_grid, cfg, degree, knots).to(device)
+                    model._initialize_weights()
 
+                    for _ in range(num_dataset):
                         cur_save_path = save_path + '/' + str(_)
                         if not os.path.exists(cur_save_path):
                             os.makedirs(cur_save_path)
@@ -191,7 +201,7 @@ if __name__ == "__main__":
                             tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
                             tr_optimizer2 = torch.optim.SGD(TargetReg2.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
 
-                        print('model : ', model_name,'params: ', params, ' dataset: ', _)
+                        print('model : ', model_name,'params:', params, ' dataset: ', _) #, params
                         for epoch in range(num_epoch):
                             for idx, (inputs,y2) in enumerate(train_loader):
                                 t = inputs[:, 0]
@@ -253,9 +263,13 @@ if __name__ == "__main__":
                         print('current loss: ', float(loss.data))
                         print('current mse1: ', mse1,' mse2: ',mse2)
 
-                        Result[model_name][params].append([mse1,mse2])
-
-                        with open(save_path + '/result_tune2.json', 'w') as fp:
+                        Result[params].append([mse1,mse2])
+                        with open(save_path + '/result_alter.json', 'w') as fp:
                             json.dump(Result, fp)
+
+                        if len(Result[params])>=3 and Result[params][-1][1]<=0.003 and Result[params][-2][1]<=0.003 and Result[params][-3][1]<=0.003:
+                            print('early stoped')
+                            break
+                            
 
                                 

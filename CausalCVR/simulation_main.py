@@ -59,7 +59,7 @@ def criterion_TR_cvr(out, trg, y1, y2, beta=1., epsilon=1e-9):
     y1,y2,out1,out2,trg = y1.squeeze(),y2.squeeze(),out1.squeeze(),out2.squeeze(),trg.squeeze()
     return beta * (( (y2 - out2)/(out1 + epsilon) - (y1-out1)*out2/(out1**2+epsilon) - trg/(out[0].detach().squeeze()+epsilon) )**2).mean()
 
-def criterion_TR_id(out, trg, y1, y2,beta=1., epsilon=1e-9,balance=True):
+def criterion_TR_id(out, trg, y1, y2,beta=1., epsilon=1e-9,balance=False):
     loss = beta *  (y1.squeeze()*(y2.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[2].squeeze())**2 / (out[1].detach().squeeze()+1e-9) ).mean()
     if balance:
         loss *= ((y1.squeeze()*out[1].detach().squeeze()).sum()) / (y1.squeeze().sum()+1e-9)
@@ -70,11 +70,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='train with simulate data_utils')
 
     # i/o
-    parser.add_argument('--data_dir', type=str, default='/root/test01/research/CausalCVR/dataset/simu2/eval', help='dir of eval dataset')
-    parser.add_argument('--save_dir', type=str, default='/root/test01/research/CausalCVR/logs/simu4/eval', help='dir to save result')
+    parser.add_argument('--data_dir', type=str, default='/root/test01/research/CausalCVR/dataset/simulation/eval', help='dir of eval dataset')
+    parser.add_argument('--save_dir', type=str, default='/root/test01/research/CausalCVR/logs/simulation/eval', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=20, help='num of datasets to train')
 
     # training
     parser.add_argument('--n_epochs', type=int, default=600, help='num of epochs to train')
@@ -108,21 +108,14 @@ if __name__ == "__main__":
 
 
     Result = {}
-    h = 32 
-    init_lr = 1e-5 
-    tr_init_lr = 1e-3
     alpha = 0.5
-    beta = 1.
+    beta = 1.  
+    h = 32  
+    init_lr = 5e-4
+    tr_init_lr = 5e-4
+    
 
-    for model_name in ['CVRNet_tr','CVRNet','Alter']: #'Vcnet_tr','Vcnet'
-
-        cfg_density = [(8, h, 1, 'relu'), (h, h, 1, 'relu')]
-        num_grid = 10
-        cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
-        degree = 2
-        knots = [0.33, 0.66]
-        model = CVRNet(cfg_density, num_grid, cfg, degree, knots).to(device)
-        model._initialize_weights()
+    for model_name in ['CVRNet_tr','CVRNet','Alter']: #,
         Result[model_name] = []
         # use Target Regularization
         if model_name == 'CVRNet_tr' or model_name == 'Alter':
@@ -138,20 +131,26 @@ if __name__ == "__main__":
             TargetReg1._initialize_weights()
             TargetReg2._initialize_weights()
 
-        elif model_name == 'CVRNet':
-            init_lr = init_lr
-            alpha = 0.5
-            Result[model_name] = []
-
-        elif model_name == 'CVRNet_tr' or model_name == 'Alter':
+        if model_name == 'CVRNet_tr' or model_name == 'CVRNet':
             init_lr = init_lr 
             alpha = 0.5
             tr_init_lr = tr_init_lr
             beta = 1. 
-            Result[model_name] = []
+        else:
+            init_lr = 1e-5
+            alpha = 0.5
+            tr_init_lr = 1e-4
+            beta = 1. 
+
+        cfg_density = [(8, h, 1, 'relu'), (h, h, 1, 'relu')]
+        num_grid = 10
+        cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
+        degree = 2
+        knots = [0.33, 0.66]
+        model = CVRNet(cfg_density, num_grid, cfg, degree, knots).to(device)
+        model._initialize_weights()
 
         for _ in range(num_dataset):
-
             cur_save_path = save_path + '/' + str(_)
             if not os.path.exists(cur_save_path):
                 os.makedirs(cur_save_path)
@@ -162,6 +161,8 @@ if __name__ == "__main__":
             test_matrix = torch.from_numpy(data.to_numpy()).float().to(device)
             data = pd.read_csv(load_path + '/' + str(_) + '/t_grid.txt', header=None, sep=' ')
             t_grid = torch.from_numpy(data.to_numpy()).float().to(device)
+
+            print('***',train_matrix.shape, test_matrix.shape, t_grid.shape)
 
             # train_matrix, test_matrix, t_grid = simu_data1(500, 200)
             train_loader = get_iter(train_matrix, batch_size=500, shuffle=True)
@@ -179,7 +180,7 @@ if __name__ == "__main__":
                 tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
                 tr_optimizer2 = torch.optim.SGD(TargetReg2.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
 
-            print('model : ', model_name)
+            print('model : ', model_name,' dataset: ', _) #, params
             for epoch in range(num_epoch):
                 for idx, (inputs,y2) in enumerate(train_loader):
                     t = inputs[:, 0]
@@ -242,8 +243,8 @@ if __name__ == "__main__":
             print('current mse1: ', mse1,' mse2: ',mse2)
 
             Result[model_name].append([mse1,mse2])
-
-            with open(save_path + '/result_test.json', 'w') as fp:
+            with open(save_path + '/result_1230.json', 'w') as fp:
                 json.dump(Result, fp)
+                            
 
-                    
+                                
