@@ -193,7 +193,7 @@ if __name__ == "__main__":
     t_grid_all = torch.load(os.path.join(args.data_dir, 't_grid.pt'))        # [num_t, N] or [num_t, ?]
 
     Result = {}
-    h = 16
+    h = 32
     init_lr_nuis = 1e-4   # nuisance learning rate
     final_lr = 5e-3       # final model lr
 
@@ -279,5 +279,5 @@ if __name__ == "__main__":
             print('current mse1: ', mse1, ' mse2: ', mse2)
 
             Result[model_name].append([mse1, mse2])
-            with open(os.path.join(save_path, 'result_dr.json'), 'w') as fp:
+            with open(os.path.join(save_path, 'result_dr_1231.json'), 'w') as fp:
                 json.dump(Result, fp)

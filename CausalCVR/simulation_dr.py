@@ -125,11 +125,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='train with simulate data_utils')
 
     # i/o
-    parser.add_argument('--data_dir', type=str, default='/root/test01/research/CausalCVR/dataset/simu2/eval', help='dir of eval dataset')
-    parser.add_argument('--save_dir', type=str, default='/root/test01/research/CausalCVR/logs/simu4/eval', help='dir to save result')
+    parser.add_argument('--data_dir', type=str, default='/root/test01/research/CausalCVR/dataset/simulation/eval', help='dir of eval dataset')
+    parser.add_argument('--save_dir', type=str, default='/root/test01/research/CausalCVR/logs/simulation/eval', help='dir to save result')
 
     # common
-    parser.add_argument('--num_dataset', type=int, default=100, help='num of datasets to train')
+    parser.add_argument('--num_dataset', type=int, default=20, help='num of datasets to train')
 
     # training
     parser.add_argument('--n_epochs', type=int, default=600, help='num of epochs to train')
@@ -163,9 +163,9 @@ if __name__ == "__main__":
 
 
     Result = {}
-    h = 8 
-    init_lr = 5e-4 
-    lr_final = 5e-3
+    h = 32 
+    init_lr = 1e-3 
+    # lr_final = 5e-3
 
     for model_name in ['DR']:
         cfg_density = [(8, h, 1, 'relu'), (h, h, 1, 'relu')]
@@ -224,14 +224,14 @@ if __name__ == "__main__":
             final_model1._initialize_weights()
             final_model2._initialize_weights()
             print(f"\n===== Training Final Model1 =====")
-            final_model1 = train_final(final_model1,t_all,X_all,PSI1)
+            final_model1 = train_final(final_model1,t_all,X_all,PSI1,lr=1e-2)
             print(f"\n===== Training Final Model2 =====")
-            final_model2 = train_final(final_model2,t_all,X_all,PSI2)
+            final_model2 = train_final(final_model2,t_all,X_all,PSI2,lr=1e-2)
 
             t_grid_hat, mse1, mse2 = curve_dr([final_model1,final_model2],test_matrix, t_grid)
             mse1,mse2 = float(mse1),float(mse2)
             print('current mse1: ', mse1,' mse2: ',mse2)
             Result[model_name].append([mse1,mse2])
-            with open(save_path + '/result_dr.json', 'w') as fp:
+            with open(save_path + '/result_dr_1231.json', 'w') as fp:
                 json.dump(Result, fp)
                     

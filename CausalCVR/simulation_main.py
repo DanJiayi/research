@@ -110,9 +110,9 @@ if __name__ == "__main__":
     Result = {}
     alpha = 0.5
     beta = 1.  
-    h = 32  
-    init_lr = 5e-4
-    tr_init_lr = 5e-4
+    h = 8 #32  
+    init_lr = 1e-4 #5e-4
+    tr_init_lr = 1e-3 #5e-4
     
 
     for model_name in ['CVRNet_tr','CVRNet','Alter']: #,
@@ -243,7 +243,7 @@ if __name__ == "__main__":
             print('current mse1: ', mse1,' mse2: ',mse2)
 
             Result[model_name].append([mse1,mse2])
-            with open(save_path + '/result_1230.json', 'w') as fp:
+            with open(save_path + '/result_1231.json', 'w') as fp:
                 json.dump(Result, fp)
                             
 
