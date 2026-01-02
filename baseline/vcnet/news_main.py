@@ -63,7 +63,7 @@ if __name__ == "__main__":
                         default='/root/test01/research/CausalCVR/dataset/news/eval')
     parser.add_argument('--save_dir', type=str,
                         default='logs/news/eval')
-    parser.add_argument('--num_dataset', type=int, default=10)
+    parser.add_argument('--num_dataset', type=int, default=20)
     parser.add_argument('--n_epochs', type=int, default=600)
     parser.add_argument('--verbose', type=int, default=100)
 
@@ -87,123 +87,121 @@ if __name__ == "__main__":
     data_matrix = torch.load(args.data_dir + '/data_matrix.pt')
     t_grid_all = torch.load(args.data_dir + '/t_grid.pt')
 
-    # ===== TUNING ADD =====
-    h_list = [8, 16, 32, 64] #, 64, 128
-    lr_list = [1e-4,5e-4,1e-3] #,5e-4,1e-3
-    lr_tr_list = lr_list
-    lr1 = 5e-5  # for ctr model,fixed
-    # =====================
-
+    
     Result = {}
+    h = 32 
 
-    for model_name in ['Vcnet_tr', 'Dragonnet_tr', 'Drnet', 'Tarnet']:
-        Result[model_name] = {}
-        best_mse, best_params = 999., None
+    for model_name in ['Vcnet_tr','Dragonnet_tr', 'Drnet', 'Tarnet']:
+        Result[model_name] = []
 
-        for h in h_list:
-            for lr in lr_list:
-                for lr_tr in lr_tr_list:
+        # ===== model init =====
+        if model_name in ['Dragonnet_tr']:
+            cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
+            cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
+            model1 = Drnet(cfg_density, 10, cfg, isenhance=0).to(device)
+            model2 = Drnet(cfg_density, 10, cfg, isenhance=0).to(device)
+            lr =5e-4
+            lr_tr = 1e-3
 
-                    params = f'{h}_{lr}_{lr_tr}'
-                    Result[model_name][params] = []
+        elif model_name in ['Drnet']:
+            cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
+            cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
+            model1 = Drnet(cfg_density, 10, cfg, isenhance=1).to(device)
+            model2 = Drnet(cfg_density, 10, cfg, isenhance=1).to(device)
+            lr = 5e-4
 
-                    # ===== model init =====
-                    if model_name in ['Vcnet', 'Vcnet_tr']:
-                        cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
-                        num_grid = 10
-                        cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
-                        model1 = Vcnet(cfg_density, num_grid, cfg, 2, [0.33, 0.66]).to(device)
-                        model2 = Vcnet(cfg_density, num_grid, cfg, 2, [0.33, 0.66]).to(device)
+        elif model_name in ['Tarnet']:
+            cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
+            cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
+            model1 = Drnet(cfg_density, 10, cfg, isenhance=0).to(device)
+            model2 = Drnet(cfg_density, 10, cfg, isenhance=0).to(device)
+            lr = 5e-4
 
-                    elif model_name in ['Drnet', 'Drnet_tr']:
-                        cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
-                        cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
-                        model1 = Drnet(cfg_density, 10, cfg, isenhance=1).to(device)
-                        model2 = Drnet(cfg_density, 10, cfg, isenhance=1).to(device)
+        else:
+            cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
+            num_grid = 10
+            cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
+            model1 = Vcnet(cfg_density, num_grid, cfg, 2, [0.33, 0.66]).to(device)
+            model2 = Vcnet(cfg_density, num_grid, cfg, 2, [0.33, 0.66]).to(device)
+            lr = lr_tr = 1e-5
 
-                    else:
-                        cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
-                        cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
-                        model1 = Drnet(cfg_density, 10, cfg, isenhance=0).to(device)
-                        model2 = Drnet(cfg_density, 10, cfg, isenhance=0).to(device)
+        isTargetReg = model_name.endswith('_tr')
 
-                    isTargetReg = model_name.endswith('_tr')
+        if isTargetReg:
+            TargetReg1 = TR(2, list(np.arange(0.1, 1, 0.1))).to(device)
+            TargetReg2 = TR(2, list(np.arange(0.1, 1, 0.1))).to(device)
+
+        alpha = 0.5 if isTargetReg else 0.0
+        beta = 1.
+
+        for d in range(args.num_dataset):
+            print(f'----- Dataset {d}, Model {model_name} -----')
+            idx_train = torch.load(f'{args.data_split_dir}/{d}/idx_train.pt')
+            idx_test = torch.load(f'{args.data_split_dir}/{d}/idx_test.pt')
+
+            train_matrix = data_matrix[idx_train].to(device)
+            test_matrix = data_matrix[idx_test].to(device)
+            t_grid = t_grid_all[:, idx_test].to(device)
+
+            train_loader = get_iter(train_matrix, 500, True)
+
+            model1._initialize_weights()
+            model2._initialize_weights()
+
+            optimizer1 = torch.optim.SGD(model1.parameters(), lr=lr, #lr1,
+                                            momentum=momentum, weight_decay=wd, nesterov=True)
+            optimizer2 = torch.optim.SGD(model2.parameters(), lr=lr,
+                                            momentum=momentum, weight_decay=wd, nesterov=True)
+
+            if isTargetReg:
+                TargetReg1._initialize_weights()
+                TargetReg2._initialize_weights()
+                tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=5e-4,
+                                                weight_decay=tr_wd)
+                tr_optimizer2 = torch.optim.SGD(TargetReg2.parameters(), lr=lr_tr,
+                                                weight_decay=tr_wd)
+
+            for epoch in range(num_epoch):
+                for inputs, y2 in train_loader:
+                    t = inputs[:, 0]
+                    x = inputs[:, 1:-2]
+                    y1 = inputs[:, -2]
+
+                    optimizer1.zero_grad()
+                    optimizer2.zero_grad()
+
+                    out1, out2 = model1(t, x), model2(t, x)
+
+                    loss1 = criterion(out1, y1, alpha)
+                    loss2 = criterion_2(out2, y1, y2, alpha)
+                    # if torch.isnan(loss1) or torch.isnan(loss2):
+                    #     print('nan detected.')
+                    #     flag = 1
 
                     if isTargetReg:
-                        TargetReg1 = TR(2, list(np.arange(0.1, 1, 0.1))).to(device)
-                        TargetReg2 = TR(2, list(np.arange(0.1, 1, 0.1))).to(device)
+                        trg1, trg2 = TargetReg1(t), TargetReg2(t)
+                        loss1 += criterion_TR(out1, trg1, y1, beta)
+                        loss2 += criterion_TR_2(out2, trg2, y1, y2, beta)
 
-                    alpha = 0.5 if model_name != 'Tarnet' else 0.0
-                    beta = 1.
+                    loss1.backward()
+                    loss2.backward()
+                    optimizer1.step()
+                    optimizer2.step()
 
-                    for d in range(args.num_dataset):
-                        idx_train = torch.load(f'{args.data_split_dir}/{d}/idx_train.pt')
-                        idx_test = torch.load(f'{args.data_split_dir}/{d}/idx_test.pt')
 
-                        train_matrix = data_matrix[idx_train].to(device)
-                        test_matrix = data_matrix[idx_test].to(device)
-                        t_grid = t_grid_all[:, idx_test].to(device)
+            if isTargetReg:
+                _, mse1, mse2 = curve_2([model1, model2],
+                                        test_matrix, t_grid,
+                                        TargetReg1, TargetReg2)
+            else:
+                _, mse1, mse2 = curve_2([model1, model2],
+                                        test_matrix, t_grid)
 
-                        train_loader = get_iter(train_matrix, 500, True)
+            mse1,mse2 = float(mse1),float(mse2)
+            print('current loss: ', float(loss1.data),', ',float(loss2.data))
+            print('current mse1: ', mse1,' mse2: ',mse2)
 
-                        model1._initialize_weights()
-                        model2._initialize_weights()
+            Result[model_name].append([mse1,mse2])
+            with open(args.save_dir + '/result_baseline.json', 'w') as f:
+                json.dump(Result, f)
 
-                        optimizer1 = torch.optim.SGD(model1.parameters(), lr=lr, #lr1,
-                                                     momentum=momentum, weight_decay=wd, nesterov=True)
-                        optimizer2 = torch.optim.SGD(model2.parameters(), lr=lr,
-                                                     momentum=momentum, weight_decay=wd, nesterov=True)
-
-                        if isTargetReg:
-                            TargetReg1._initialize_weights()
-                            TargetReg2._initialize_weights()
-                            tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=5e-4,
-                                                            weight_decay=tr_wd)
-                            tr_optimizer2 = torch.optim.SGD(TargetReg2.parameters(), lr=lr_tr,
-                                                            weight_decay=tr_wd)
-
-                        for epoch in range(num_epoch):
-                            for inputs, y2 in train_loader:
-                                t = inputs[:, 0]
-                                x = inputs[:, 1:-2]
-                                y1 = inputs[:, -2]
-
-                                optimizer1.zero_grad()
-                                optimizer2.zero_grad()
-
-                                out1, out2 = model1(t, x), model2(t, x)
-
-                                loss1 = criterion(out1, y1, alpha)
-                                loss2 = criterion_2(out2, y1, y2, alpha)
-
-                                if isTargetReg:
-                                    trg1, trg2 = TargetReg1(t), TargetReg2(t)
-                                    loss1 += criterion_TR(out1, trg1, y1, beta)
-                                    loss2 += criterion_TR_2(out2, trg2, y1, y2, beta)
-
-                                loss1.backward()
-                                loss2.backward()
-                                optimizer1.step()
-                                optimizer2.step()
-
-                        if isTargetReg:
-                            _, mse1, mse2 = curve_2([model1, model2],
-                                                    test_matrix, t_grid,
-                                                    TargetReg1, TargetReg2)
-                        else:
-                            _, mse1, mse2 = curve_2([model1, model2],
-                                                    test_matrix, t_grid)
-
-                        mse1,mse2 = float(mse1),float(mse2)
-                        print('current loss: ', float(loss1.data),', ',float(loss2.data))
-                        print('current mse1: ', mse1,' mse2: ',mse2)
-
-                        Result[model_name][params].append([mse1,mse2])
-                        with open(args.save_dir + '/result_baseline_tune.json', 'w') as f:
-                            json.dump(Result, f)
-
-                    avg_mse = np.mean([x[1] for x in Result[model_name][params]])
-                    if avg_mse < best_mse:
-                        best_mse, best_params = avg_mse, params
-
-                    print('***', model_name, best_mse, best_params)

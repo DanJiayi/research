@@ -127,8 +127,8 @@ if __name__ == "__main__":
             print(k,params)
             Result[params]={}
             k+=1
-            h = 8
-            lr = 5e-4
+            h = 32
+            lr = 1e-5
             lr_tr = 5e-4
             for model_name in ['CVRNet_tr']:
                 Result[params][model_name]=[]
@@ -230,7 +230,7 @@ if __name__ == "__main__":
 
                     Result[params][model_name].append([mse1,mse2])
 
-                    with open(save_path + '/result_sens.json', 'w') as fp:
+                    with open(save_path + '/result_sens_0101.json', 'w') as fp:
                         json.dump(Result, fp)
 
 

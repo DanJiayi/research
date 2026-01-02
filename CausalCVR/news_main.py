@@ -1,9 +1,9 @@
 import torch
 import math
 import numpy as np
-from models.dynamic_net import Vcnet, Drnet, TR, Vcnet_2
+from models.dynamic_net import TR, CVRNet
 from data.data import get_iter
-from utils.eval import curve,curve_2
+from utils.eval import curve_2
 
 import os
 import json
@@ -32,15 +32,6 @@ def save_checkpoint(state, model_name='', checkpoint_dir='.'):
     print('=> Saving checkpoint to {}'.format(filename))
     torch.save(state, filename)
 
-# criterion
-# def criterion(out, y, alpha=0.5, epsilon=1e-9):
-#     return ((out[1].squeeze() - y.squeeze())**2).mean() - alpha * torch.log(out[0] + epsilon).mean()
-
-# def criterion_2(out, y1, y2,alpha=0.5, epsilon=1e-9):
-#     loss_pi = -alpha * torch.log(out[0] + epsilon).mean()
-#     loss_y1 = (-y1 * torch.log(out[1] + epsilon).squeeze() - (1-y1) * torch.log(1 - out[1] + epsilon).squeeze()).mean()
-#     loss_y2 = ((-y2 * torch.log(out[2] + epsilon).squeeze() - (1-y2) * torch.log(1 - out[2] + epsilon).squeeze()) * y1.squeeze()).mean()
-#     return loss_pi + loss_y1 + loss_y2 
 
 def criterion_cvr(out, y1, y2,alpha=0.5, epsilon=1e-9):
     loss_pi = -alpha * torch.log(out[0] + epsilon).mean()
@@ -67,6 +58,7 @@ def criterion_TR_cvr(out, trg, y1, y2, beta=1., epsilon=1e-9):
 
 def criterion_TR_id(out, trg, y1, y2,beta=1., epsilon=1e-9):
     return beta *  (y1.squeeze()*(y2.squeeze() - trg.squeeze()/(out[0].squeeze() + epsilon) - out[2].squeeze())**2 / (out[1].detach().squeeze()+1e-9) ).mean()
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='train with news data_utils')
@@ -117,186 +109,139 @@ if __name__ == "__main__":
     t_grid_all = torch.load(args.data_dir + '/t_grid.pt')
 
     Result = {}
-    # model_name = 'Vcnet_tr'
-    best_mse = 1e6
-    best_mse1 = 1e6
-    best_params = None
-    k = 0
+    h = 32
+    lr = 1e-5
+    lr_tr = 5e-4
 
-    #for model_name in ['Vcnet', 'Vcnet_tr', 'Tarnet', 'Tarnet_tr', 'Drnet', 'Drnet_tr']:
-    for num_epoch in [600]:
-        for h in [8]:
-            # if num_epoch==400 and h==8: continue
-            # for init_lr in [1e-4,1e-3,1e-2]:
-            # for alpha in [0.1,0.5,1]:
-            for lr in [5e-4]:
-                # for tr_init_lr in [1e-4,1e-3,1e-2]:
-                for lr_tr in [5e-4]:
-                    params = f'{num_epoch}_{h}_{lr}_{lr_tr}'
-                    Result[params]={}
-                    #Result[model_name]=[]
-                    k+=1
-                    #for model_name in ['Vcnet_id_tr','Vcnet_id']: #'Vcnet_tr'
-                    for model_name in ['Vcnet_tr','Vcnet']: #'Vcnet_tr'
-                        Result[params][model_name]=[]
-                        # import model
-                        cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
-                        num_grid = 10
-                        cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
-                        degree = 2
-                        knots = [0.33, 0.66]
-                        model = Vcnet_2(cfg_density, num_grid, cfg, degree, knots).to(device)
-                        model._initialize_weights()
+    for model_name in ['CVRNet_tr','CVRNet','Alter']: #'CVRNet_tr',
+        Result[model_name] = []
+        # import model
+        cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
+        num_grid = 10
+        cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
+        degree = 2
+        knots = [0.33, 0.66]
+        model = CVRNet(cfg_density, num_grid, cfg, degree, knots).to(device)
+        model._initialize_weights()
 
-                        # use Target Regularization?
-                        if model_name == 'Vcnet_tr' or model_name == 'Vcnet_id_tr':
-                            isTargetReg = 1
-                        else:
-                            isTargetReg = 0
+        # use Target Regularization?
+        if model_name == 'CVRNet_tr' or model_name == 'Alter':
+            isTargetReg = 1
+        else:
+            isTargetReg = 0
 
-                        tr_knots=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9]
-                        tr_degree = 2
-                        TargetReg1 = TR(tr_degree, tr_knots).to(device)
-                        TargetReg1._initialize_weights()
-                        TargetReg2 = TR(tr_degree, tr_knots).to(device)
-                        TargetReg2._initialize_weights()
+        tr_knots=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9]
+        tr_degree = 2
+        TargetReg1 = TR(tr_degree, tr_knots).to(device)
+        TargetReg1._initialize_weights()
+        TargetReg2 = TR(tr_degree, tr_knots).to(device)
+        TargetReg2._initialize_weights()
 
-                        # best cfg for each model
-                        if model_name == 'Vcnet':
-                            init_lr = 0.0005
-                            alpha = 0.5
-                            beta = 1.
+        # best cfg for each model
+        if model_name == 'CVRNet':
+            init_lr = lr
+            alpha = 0.5
+            beta = 1.
 
-                            Result[params]['Vcnet'] = []
+        elif model_name == 'CVRNet_tr':
+            tr_init_lr = lr_tr
+            init_lr = lr
+            alpha = 0.5
+            beta = 1. 
 
-                        elif model_name == 'Vcnet_tr':
-                            init_lr = 0.0005
-                            alpha = 0.5
-                            tr_init_lr = lr_tr #1e-4 #0.0005
-                            beta = 1. #beta
+        else:
+            tr_init_lr = 5e-4
+            init_lr = 5e-4
+            alpha = 0.5
+            beta = 1.
 
-                            Result[params]['Vcnet_tr'] = []
+        for _ in range(num_dataset):
+            cur_save_path = save_path + '/' + str(_)
+            if not os.path.exists(cur_save_path):
+                os.makedirs(cur_save_path)
 
-                        elif model_name == 'Vcnet_id':
-                            init_lr = 0.001
-                            alpha = 0.5
-                            beta = 1.
+            idx_train = torch.load(args.data_split_dir + '/' + str(_) + '/idx_train.pt')
+            idx_test = torch.load(args.data_split_dir + '/' + str(_) + '/idx_test.pt')
 
-                            Result[params]['Vcnet_id'] = []
+            train_matrix = data_matrix[idx_train, :].to(device)
+            test_matrix = data_matrix[idx_test, :].to(device)
+            t_grid = t_grid_all[:, idx_test].to(device)
 
-                        elif model_name == 'Vcnet_id_tr':
-                            init_lr = 0.001
-                            alpha = 0.5
-                            tr_init_lr = lr_tr
-                            beta = 1.
+            train_loader = get_iter(train_matrix, batch_size=500, shuffle=True)
+            test_loader = get_iter(test_matrix, batch_size=test_matrix.shape[0], shuffle=False)
 
-                            Result[params]['Vcnet_id_tr'] = []
+            # reinitialize model
+            model._initialize_weights()
 
-                        for _ in range(num_dataset):
-                            cur_save_path = save_path + '/' + str(_)
-                            if not os.path.exists(cur_save_path):
-                                os.makedirs(cur_save_path)
+            # define optimizer
+            optimizer = torch.optim.SGD(model.parameters(), lr=init_lr, momentum=momentum, weight_decay=wd,
+                                        nesterov=True)
 
-                            idx_train = torch.load(args.data_split_dir + '/' + str(_) + '/idx_train.pt')
-                            idx_test = torch.load(args.data_split_dir + '/' + str(_) + '/idx_test.pt')
+            if isTargetReg:
+                TargetReg1._initialize_weights()
+                TargetReg2._initialize_weights()
+                tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
+                tr_optimizer2 = torch.optim.SGD(TargetReg2.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
 
-                            train_matrix = data_matrix[idx_train, :].to(device)
-                            test_matrix = data_matrix[idx_test, :].to(device)
-                            t_grid = t_grid_all[:, idx_test].to(device)
+            print('model : ', model_name,', dataset : ', _)
+            for epoch in range(num_epoch):
+                for idx, (inputs, y2) in enumerate(train_loader):
+                    t = inputs[:, 0]
+                    x = inputs[:, 1:-2]
+                    y1 = inputs[:,-2]
 
-                            train_loader = get_iter(train_matrix, batch_size=500, shuffle=True)
-                            test_loader = get_iter(test_matrix, batch_size=test_matrix.shape[0], shuffle=False)
-
-                            # reinitialize model
-                            model._initialize_weights()
-
-                            # define optimizer
-                            optimizer = torch.optim.SGD(model.parameters(), lr=init_lr, momentum=momentum, weight_decay=wd,
-                                                        nesterov=True)
-
-                            if isTargetReg:
-                                TargetReg1._initialize_weights()
-                                TargetReg2._initialize_weights()
-                                tr_optimizer1 = torch.optim.SGD(TargetReg1.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
-                                tr_optimizer2 = torch.optim.SGD(TargetReg2.parameters(), lr=tr_init_lr, weight_decay=tr_wd)
-
-                            print('model : ', model_name)
-                            for epoch in range(num_epoch):
-                                for idx, (inputs, y2) in enumerate(train_loader):
-                                    t = inputs[:, 0]
-                                    x = inputs[:, 1:-2]
-                                    y1 = inputs[:,-2]
-
-                                    if isTargetReg:
-                                        if epoch <= 800:
-                                            optimizer.zero_grad()
-                                            out = model.forward(t, x)
-                                            trg1,trg2 = TargetReg1(t),TargetReg2(t)
-                                            if model_name in ['Vcnet_id','Vcnet_id_tr']:
-                                                loss = criterion_id(out, y1,y2,alpha=alpha) + criterion_TR(out, trg1, y1, beta=beta) + criterion_TR_id(out, trg2, y1, y2, beta=beta)
-                                            else:
-                                                loss = criterion_cvr(out, y1,y2,alpha=alpha) + criterion_TR(out, trg1, y1, beta=beta,detach=True) + criterion_TR_cvr(out, trg2, y1, y2, beta=beta)
-                                            loss.backward()
-                                            optimizer.step()
-
-                                        tr_optimizer1.zero_grad()
-                                        tr_optimizer2.zero_grad()
-                                        out = model(t, x)
-                                        trg1, trg2 = TargetReg1(t), TargetReg2(t)
-                                        if model_name in ['Vcnet_id','Vcnet_id_tr']:
-                                            tr_loss1 = criterion_TR(out, trg1, y1, beta=beta)
-                                            tr_loss2 = criterion_TR_id(out, trg2, y1, y2, beta=beta)
-                                        else:
-                                            tr_loss1 = criterion_TR(out, trg1, y1, beta=beta,detach=True)
-                                            tr_loss2 = criterion_TR_cvr(out, trg2, y1, y2, beta=beta)
-                                        tr_loss1.backward(retain_graph=True) 
-                                        tr_optimizer1.step()
-                                        tr_loss2.backward() 
-                                        tr_optimizer2.step()
-                                    else:
-                                        optimizer.zero_grad()
-                                        out = model.forward(t, x)
-                                        if model_name in ['Vcnet_id','Vcnet_id_tr']:
-                                            loss = criterion_id(out, y1,y2,alpha=alpha)
-                                        else:
-                                            loss = criterion_cvr(out, y1,y2,alpha=alpha)
-                                        loss.backward()
-                                        optimizer.step()
-
-                                if epoch % verbose == 0:
-                                    print('current epoch: ', epoch)
-                                    print('loss: ', loss)
-
-                            if isTargetReg:
-                                t_grid_hat, mse1, mse2 = curve_2(model, test_matrix, t_grid, TargetReg1, TargetReg2)
-                                mse1, mse2 = float(mse1),float(mse2)
-                                print('current loss: ', float(loss.data))
-                                print('current mse1: ', mse1,' mse2: ',mse2)
+                    if isTargetReg:
+                        if epoch <= 800:
+                            optimizer.zero_grad()
+                            out = model.forward(t, x)
+                            trg1,trg2 = TargetReg1(t),TargetReg2(t)
+                            if model_name in ['Alter']:
+                                loss = criterion_id(out, y1,y2,alpha=alpha) + criterion_TR(out, trg1, y1, beta=beta) + criterion_TR_id(out, trg2, y1, y2, beta=beta)
                             else:
-                                t_grid_hat, mse1, mse2 = curve_2(model, test_matrix, t_grid, TargetReg1, TargetReg2)
-                                mse1, mse2 = float(mse1),float(mse2)
-                                print('current loss: ', float(loss.data))
-                                print('current mse1: ', mse1,' mse2: ',mse2)
+                                loss = criterion_cvr(out, y1,y2,alpha=alpha) + criterion_TR(out, trg1, y1, beta=beta,detach=True) + criterion_TR_cvr(out, trg2, y1, y2, beta=beta)
+                            loss.backward()
+                            optimizer.step()
 
-                            # print('-----------------------------------------------------------------')
-                            # save_checkpoint({
-                            #     'model': model_name,
-                            #     'best_test_loss': [mse1,mse2],
-                            #     'model_state_dict': model.state_dict(),
-                            #     'TR_state_dict': [TargetReg1.state_dict(),TargetReg2.state_dict()],
-                            # }, model_name=model_name, checkpoint_dir=cur_save_path)
-                            # print('-----------------------------------------------------------------')
+                        tr_optimizer1.zero_grad()
+                        tr_optimizer2.zero_grad()
+                        out = model(t, x)
+                        trg1, trg2 = TargetReg1(t), TargetReg2(t)
+                        if model_name in ['Alter']:
+                            tr_loss1 = criterion_TR(out, trg1, y1, beta=beta)
+                            tr_loss2 = criterion_TR_id(out, trg2, y1, y2, beta=beta)
+                        else:
+                            tr_loss1 = criterion_TR(out, trg1, y1, beta=beta,detach=True)
+                            tr_loss2 = criterion_TR_cvr(out, trg2, y1, y2, beta=beta)
+                        tr_loss1.backward(retain_graph=True) 
+                        tr_optimizer1.step()
+                        tr_loss2.backward() 
+                        tr_optimizer2.step()
+                    else:
+                        optimizer.zero_grad()
+                        out = model.forward(t, x)
+                        if model_name in ['Alter']:
+                            loss = criterion_id(out, y1,y2,alpha=alpha)
+                        else:
+                            loss = criterion_cvr(out, y1,y2,alpha=alpha)
+                        loss.backward()
+                        optimizer.step()
 
-                            Result[params][model_name].append([mse1,mse2])
+                if epoch % verbose == 0:
+                    print('current epoch: ', epoch)
+                    print('loss: ', loss)
 
-                            with open(save_path + '/result_test.json', 'w') as fp:
-                                json.dump(Result, fp)
+            if isTargetReg:
+                t_grid_hat, mse1, mse2 = curve_2(model, test_matrix, t_grid, TargetReg1, TargetReg2)
+                mse1, mse2 = float(mse1),float(mse2)
+                print('current loss: ', float(loss.data))
+                print('current mse1: ', mse1,' mse2: ',mse2)
+            else:
+                t_grid_hat, mse1, mse2 = curve_2(model, test_matrix, t_grid)
+                mse1, mse2 = float(mse1),float(mse2)
+                print('current loss: ', float(loss.data))
+                print('current mse1: ', mse1,' mse2: ',mse2)
 
-                    # avg_mse1 = sum([i[1] for i in Result[params]['Vcnet']])/len(Result[params]['Vcnet'])
-                    # avg_mse2 = sum([i[1] for i in Result[params]['Vcnet_tr']])/len(Result[params]['Vcnet_tr'])
-                    # if avg_mse2<avg_mse1 and avg_mse2<best_mse:
-                    #     best_mse,best_mse1, best_params = avg_mse2, avg_mse1,params
-                    # print('*** current mse: ',[avg_mse1,avg_mse2],' current params: ',params, ' num_tunes: ',k)
-                    # print('best mse: ',[best_mse1,best_mse],' best_params: ',best_params)
 
-
+            Result[model_name].append([mse1,mse2])
+            with open(save_path + '/result.json', 'w') as fp:
+                json.dump(Result, fp)

@@ -116,8 +116,7 @@ if __name__ == "__main__":
         Result[model_name] = {}
         for alpha in [5e-5,5e-4,5e-3,5e-2,0.5,5]:
             for beta in [1e-5,1e-4,1e-3,1e-2,0.1,1]:
-                # if alpha != 0.5 and beta != 1: continue
-                if (alpha,beta) not in [(5e-5,1),(5,1),(0.5,1e-5)]: continue
+                if alpha != 0.5 and beta != 1: continue
 
                 params = 'alpha' + str(alpha) + '_beta' + str(beta)
                 Result[model_name][params] = []

@@ -52,7 +52,6 @@ def criterion_cvr(out, y1, y2, alpha=0.5, epsilon=1e-9):
 
 def get_pseudo_out(y1, y2, out):
     """
-    构造 DR 伪结果 ψ1, ψ2（点击、点击后转化），并截断到 [0,1]
     y1, y2: shape [N]
     out: [pi, mu1, mu2_given_y1]
     """
@@ -154,7 +153,7 @@ if __name__ == "__main__":
     # i/o
     parser.add_argument('--data_dir', type=str,default='/root/test01/research/CausalCVR/dataset/news',help='dir of news data (data_matrix.pt, t_grid.pt)')
     parser.add_argument('--data_split_dir', type=str,default='/root/test01/research/CausalCVR/dataset/news/eval',help='dir of data split (idx_train.pt, idx_test.pt)')
-    parser.add_argument('--save_dir', type=str,default='logs/news/dr_eval',help='dir to save result')
+    parser.add_argument('--save_dir', type=str,default='logs/news/eval',help='dir to save result')
 
     # common
     parser.add_argument('--num_dataset', type=int, default=20,
@@ -198,7 +197,6 @@ if __name__ == "__main__":
     final_lr = 5e-3       # final model lr
 
     for model_name in ['DR']:
-        # news 维度：t(1) + x(498) + y1 + y2 → x_dim = 498
         cfg_density = [(498, h, 1, 'relu'), (h, h, 1, 'relu')]
         num_grid = 10
         cfg = [(h, h, 1, 'relu'), (h, 1, 1, 'id')]
@@ -279,5 +277,5 @@ if __name__ == "__main__":
             print('current mse1: ', mse1, ' mse2: ', mse2)
 
             Result[model_name].append([mse1, mse2])
-            with open(os.path.join(save_path, 'result_dr_1231.json'), 'w') as fp:
+            with open(os.path.join(save_path, 'result_dr.json'), 'w') as fp:
                 json.dump(Result, fp)

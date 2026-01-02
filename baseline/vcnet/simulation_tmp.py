@@ -102,7 +102,7 @@ if __name__ == "__main__":
         Result[model_name]=[]
         h=8
         lr = 1e-5
-        lr_tr = 1e-4
+        lr_tr = 1e-5
         if model_name == 'Vcnet' or model_name == 'Vcnet_tr':
             cfg_density = [(8, h, 1, 'relu'), (h, h, 1, 'relu')]
             num_grid = 10
@@ -158,7 +158,7 @@ if __name__ == "__main__":
             init_lr1 = lr
             init_lr2 = lr
             alpha = 0.5
-            tr_init_lr = 1e-4
+            tr_init_lr = lr_tr
             beta = 1.
 
         elif model_name == 'Tarnet':
@@ -282,5 +282,5 @@ if __name__ == "__main__":
             print('current mse1: ', mse1,' mse2: ',mse2)
             
             Result[model_name].append([mse1,mse2])
-            with open(save_path + f'/result_baseline_1231.json', 'w') as fp:
+            with open(save_path + f'/result_baseline_1231_tmp.json', 'w') as fp:
                 json.dump(Result, fp)

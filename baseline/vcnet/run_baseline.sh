@@ -8,9 +8,9 @@
 # python3 main_batch_cvr.py --lr 1e-5 --lr_tr 1e-6
 # python3 main_batch_cvr.py --lr 1e-5 --lr_tr 1e-4
 
-python3 news_main.py
 python3 simulation_main.py
+python3 simulation_tmp.py
 cd /root/test01/research 
 git add .
-git commit -m "1229"
+git commit -m "1231"
 git push origin main
