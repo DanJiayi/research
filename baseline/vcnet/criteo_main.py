@@ -120,11 +120,11 @@ if __name__ == "__main__":
 
 
     Result = {}
-    for model_name in ['Dragonnet_tr','Tarnet','TLearner']: #,'Tarnet','TLearner'
+    for model_name in ['Dragonnet_tr']: #,'Tarnet','TLearner'
         Result[model_name] = {}
         best_auuc,best_qini = 0,0
         best_params = None
-        for h in [8,16,32,64,128,256]:
+        for h in [8,16,32,128]:
             for init_lr in [1e-6,1e-5,5e-5,1e-4,5e-4,1e-3]: #1e-6,
                 for tr_init_lr in [1e-6,1e-5,5e-5,1e-4,5e-4,1e-3]:
                     if init_lr not in [1e-6,5e-5,5e-4] and tr_init_lr not in [1e-6,5e-5,5e-4] and h not in [128,256]: continue
@@ -252,10 +252,12 @@ if __name__ == "__main__":
                         print('current loss: ', [loss1.data,loss2.data])
                         if torch.isnan(loss1) or torch.isnan(loss2): flag = 1
                         if epoch % 5 == 0:
-                            if isTargetReg:
-                                auuc1, auuc2, qini1, qini2 = eval_binary([model1,model2],test_matrix, TargetReg1,TargetReg2)
-                            else:
-                                auuc1, auuc2, qini1, qini2 = eval_binary([model1,model2], test_matrix)
+                            # if isTargetReg:
+                            #     auuc1, auuc2, qini1, qini2 = eval_binary([model1,model2],test_matrix, TargetReg1,TargetReg2)
+                            # else:
+                            #     auuc1, auuc2, qini1, qini2 = eval_binary([model1,model2], test_matrix)
+
+                            auuc1, auuc2, qini1, qini2 = eval_binary([model1,model2], test_matrix)
 
                             params = f'{epoch}_{h}_{init_lr}_{tr_init_lr}'
                             Result[model_name][params]=[auuc1,auuc2,qini1,qini2]
@@ -267,5 +269,5 @@ if __name__ == "__main__":
                             print('current auuc: ', [auuc1,auuc2],' current qini: ',[qini1,qini2],' best auuc: ',best_auuc,'best_qini: ',best_qini,' best_params: ',best_params)
 
 
-                            with open(save_path + f'/result_baseline_test1.json', 'w') as fp:
+                            with open(save_path + f'/result_baseline_dra.json', 'w') as fp:
                                 json.dump(Result, fp)

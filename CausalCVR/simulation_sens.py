@@ -114,7 +114,7 @@ if __name__ == "__main__":
 
     for model_name in ['CVRNet_tr']:
         Result[model_name] = {}
-        for alpha in [5e-5,5e-4,5e-3,5e-2,0.5,5]:
+        for alpha in [5e-4,5e-3,5e-2,0.5,5]:
             for beta in [1e-5,1e-4,1e-3,1e-2,0.1,1]:
                 if alpha != 0.5 and beta != 1: continue
 
@@ -250,7 +250,7 @@ if __name__ == "__main__":
 
                     Result[model_name][params].append([mse1,mse2])
 
-                    with open(save_path + '/result_sens3.json', 'w') as fp:
+                    with open(save_path + '/result_sens.json', 'w') as fp:
                         json.dump(Result, fp)
 
                                 

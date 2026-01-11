@@ -31714,3 +31714,358 @@ Traceback (most recent call last):
   File "/root/miniconda3/lib/python3.8/site-packages/torch/autograd/__init__.py", line 154, in backward
     Variable._execution_engine.run_backward(
 KeyboardInterrupt
+8_1e-06_1e-06
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.5097, device='cuda:0'), tensor(0.0174, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.5045, device='cuda:0'), tensor(0.0104, device='cuda:0')]
+current epoch:  3
+current loss:  [tensor(0.5010, device='cuda:0'), tensor(0.0097, device='cuda:0')]
+current epoch:  4
+current loss:  [tensor(0.4892, device='cuda:0'), tensor(-0.0036, device='cuda:0')]
+current epoch:  5
+current loss:  [tensor(0.4802, device='cuda:0'), tensor(-0.0273, device='cuda:0')]
+current auuc:  [0.0022622508870002805, -0.010234043598653078]  current qini:  [0.005645120003632161, -0.01962824930952548]  best auuc:  0 best_qini:  0  best_params:  None
+current epoch:  6
+current loss:  [tensor(0.4790, device='cuda:0'), tensor(-0.0020, device='cuda:0')]
+current epoch:  7
+current loss:  [tensor(0.4779, device='cuda:0'), tensor(-0.0492, device='cuda:0')]
+current epoch:  8
+current loss:  [tensor(0.4750, device='cuda:0'), tensor(-0.0630, device='cuda:0')]
+current epoch:  9
+current loss:  [tensor(0.4582, device='cuda:0'), tensor(-0.0948, device='cuda:0')]
+current epoch:  10
+current loss:  [tensor(0.5007, device='cuda:0'), tensor(0.0351, device='cuda:0')]
+current auuc:  [0.0024428912468204313, 0.0]  current qini:  [0.00609413019185742, 0.0]  best auuc:  0 best_qini:  0  best_params:  None
+current epoch:  11
+current loss:  [tensor(0.4513, device='cuda:0'), tensor(-0.0097, device='cuda:0')]
+current epoch:  12
+current loss:  [tensor(0.4492, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_1e-06_1e-05
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.5097, device='cuda:0'), tensor(0.0156, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.4981, device='cuda:0'), tensor(0.0109, device='cuda:0')]
+current epoch:  3
+current loss:  [tensor(0.5043, device='cuda:0'), tensor(-0.0026, device='cuda:0')]
+current epoch:  4
+current loss:  [tensor(0.4832, device='cuda:0'), tensor(-0.0076, device='cuda:0')]
+current epoch:  5
+current loss:  [tensor(0.4808, device='cuda:0'), tensor(-0.0094, device='cuda:0')]
+current auuc:  [-0.003968905604173465, 0.00044502987544364845]  current qini:  [-0.009917574648033308, 0.0007520749169332496]  best auuc:  0.00044502987544364845 best_qini:  0.0007520749169332496  best_params:  5_8_1e-06_1e-05
+current epoch:  6
+current loss:  [tensor(0.4957, device='cuda:0'), tensor(-0.0130, device='cuda:0')]
+current epoch:  7
+current loss:  [tensor(0.4821, device='cuda:0'), tensor(-0.0451, device='cuda:0')]
+current epoch:  8
+current loss:  [tensor(0.4605, device='cuda:0'), tensor(-0.1419, device='cuda:0')]
+current epoch:  9
+current loss:  [tensor(0.5082, device='cuda:0'), tensor(-0.0098, device='cuda:0')]
+current epoch:  10
+current loss:  [tensor(0.4921, device='cuda:0'), tensor(0.0477, device='cuda:0')]
+current auuc:  [-0.00022072997127083524, 0.0]  current qini:  [-0.0005533455273721089, 0.0]  best auuc:  0.00044502987544364845 best_qini:  0.0007520749169332496  best_params:  5_8_1e-06_1e-05
+current epoch:  11
+current loss:  [tensor(0.4563, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_1e-06_5e-05
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.5335, device='cuda:0'), tensor(0.0193, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.4871, device='cuda:0'), tensor(0.0160, device='cuda:0')]
+current epoch:  3
+current loss:  [tensor(0.5123, device='cuda:0'), tensor(-0.0009, device='cuda:0')]
+current epoch:  4
+current loss:  [tensor(0.4655, device='cuda:0'), tensor(-0.0091, device='cuda:0')]
+current epoch:  5
+current loss:  [tensor(0.4838, device='cuda:0'), tensor(0.0054, device='cuda:0')]
+current auuc:  [-0.003800798914932801, 0.012731342799352357]  current qini:  [-0.009511012380739656, 0.024599242056823824]  best auuc:  0.012731342799352357 best_qini:  0.024599242056823824  best_params:  5_8_1e-06_5e-05
+current epoch:  6
+current loss:  [tensor(0.4938, device='cuda:0'), tensor(-0.0155, device='cuda:0')]
+current epoch:  7
+current loss:  [tensor(0.4909, device='cuda:0'), tensor(-0.0496, device='cuda:0')]
+current epoch:  8
+current loss:  [tensor(0.4767, device='cuda:0'), tensor(-0.0336, device='cuda:0')]
+current epoch:  9
+current loss:  [tensor(0.4641, device='cuda:0'), tensor(-0.0526, device='cuda:0')]
+current epoch:  10
+current loss:  [tensor(0.4855, device='cuda:0'), tensor(-0.1089, device='cuda:0')]
+current auuc:  [-0.002934325262592293, 0.012290154797350255]  current qini:  [-0.007330702266353505, 0.023826725317738395]  best auuc:  0.012731342799352357 best_qini:  0.024599242056823824  best_params:  5_8_1e-06_5e-05
+current epoch:  11
+current loss:  [tensor(0.4793, device='cuda:0'), tensor(-0.0087, device='cuda:0')]
+current epoch:  12
+current loss:  [tensor(0.4665, device='cuda:0'), tensor(0.0314, device='cuda:0')]
+current epoch:  13
+current loss:  [tensor(0.4742, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_1e-06_0.0001
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.5012, device='cuda:0'), tensor(0.0250, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.5158, device='cuda:0'), tensor(0.0223, device='cuda:0')]
+current epoch:  3
+current loss:  [tensor(0.4836, device='cuda:0'), tensor(-0.0023, device='cuda:0')]
+current epoch:  4
+current loss:  [tensor(0.4790, device='cuda:0'), tensor(-0.0084, device='cuda:0')]
+current epoch:  5
+current loss:  [tensor(0.5013, device='cuda:0'), tensor(0.0044, device='cuda:0')]
+current auuc:  [0.003996402095873596, 0.008850184704445546]  current qini:  [0.00999976214108724, 0.017221350569280036]  best auuc:  0.012731342799352357 best_qini:  0.024599242056823824  best_params:  5_8_1e-06_5e-05
+current epoch:  6
+current loss:  [tensor(0.5285, device='cuda:0'), tensor(-0.0132, device='cuda:0')]
+current epoch:  7
+current loss:  [tensor(0.4917, device='cuda:0'), tensor(-0.0275, device='cuda:0')]
+current epoch:  8
+current loss:  [tensor(0.4942, device='cuda:0'), tensor(-0.0496, device='cuda:0')]
+current epoch:  9
+current loss:  [tensor(0.4860, device='cuda:0'), tensor(-0.0663, device='cuda:0')]
+current epoch:  10
+current loss:  [tensor(0.4893, device='cuda:0'), tensor(-0.0980, device='cuda:0')]
+current auuc:  [0.0032052395505771714, 0.0012052587808795282]  current qini:  [0.007989508114516323, 0.0024418192929598556]  best auuc:  0.012731342799352357 best_qini:  0.024599242056823824  best_params:  5_8_1e-06_5e-05
+current epoch:  11
+current loss:  [tensor(0.4556, device='cuda:0'), tensor(-0.0120, device='cuda:0')]
+current epoch:  12
+current loss:  [tensor(0.4699, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_1e-06_0.0005
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.5274, device='cuda:0'), tensor(0.0340, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.4979, device='cuda:0'), tensor(0.0064, device='cuda:0')]
+current epoch:  3
+current loss:  [tensor(0.4966, device='cuda:0'), tensor(-0.0059, device='cuda:0')]
+current epoch:  4
+current loss:  [tensor(0.4767, device='cuda:0'), tensor(-0.0082, device='cuda:0')]
+current epoch:  5
+current loss:  [tensor(0.4971, device='cuda:0'), tensor(-0.0143, device='cuda:0')]
+current auuc:  [0.0028356250639299876, 0.002158040725639297]  current qini:  [0.0071117541506926, 0.004435894665729538]  best auuc:  0.012731342799352357 best_qini:  0.024599242056823824  best_params:  5_8_1e-06_5e-05
+current epoch:  6
+current loss:  [tensor(0.4625, device='cuda:0'), tensor(-0.0150, device='cuda:0')]
+current epoch:  7
+current loss:  [tensor(0.4734, device='cuda:0'), tensor(-0.0404, device='cuda:0')]
+current epoch:  8
+current loss:  [tensor(0.4995, device='cuda:0'), tensor(-0.0331, device='cuda:0')]
+current epoch:  9
+current loss:  [tensor(0.4688, device='cuda:0'), tensor(-0.0646, device='cuda:0')]
+current epoch:  10
+current loss:  [tensor(0.4962, device='cuda:0'), tensor(-0.0124, device='cuda:0')]
+current auuc:  [0.002980912403331061, 0.0]  current qini:  [0.007477591618328297, 0.0]  best auuc:  0.012731342799352357 best_qini:  0.024599242056823824  best_params:  5_8_1e-06_5e-05
+current epoch:  11
+current loss:  [tensor(0.4430, device='cuda:0'), tensor(0.0144, device='cuda:0')]
+current epoch:  12
+current loss:  [tensor(0.4706, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_1e-06_0.001
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.4862, device='cuda:0'), tensor(0.0336, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.4914, device='cuda:0'), tensor(0.0095, device='cuda:0')]
+current epoch:  3
+current loss:  [tensor(0.4888, device='cuda:0'), tensor(-0.0020, device='cuda:0')]
+current epoch:  4
+current loss:  [tensor(0.5048, device='cuda:0'), tensor(-0.0186, device='cuda:0')]
+current epoch:  5
+current loss:  [tensor(0.4935, device='cuda:0'), tensor(-0.0229, device='cuda:0')]
+current auuc:  [-0.003895283222386031, 0.00081603182116384]  current qini:  [-0.00982205938799297, 0.0016330140901183565]  best auuc:  0.012731342799352357 best_qini:  0.024599242056823824  best_params:  5_8_1e-06_5e-05
+current epoch:  6
+current loss:  [tensor(0.4956, device='cuda:0'), tensor(-0.0013, device='cuda:0')]
+current epoch:  7
+current loss:  [tensor(0.4762, device='cuda:0'), tensor(-0.0330, device='cuda:0')]
+current epoch:  8
+current loss:  [tensor(0.5077, device='cuda:0'), tensor(-0.0885, device='cuda:0')]
+current epoch:  9
+current loss:  [tensor(0.5037, device='cuda:0'), tensor(-0.1546, device='cuda:0')]
+current epoch:  10
+current loss:  [tensor(0.4627, device='cuda:0'), tensor(-0.0032, device='cuda:0')]
+current auuc:  [-0.003687486844920974, 0.0]  current qini:  [-0.009291094072850715, 0.0]  best auuc:  0.012731342799352357 best_qini:  0.024599242056823824  best_params:  5_8_1e-06_5e-05
+current epoch:  11
+current loss:  [tensor(0.4604, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_1e-05_1e-06
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.4598, device='cuda:0'), tensor(-0.0071, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.4424, device='cuda:0'), tensor(-0.0083, device='cuda:0')]
+current epoch:  3
+current loss:  [tensor(0.4003, device='cuda:0'), tensor(-0.0004, device='cuda:0')]
+current epoch:  4
+current loss:  [tensor(0.3907, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_1e-05_5e-05
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.4939, device='cuda:0'), tensor(-0.0034, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.4577, device='cuda:0'), tensor(-0.0260, device='cuda:0')]
+current epoch:  3
+current loss:  [tensor(0.4052, device='cuda:0'), tensor(-0.0917, device='cuda:0')]
+current epoch:  4
+current loss:  [tensor(0.3938, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_1e-05_0.0005
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.4465, device='cuda:0'), tensor(-0.0049, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.4456, device='cuda:0'), tensor(-0.0309, device='cuda:0')]
+current epoch:  3
+current loss:  [tensor(0.4429, device='cuda:0'), tensor(-0.0112, device='cuda:0')]
+current epoch:  4
+current loss:  [tensor(0.4017, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_5e-05_1e-06
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.3651, device='cuda:0'), tensor(-0.0149, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.2430, device='cuda:0'), tensor(-0.0171, device='cuda:0')]
+current epoch:  3
+current loss:  [tensor(0.1844, device='cuda:0'), tensor(0.0339, device='cuda:0')]
+current epoch:  4
+current loss:  [tensor(0.0725, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_5e-05_1e-05
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.3729, device='cuda:0'), tensor(-0.0376, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.2662, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_5e-05_5e-05
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.3428, device='cuda:0'), tensor(-0.0262, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.2637, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_5e-05_0.0001
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.3447, device='cuda:0'), tensor(-0.0199, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.2398, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_5e-05_0.0005
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.3703, device='cuda:0'), tensor(-0.0540, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.2359, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_5e-05_0.001
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.3582, device='cuda:0'), tensor(-0.0233, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.2523, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_0.0001_1e-06
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.2363, device='cuda:0'), tensor(-0.0727, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.0811, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_0.0001_5e-05
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.2277, device='cuda:0'), tensor(-0.0400, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.0976, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_0.0001_0.0005
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.2669, device='cuda:0'), tensor(-0.1512, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.0901, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_0.0005_1e-06
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(-0.1952, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_0.0005_1e-05
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(-0.2126, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_0.0005_5e-05
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(-0.1890, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_0.0005_0.0001
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(-0.2397, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_0.0005_0.0005
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(-0.1857, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_0.0005_0.001
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(-0.2062, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_0.001_1e-06
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(-0.5876, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_0.001_5e-05
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(-0.7936, device='cuda:0'), tensor(nan, device='cuda:0')]
+8_0.001_0.0005
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(-0.7471, device='cuda:0'), tensor(nan, device='cuda:0')]
+16_1e-06_1e-06
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.5099, device='cuda:0'), tensor(0.0280, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.4958, device='cuda:0'), tensor(0.0140, device='cuda:0')]
+current epoch:  3
+current loss:  [tensor(0.5015, device='cuda:0'), tensor(0.0065, device='cuda:0')]
+current epoch:  4
+current loss:  [tensor(0.4853, device='cuda:0'), tensor(-0.0157, device='cuda:0')]
+current epoch:  5
+current loss:  [tensor(0.4861, device='cuda:0'), tensor(-0.0099, device='cuda:0')]
+current auuc:  [0.001128389548444507, 0.005082192194109157]  current qini:  [0.0027047639900478542, 0.009951237293303895]  best auuc:  0.012731342799352357 best_qini:  0.024599242056823824  best_params:  5_8_1e-06_5e-05
+current epoch:  6
+current loss:  [tensor(0.4902, device='cuda:0'), tensor(-0.0463, device='cuda:0')]
+current epoch:  7
+current loss:  [tensor(0.4738, device='cuda:0'), tensor(-0.0524, device='cuda:0')]
+current epoch:  8
+current loss:  [tensor(0.5011, device='cuda:0'), tensor(-0.0607, device='cuda:0')]
+current epoch:  9
+current loss:  [tensor(0.4462, device='cuda:0'), tensor(-0.0061, device='cuda:0')]
+current epoch:  10
+current loss:  [tensor(0.4711, device='cuda:0'), tensor(0.0543, device='cuda:0')]
+current auuc:  [0.0004735980222855795, -0.0030798878179381928]  current qini:  [0.001079412701733338, -0.005971378344447639]  best auuc:  0.012731342799352357 best_qini:  0.024599242056823824  best_params:  5_8_1e-06_5e-05
+current epoch:  11
+current loss:  [tensor(0.4694, device='cuda:0'), tensor(nan, device='cuda:0')]
+16_1e-06_1e-05
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.4991, device='cuda:0'), tensor(0.0271, device='cuda:0')]
+current epoch:  2
+current loss:  [tensor(0.4699, device='cuda:0'), tensor(0.0085, device='cuda:0')]
+current epoch:  3
+current loss:  [tensor(0.4930, device='cuda:0'), tensor(-0.0069, device='cuda:0')]
+current epoch:  4
+current loss:  [tensor(0.4848, device='cuda:0'), tensor(-0.0122, device='cuda:0')]
+current epoch:  5
+current loss:  [tensor(0.4842, device='cuda:0'), tensor(-0.0101, device='cuda:0')]
+current auuc:  [0.0009556478060174415, 0.00953862259379072]  current qini:  [0.002273327984193556, 0.01849197467350006]  best auuc:  0.012731342799352357 best_qini:  0.024599242056823824  best_params:  5_8_1e-06_5e-05
+current epoch:  6
+current loss:  [tensor(0.5140, device='cuda:0'), tensor(-0.0508, device='cuda:0')]
+current epoch:  7
+current loss:  [tensor(0.4805, device='cuda:0'), tensor(-0.0078, device='cuda:0')]
+current epoch:  8
+current loss:  [tensor(0.4707, device='cuda:0'), tensor(-0.0397, device='cuda:0')]
+current epoch:  9
+current loss:  [tensor(0.4857, device='cuda:0'), tensor(-0.0774, device='cuda:0')]
+current epoch:  10
+current loss:  [tensor(0.4648, device='cuda:0'), tensor(-0.0120, device='cuda:0')]
+current auuc:  [0.002284560536180589, -0.022136087898808197]  current qini:  [0.005600933044478226, -0.04254671415654336]  best auuc:  0.012731342799352357 best_qini:  0.024599242056823824  best_params:  5_8_1e-06_5e-05
+current epoch:  11
+current loss:  [tensor(0.4786, device='cuda:0'), tensor(0.0201, device='cuda:0')]
+current epoch:  12
+current loss:  [tensor(0.4487, device='cuda:0'), tensor(-0.0074, device='cuda:0')]
+current epoch:  13
+current loss:  [tensor(0.4444, device='cuda:0'), tensor(-1.5810e-05, device='cuda:0')]
+current epoch:  14
+current loss:  [tensor(0.4942, device='cuda:0'), tensor(0.0261, device='cuda:0')]
+current epoch:  15
+current loss:  [tensor(0.4614, device='cuda:0'), tensor(nan, device='cuda:0')]
+current auuc:  [0.0018116856905685168, -0.005379650476821878]  current qini:  [0.004423024978177937, -0.010554018611542728]  best auuc:  0.012731342799352357 best_qini:  0.024599242056823824  best_params:  5_8_1e-06_5e-05
+16_1e-06_5e-05
+model :  Dragonnet_tr
+current epoch:  1
+current loss:  [tensor(0.4971, device='cuda:0'), tensor(0.0341, device='cuda:0')]
